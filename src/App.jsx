@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { lazy, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './containers/Nav/Navbar';
-import UsersPage from './pages/userPage/UsersPage';
-import AddBlogPage from './pages/AddBlog/AddBlogPage';
-import BlogListPage from './pages/BlogListPage/BlogListPage';
-import ContactPage from './pages/Contact/ContactPage';
-import LoginPage from './components/Login/Login';
+const Navbar = lazy(() => import('./containers/Nav/Navbar'));
+// import Navbar from './containers/Nav/Navbar';
+const UsersPage = lazy(() => import('./pages/userPage/UsersPage'))
+const AddBlogPage = lazy(() => import('./pages/AddBlog/AddBlogPage'))
+const BlogListPage = lazy(() => import('./pages/BlogListPage/BlogListPage'))
+const ContactPage = lazy(() => import('./pages/Contact/ContactPage'))
+const LoginPage = lazy(() => import('./components/Login/Login'))
 import './App.scss';
 
 const App = () => {
