@@ -1,0 +1,21 @@
+.user-list {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    .user-card {
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: white;
+
+      h3 {
+        margin: 0;
+      }
+
+      p {
+        margin: 5px 0;
+      }
+    }
+  }
