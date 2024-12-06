@@ -10,7 +10,7 @@ import './App.scss';
 
 const App = () => {
   // State to track if the user is logged in
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   // Function to handle login
   const handleLogin = () => {
