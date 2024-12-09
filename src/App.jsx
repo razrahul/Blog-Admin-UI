@@ -1,3 +1,15 @@
+<<<<<<< HEAD
+import React, { lazy, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+const Navbar = lazy(() => import('./containers/Nav/Navbar'));
+// import Navbar from './containers/Nav/Navbar';
+const UsersPage = lazy(() => import('./pages/userPage/UsersPage'))
+const AddBlogPage = lazy(() => import('./pages/AddBlog/AddBlogPage'))
+const BlogListPage = lazy(() => import('./pages/BlogListPage/BlogListPage'))
+const ContactPage = lazy(() => import('./pages/Contact/ContactPage'))
+const LoginPage = lazy(() => import('./components/Login/Login'))
+import './App.scss';
+=======
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./containers/Nav/Navbar";
@@ -8,6 +20,7 @@ import ContactPage from "./pages/Contact/ContactPage";
 import LoginPage from "./components/Login/Login";
 import AddSubtitlePage from "./components/AddTitle/AddSubTitlePage";
 import "./App.scss";
+>>>>>>> 620296637b0b68d6fc13eb512b48ff60de2d5e0c
 
 const App = () => {
   // State to track if the user is logged in

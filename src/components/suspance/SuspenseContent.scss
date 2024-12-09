@@ -1,0 +1,11 @@
+.suspenseContainer {
+    width: 100%;
+    height: 100vh; /* Full viewport height */
+    color: #d1d5db; /* Equivalent to text-gray-300 */
+    background-color: var(--base-100); /* Use your custom `base-100` color variable */
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centers the loading text */
+    font-size: 1.5rem; /* Optional: Adjust text size */
+  }
+  

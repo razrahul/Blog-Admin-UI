@@ -15,7 +15,6 @@
     color: #fff;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     z-index: 10;
-    // overflow-y: auto; /* In case Navbar has scrollable items */
   }
 
   // Scrollable Content
@@ -25,13 +24,13 @@
     padding: 20px;
     background-color: #f9f9f9;
     overflow-y: auto; /* Enables scrolling for this area */
-    height: 100vh; /* Ensures content takes full vertical space */
+    height: 100vh; 
   }
 }
 
 @media (max-width: 780px) {
   .content-fix {
-    width: 15vw; /* Narrower Navbar */
+    width: 15vw;
   }
 
   .content {
@@ -41,14 +40,14 @@
 
 @media (max-width: 480px) {
   .content-fix {
-    position: relative; /* Make Navbar stack vertically */
+    position: relative; 
     width: 100vw;
     height: auto;
   }
 
   .content {
     margin-left: 0;
-    margin-top: 60px; /* Add spacing if Navbar stacks on top */
+    margin-top: 60px; 
   }
 }
 
