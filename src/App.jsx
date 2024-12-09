@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './containers/Nav/Navbar';
-import UsersPage from './pages/userPage/UsersPage';
-import AddBlogPage from './pages/AddBlog/AddBlogPage';
-import BlogListPage from './pages/BlogListPage/BlogListPage';
-import ContactPage from './pages/Contact/ContactPage';
-import LoginPage from './components/Login/Login';
-import './App.scss';
+import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from "./containers/Nav/Navbar";
+import UsersPage from "./pages/userPage/UsersPage";
+import AddBlogPage from "./pages/AddBlog/AddBlogPage";
+import BlogListPage from "./pages/BlogListPage/BlogListPage";
+import ContactPage from "./pages/Contact/ContactPage";
+import LoginPage from "./components/Login/Login";
+import AddSubtitlePage from "./components/AddTitle/AddSubTitlePage";
+import "./App.scss";
 
 const App = () => {
   // State to track if the user is logged in
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // Function to handle login
   const handleLogin = () => {
@@ -25,11 +26,10 @@ const App = () => {
           <LoginPage onLogin={handleLogin} />
         ) : (
           <>
-          <div className="content-fix">
-            {/* Left Navbar */}
-            <Navbar />
-          </div>
-            
+            <div className="content-fix">
+              {/* Left Navbar */}
+              <Navbar />
+            </div>
 
             {/* Right-Side Dynamic Content */}
             <div className="content">
@@ -37,7 +37,15 @@ const App = () => {
                 <Route path="/users" element={<UsersPage />} />
                 <Route path="/add-blog" element={<AddBlogPage />} />
                 <Route path="/blog-list" element={<BlogListPage />} />
+                <Route
+                  path="/add-subtitle/:blogId"
+                  element={<AddSubtitlePage />}
+                />
                 <Route path="/contact" element={<ContactPage />} />
+                <Route
+                  path="/add-subtitle/:blogId"
+                  element={<AddSubtitlePage />}
+                />
               </Routes>
             </div>
           </>

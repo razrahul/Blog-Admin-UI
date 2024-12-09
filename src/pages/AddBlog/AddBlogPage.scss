@@ -1,0 +1,83 @@
+.create-blog-page {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2rem;
+    color: #333;
+  }
+
+  .blog-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+
+      label {
+        font-weight: bold;
+        color: #555;
+      }
+
+      input,
+      textarea,
+      select {
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+
+        &:focus {
+          border-color: #007bff;
+        }
+      }
+
+      textarea {
+        resize: vertical;
+      }
+
+      .mandatory {
+        font-size: 0.8rem;
+        color: red;
+      }
+    }
+
+    .visibility-options {
+      display: flex;
+      gap: 15px;
+
+      label {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        input {
+          accent-color: #007bff;
+        }
+      }
+    }
+
+    .create-button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: bold;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+  }
+}
