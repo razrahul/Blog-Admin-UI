@@ -1,19 +1,33 @@
 .navbar {
-    // width: 20vw;
-    background-color: #00bfff;
+  background-color: #00bfff;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  height: 100vh;
+  line-height: 40px;
+
+  h2 {
+    margin-bottom: 30px;
+    font-size: 40px;
+  }
+
+  .menu-toggle {
+    display: none;
+    background: none;
     color: white;
+    font-size: 24px;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+
+  .nav-links {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    height: 100vh;
-    line-height: 40px;
-  
-    h2 {
-      margin-bottom: 30px;
-      font-size: 40px;
-    }
-  
+    width: 100%;
+
     a {
       font-size: 20px;
       display: flex;
@@ -22,21 +36,19 @@
       margin: 10px 0;
       text-decoration: none;
       color: white;
-      width: 100%;
       border-radius: 5px;
-  
+
       svg {
         margin-right: 10px;
       }
-  
+
       &.active {
         background-color: white;
         color: #00bfff;
       }
     }
-  
+
     .logout {
-      margin-top: 10rem;
       background-color: white;
       color: #00bfff;
       padding: 10px 15px;
@@ -45,4 +57,38 @@
       cursor: pointer;
     }
   }
-  
+
+  @media (max-width: 768px) {
+    height: auto;
+
+    h2 {
+      font-size: 24px;
+    }
+
+    .menu-toggle {
+      display: block;
+    }
+
+    .nav-links {
+      display: none;
+      flex-direction: column;
+
+      &.open {
+        display: flex;
+      }
+    }
+
+    a,
+    .logout {
+      font-size: 16px;
+      padding: 10px;
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    h2 {
+      font-size: 20px;
+    }
+  }
+}

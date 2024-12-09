@@ -1,126 +1,144 @@
-.app-container {
-    display: flex;
-    height: 100vh;
-    width: 100vw;
-    overflow-x: hidden;
-  
-    // Fixed Navbar
-    .content-fix {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 22vw; /* Adjust as needed */
-      background-color: #333; /* Example background */
-      color: #fff;
-      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-      z-index: 10;
-      // overflow-y: auto; /* In case Navbar has scrollable items */
-    }
-  
-    // Scrollable Content
-    .content {
-      margin-left: 22vw; /* Matches the fixed Navbar width */
-      flex: 1;
-      padding: 20px;
-      background-color: #f9f9f9;
-      overflow-y: auto; /* Enables scrolling for this area */
-      height: 100vh; /* Ensures content takes full vertical space */
-    }
+/* General Styles */
+.contact-container {
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2rem;
+    color: #333;
   }
-  
-  @media (max-width: 780px) {
-    .content-fix {
-      width: 15vw; /* Narrower Navbar */
-    }
-  
-    .content {
-      margin-left: 15vw;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .content-fix {
-      position: relative; /* Make Navbar stack vertically */
-      width: 100vw;
-      height: auto;
-    }
-  
-    .content {
-      margin-left: 0;
-      margin-top: 60px; /* Add spacing if Navbar stacks on top */
-    }
-  }
-  
-  /* Contact Styles */
-  .contact-container {
-    padding: 20px;
-  }
-  
-  .request-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .request-card {
-    display: flex;
-    justify-content: space-between;
-    background-color: #f9f9f9;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .request-info {
-    display: flex;
-    flex-direction: column;
-  }
-  
+}
+
+/* Request List */
+.request-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.request-card {
+  display: flex;
+  flex-wrap: wrap; /* Enables wrapping on smaller screens */
+  justify-content: space-between;
+  gap: 15px;
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
+  .request-info,
   .request-info-right {
-    display: flex;
-    flex-direction: column;
-    width: 70%;
+    flex: 1;
+    min-width: 250px; /* Ensures both sections shrink for smaller screens */
   }
-  
+}
+
+/* Request Information */
+.request-info {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+
+  p {
+    margin: 5px 0;
+  }
+
+  .request-date {
+    font-size: 0.85rem;
+    color: #666;
+  }
+}
+
+/* Right Section for Messages and Replies */
+.request-info-right {
+  display: flex;
+  flex-direction: column;
+
   .request-message {
     margin-bottom: 10px;
+
+    p {
+      font-size: 0.9rem;
+      color: #555;
+    }
   }
-  
+
   .reply-section {
-    margin-top: 15px;
-  
+    margin-top: 10px;
+
     textarea {
-      width: 95%;
+      width: 100%; /* Full width on small screens */
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 5px;
       min-height: 80px;
       resize: vertical;
     }
-  
+
     button {
+      width: 100%; /* Full width on smaller screens */
+      padding: 10px;
       background-color: #4CAF50;
       color: white;
       border: none;
-      padding: 10px;
+      border-radius: 5px;
+      font-size: 1rem;
       margin-top: 10px;
       cursor: pointer;
-      border-radius: 5px;
-      font-size: 16px;
-      width: 20%;
       transition: background-color 0.3s;
+
+      &:hover {
+        background-color: #45a049;
+      }
     }
-  
-    button:hover {
-      background-color: #45a049;
-    }
-  
+
     .reply-message {
       background-color: #e6f7e6;
       padding: 10px;
       margin-top: 10px;
       border-radius: 5px;
+      font-size: 0.9rem;
     }
   }
-  
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .request-card {
+    flex-direction: column;
+  }
+
+  .request-info,
+  .request-info-right {
+    width: 100%; /* Take full width */
+  }
+
+  textarea {
+    width: 100%; /* Ensure full width */
+  }
+
+  button {
+    width: 100%; /* Full width for buttons */
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.5rem; /* Smaller heading */
+  }
+
+  .request-card {
+    padding: 10px;
+  }
+
+  textarea {
+    padding: 8px;
+  }
+
+  button {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+}

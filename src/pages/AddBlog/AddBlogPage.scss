@@ -52,6 +52,7 @@
 
     .visibility-options {
       display: flex;
+      flex-direction: column; // Stack options vertically on small screens
       gap: 15px;
 
       label {
@@ -77,6 +78,52 @@
 
       &:hover {
         background-color: #0056b3;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 15px;
+
+    h1 {
+      font-size: 1.5rem;
+    }
+
+    .blog-form {
+      .form-group {
+        input,
+        textarea,
+        select {
+          font-size: 0.9rem;
+          padding: 8px;
+        }
+      }
+
+      .create-button {
+        font-size: 0.9rem;
+        padding: 8px;
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    h1 {
+      font-size: 1.2rem;
+    }
+
+    .blog-form {
+      .form-group {
+        input,
+        textarea,
+        select {
+          font-size: 0.8rem;
+          padding: 6px;
+        }
+      }
+
+      .create-button {
+        font-size: 0.8rem;
+        padding: 6px;
       }
     }
   }

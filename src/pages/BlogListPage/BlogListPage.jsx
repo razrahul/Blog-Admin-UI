@@ -36,7 +36,7 @@ const BlogListPage = () => {
   return (
     <div className="blog-list-page">
       <div className="sidebar">
-        <h1>Categories</h1>
+        <h2>Categories</h2>
         <ul>
           <li>All Blogs</li>
           <li>Marketing</li>

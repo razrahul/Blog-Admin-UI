@@ -1,41 +1,130 @@
 .user-list {
-    width: 95%;
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  .user-contant {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: white;
     display: flex;
-    flex-direction: column;
-    gap: 15px;
-    
+    justify-content: space-between;
+    align-items: center; /* Align items vertically */
+    gap: 20px;
 
-    .user-contant {
-      padding: 15px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      background-color: white;
+    .user-img {
+      img {
+        width: 180px;
+        height: 180px;
+        border-radius: 10px;
+        object-fit: cover; /* Ensures proper scaling */
+      }
+    }
+
+    .user-card {
+      flex: 1;
+      padding: 0 15px; /* Adds spacing between image and card */
+
+      h3 {
+        margin: 0;
+        font-size: 1.2rem;
+      }
+
+      p {
+        margin: 5px 0;
+        font-size: 0.9rem;
+        color: #555;
+      }
+    }
+
+    .user-auth {
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
+      gap: 10px;
 
-      .user-img{
-   
-        
-        img{
-          width: 180px;
-          height: 180px;
-          border-radius: 10px;
-        }
-      }
+      button {
+        padding: 10px;
+        font-size: 0.9rem;
+        border: none;
+        border-radius: 5px;
+        background-color: #4caf50;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
 
-      .user-card{
-        h3 {
-          margin: 0;
+        &:hover {
+          background-color: #45a049;
         }
-  
-        p {
-          margin: 5px 0;
-        }
-      }
-      .user-auth{
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
       }
     }
   }
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .user-contant {
+    flex-direction: column;
+    align-items: flex-start;
+
+    .user-img {
+      img {
+        width: 120px;
+        height: 120px; /* Scale down the image */
+      }
+    }
+
+    .user-card {
+      padding: 0;
+      h3 {
+        font-size: 1rem;
+      }
+      p {
+        font-size: 0.8rem;
+      }
+    }
+
+    .user-auth {
+      flex-direction: row; /* Arrange buttons in a row */
+      flex-wrap: wrap; /* Wrap buttons if they don't fit */
+      gap: 10px;
+
+      button {
+        flex: 1; /* Make buttons equal width */
+        max-width: 120px; /* Set a max width for buttons */
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .user-contant {
+    gap: 15px;
+
+    .user-img {
+      img {
+        width: 100px;
+        height: 100px; /* Further scale down the image */
+      }
+    }
+
+    .user-card {
+      h3 {
+        font-size: 0.9rem;
+      }
+
+      p {
+        font-size: 0.75rem;
+      }
+    }
+
+    .user-auth {
+      button {
+        font-size: 0.8rem;
+        padding: 8px;
+        max-width: 100px; /* Further limit button size */
+      }
+    }
+  }
+}
