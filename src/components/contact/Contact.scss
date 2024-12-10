@@ -1,13 +1,21 @@
 /* General Styles */
 .contact-container {
-  padding: 20px;
+  padding: 20px; /* Default padding */
   font-family: 'Arial', sans-serif;
+
+  @media (max-width: 768px) {
+    padding: 0px; /* Adjust padding for smaller screens */
+  }
 
   h1 {
     text-align: center;
     margin-bottom: 20px;
     font-size: 2rem;
     color: #333;
+
+    @media (max-width: 480px) {
+      font-size: 1.5rem; /* Smaller heading on small screens */
+    }
   }
 }
 
@@ -28,17 +36,26 @@
   border-radius: 8px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: 10px;
+  }
+
   .request-info,
   .request-info-right {
+    display: flex;
+    flex-direction: column;
     flex: 1;
-    min-width: 250px; /* Ensures both sections shrink for smaller screens */
+    min-width: 250px;
+
+    @media (max-width: 768px) {
+      width: 100%; /* Take full width on small screens */
+    }
   }
 }
 
 /* Request Information */
 .request-info {
-  display: flex;
-  flex-direction: column;
   font-size: 0.9rem;
 
   p {
@@ -53,9 +70,6 @@
 
 /* Right Section for Messages and Replies */
 .request-info-right {
-  display: flex;
-  flex-direction: column;
-
   .request-message {
     margin-bottom: 10px;
 
@@ -69,16 +83,20 @@
     margin-top: 10px;
 
     textarea {
-      width: 100%; /* Full width on small screens */
+      width: 100%; /* Full width on all screens */
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 5px;
       min-height: 80px;
       resize: vertical;
+
+      @media (max-width: 480px) {
+        padding: 8px;
+      }
     }
 
     button {
-      width: 100%; /* Full width on smaller screens */
+      width: 100%;
       padding: 10px;
       background-color: #4CAF50;
       color: white;
@@ -92,6 +110,11 @@
       &:hover {
         background-color: #45a049;
       }
+
+      @media (max-width: 480px) {
+        padding: 8px;
+        font-size: 0.9rem;
+      }
     }
 
     .reply-message {
@@ -101,44 +124,5 @@
       border-radius: 5px;
       font-size: 0.9rem;
     }
-  }
-}
-
-/* Media Queries */
-@media (max-width: 768px) {
-  .request-card {
-    flex-direction: column;
-  }
-
-  .request-info,
-  .request-info-right {
-    width: 100%; /* Take full width */
-  }
-
-  textarea {
-    width: 100%; /* Ensure full width */
-  }
-
-  button {
-    width: 100%; /* Full width for buttons */
-  }
-}
-
-@media (max-width: 480px) {
-  h1 {
-    font-size: 1.5rem; /* Smaller heading */
-  }
-
-  .request-card {
-    padding: 10px;
-  }
-
-  textarea {
-    padding: 8px;
-  }
-
-  button {
-    padding: 8px;
-    font-size: 0.9rem;
   }
 }

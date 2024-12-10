@@ -1,18 +1,18 @@
-import React, { lazy, useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-// Lazy load components
-const Navbar = lazy(() => import("./containers/Nav/Navbar"));
-const UsersPage = lazy(() => import("./pages/userPage/UsersPage"));
-const AddBlogPage = lazy(() => import("./pages/AddBlog/AddBlogPage"));
-const BlogListPage = lazy(() => import("./pages/BlogListPage/BlogListPage"));
-const ContactPage = lazy(() => import("./pages/Contact/ContactPage"));
-const LoginPage = lazy(() => import("./components/Login/Login"));
-const AddSubtitlePage = lazy(() =>
-  import("./components/AddTitle/AddSubTitlePage")
-);
+import React, { lazy, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+const Navbar = lazy(() => import('./containers/Nav/Navbar'));
+// import Navbar from './containers/Nav/Navbar';
+const UsersPage = lazy(() => import('./pages/userPage/UsersPage'))
+const AddBlogPage = lazy(() => import('./pages/AddBlog/AddBlogPage'))
+const BlogListPage = lazy(() => import('./pages/BlogListPage/BlogListPage'))
+const ContactPage = lazy(() => import('./pages/Contact/ContactPage'))
+const LoginPage = lazy(() => import('./components/Login/Login'))
 
+import AddSubtitlePage from "./components/AddTitle/AddSubTitlePage";
 import "./App.scss";
+
+
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
