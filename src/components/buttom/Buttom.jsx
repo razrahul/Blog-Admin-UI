@@ -11,7 +11,7 @@ const ButtonWithPopup = ({ children, onConfirm, onCancel }) => {
     if (children === "Verify") {
       setMessage("Verify this user? After verification, the user will get access to blog uploads.");
       setFirstOption("Verify");
-    } else if (children === "Public") {
+    } else if (children === "public") {
       setMessage("You want to Private this user account ?");
       setFirstOption("Private");
     } else if (children === "unblock") {

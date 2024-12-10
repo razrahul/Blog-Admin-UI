@@ -3,7 +3,7 @@ import './Login.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../redux/action/userAction';
 
-const LoginPage = ({ onLogin }) => {
+const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -25,15 +25,6 @@ const LoginPage = ({ onLogin }) => {
     e.preventDefault();
     dispatch(login(email, password)); // Dispatch the login action
   };
-
-  // Notify parent component of successful login
-  if (isAuthenticated) {
-    // alert('Login successful');
-    onLogin();
-  }
-  else if (error) {
-    alert(error);
-  }
 
 
   return (

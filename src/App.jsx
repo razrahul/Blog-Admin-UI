@@ -1,5 +1,5 @@
 
-import React, { lazy, useState } from 'react';
+import React, { lazy, useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 const Navbar = lazy(() => import('./containers/Nav/Navbar'));
 // import Navbar from './containers/Nav/Navbar';
@@ -12,21 +12,37 @@ const LoginPage = lazy(() => import('./components/Login/Login'))
 import AddSubtitlePage from "./components/AddTitle/AddSubTitlePage";
 import "./App.scss";
 
+import { useDispatch, useSelector } from 'react-redux';
+import { loadUser } from './redux/action/userAction';
+
 
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-  };
+  const { loading, error, isAuthenticated, user } = useSelector(
+    (state) => state.user
+  );
+  
+  // console.log(user)
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadUser());
+  }, [dispatch]);
+
+
+  // const handleLogin = () => {
+  //   setIsLoggedIn(true);
+  // };
 
   return (
     <Router>
       <div className="app-container">
-        {!isLoggedIn ? (
+        {!isAuthenticated ? (
           // Show LoginPage if the user is not logged in
-          <LoginPage onLogin={handleLogin} />
+          <LoginPage />
         ) : (
           <>
             <div className="content-fix">

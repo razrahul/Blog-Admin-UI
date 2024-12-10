@@ -68,6 +68,7 @@ const userSlice = createSlice({
       state.loading = false;
       state.isAuthenticated = true;
       state.user = action.payload;
+      state.message = 'User loaded successfully';
     },
     loadUserFail: (state, action) => {
       state.loading = false;

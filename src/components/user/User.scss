@@ -10,6 +10,7 @@
     border-radius: 5px;
     background-color: white;
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     align-items: center; /* Align items vertically */
     gap: 20px;
@@ -24,9 +25,6 @@
     }
 
     .user-card {
-      flex: 1;
-      padding: 0 15px; /* Adds spacing between image and card */
-
       h3 {
         margin: 0;
         font-size: 1.2rem;
@@ -34,6 +32,7 @@
 
       p {
         margin: 5px 0;
+        font-weight: 500;
         font-size: 0.9rem;
         color: #555;
       }

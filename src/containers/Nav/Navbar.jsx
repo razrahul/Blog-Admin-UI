@@ -10,6 +10,9 @@ import {
   FaBars,
 } from "react-icons/fa";
 
+import { useDispatch } from "react-redux";
+import { logout } from "../../redux/action/userAction.js";
+
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -19,10 +22,10 @@ const Navbar = () => {
   };
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
+
     const handleLogout = () => {
-      localStorage.removeItem("token");
-      window.location.reload();
-      // navigate("/");
+      dispatch(logout())
     };
 
   return (

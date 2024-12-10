@@ -18,7 +18,6 @@ export const getAllUsers = () => async (dispatch) => {
           }
          
        );
-       console.log(data);
        
   
       dispatch(getAllUsersSuccess(data));
