@@ -48,14 +48,18 @@
       }
     }
 
-    .logout {
-      background-color: white;
-      color: #00bfff;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+    
+  }
+  .logout {
+    margin-top: 10rem;
+    margin-left: 5rem;
+    width: fit-content;
+    background-color: white;
+    color: #00bfff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
   }
 
   @media (max-width: 768px) {

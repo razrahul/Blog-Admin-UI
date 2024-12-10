@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./Navbar.scss";
 import {
   FaList,
@@ -15,7 +15,15 @@ const Navbar = () => {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+
   };
+  const navigate = useNavigate();
+
+    const handleLogout = () => {
+      localStorage.removeItem("token");
+      window.location.reload();
+      // navigate("/");
+    };
 
   return (
     <div className="navbar">
@@ -36,7 +44,7 @@ const Navbar = () => {
         <NavLink to="/users" activeClassName="active">
           <FaUsers /> Users
         </NavLink>
-        <button className="logout">
+        <button className="logout" onClick={handleLogout}>
           <FaSignOutAlt /> Logout
         </button>
       </div>

@@ -1,26 +1,40 @@
 import React, { useState } from 'react';
 import './Login.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../../redux/action/userAction';
 
 const LoginPage = ({ onLogin }) => {
   const [showPassword, setShowPassword] = useState(false);
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const dispatch = useDispatch();
+
+  
+  const { loading, error, isAuthenticated, user } = useSelector(
+    (state) => state.user
+  );
+  // console.log(user)
+
+  //show , Hide Password Section 
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Authentication logic
-    if (username === 'admin' && password === 'password') {
-      alert('Login successful');
-      onLogin(); // Notify App of successful login
-    } else {
-      alert('Invalid credentials');
-    }
+    dispatch(login(email, password)); // Dispatch the login action
   };
+
+  // Notify parent component of successful login
+  if (isAuthenticated) {
+    // alert('Login successful');
+    onLogin();
+  }
+  else if (error) {
+    alert(error);
+  }
+
 
   return (
     <div className="login-container">
@@ -29,9 +43,9 @@ const LoginPage = ({ onLogin }) => {
         <form onSubmit={handleSubmit}>
           <input
             type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Email Id"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
           <input
