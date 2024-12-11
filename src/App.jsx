@@ -14,6 +14,7 @@ import "./App.scss";
 
 import { useDispatch, useSelector } from 'react-redux';
 import { loadUser } from './redux/action/userAction';
+import { getAllBlogs } from './redux/action/blogs';
 
 
 
@@ -24,12 +25,19 @@ const App = () => {
     (state) => state.user
   );
   
+
+  const { loading : blogloading, error: blogerror , blogs } = useSelector(
+    (state) => state.blog
+  );
+  console.log(blogs)
+  
   // console.log(user)
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(loadUser());
+    dispatch(getAllBlogs());
   }, [dispatch]);
 
 

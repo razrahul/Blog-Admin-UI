@@ -44,14 +44,7 @@ const UsersPage = () => {
 
   // console.log(users)
 
-  if (loading) {
-    return <div>Loading...</div>; // Show a loading message while fetching users
-  }
-
-  if (error) {
-    return <div className="error-message">Error: {error}</div>; // Show an error message if something goes wrong
-  }
-
+  
   return (
     <div className="users-page">
       <h1>Authentic user</h1>

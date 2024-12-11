@@ -2,11 +2,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import  userReducer from './reducer/userSlice.js';
 import  adminSlice from './reducer/adminSlice'
+import  blogSlice from './reducer/blogSlice.js';
 
 const store = configureStore({
   reducer: {
     user: userReducer,
     admin: adminSlice,
+    blog : blogSlice,
   },
 });
 

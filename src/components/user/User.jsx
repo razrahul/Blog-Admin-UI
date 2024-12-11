@@ -2,6 +2,7 @@ import React from "react";
 import "./User.scss";
 import Button from "../buttom/Buttom";
 import img from "../../assets/image/profile.webp";
+import formatDate from "../../Utils/formatDate ";
 
 function User({ users }) {
   // console.log(users);
@@ -30,7 +31,7 @@ function User({ users }) {
               <p>{user.role}</p>
               <p>{user.email}</p>
               <p>+91 {user.number} </p>
-              <p>{user.createdAt} </p>
+              <p>{formatDate(user.createdAt)} </p>
             </div>
             <div className="user-auth">
               <Button onConfirm={handleConfirm} onCancel={handleCancel}>
