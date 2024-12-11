@@ -30,7 +30,7 @@ const BlogCard = ({ blogs }) => {
               <button className="view">View</button>
               {/* <button className="edit">Edit</button> */}
               <button className="visibility">
-                {blog.isPrivate ? "Private" : "Public"}
+                {blog.isview}
               </button>
               <button className="delete">Delete</button>
               <button

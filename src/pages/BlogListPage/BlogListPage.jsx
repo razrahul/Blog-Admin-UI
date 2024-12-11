@@ -17,7 +17,7 @@ const BlogListPage = () => {
 //     title: `Blog Title ${index + 1}`,
 //     createdAt: `2024-12-${String((index % 9) + 1).padStart(2, "0")}`, // Ensures two-digit days
 //     image: "https://via.placeholder.com/300x200", // Fixed and clearer placeholder size
-//     isPrivate: Math.random() > 0.5, // Random boolean for isPrivate
+//     isview: Math.random() > 0.5, // Random boolean for isPrivate
 //   }))
 // );
 

@@ -1,13 +1,69 @@
 import React, { useState } from "react";
 import "./AddBlogPage.scss";
+import { useDispatch } from "react-redux";
+import { createBlog } from "../../redux/action/blogs";
 
 const AddBlogPage = () => {
-  const [isPublic, setIsPublic] = useState(true);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [createdBy, setCreatedBy] = useState("");
+  const [category, setCategory] = useState("");
+  const [isView, setIsView] = useState("");
+  const [image, setImage] = useState("");
+  const [imagePrev, setImagePrev] = useState("");
+
+  const dispatch = useDispatch();
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImage(file);
+
+    // Create a preview for the image
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImagePrev(reader.result);
+    };
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+
+    // Prepare FormData
+    const myBlog = new FormData();
+    myBlog.append("title", title);
+    myBlog.append("description", description);
+    myBlog.append("createdBy", createdBy);
+    myBlog.append("category", category);
+    myBlog.append("file", image);
+    myBlog.append("isview", isView);
+
+    // Dispatch the action to create a blog
+    dispatch(createBlog(myBlog));
+
+    // Reset form fields
+    setTitle("");
+    setDescription("");
+    setCreatedBy("");
+    setCategory("");
+    setImage("");
+    setImagePrev("");
+    setIsView(true);
+
+    console.log(title, description, createdBy, category, image, isView);
+
     alert("Blog created successfully!");
   };
+
+  const categories = [
+    "technology",
+    "lifestyle",
+    "education",
+    "marketing",
+    "biotechnology",
+  ];
 
   return (
     <div className="create-blog-page">
@@ -17,6 +73,8 @@ const AddBlogPage = () => {
         <div className="form-group">
           <label htmlFor="title">Title</label>
           <input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             type="text"
             id="title"
             placeholder="Enter blog title"
@@ -28,6 +86,8 @@ const AddBlogPage = () => {
         <div className="form-group">
           <label htmlFor="description">Description</label>
           <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             id="description"
             placeholder="Enter blog description"
             rows="5"
@@ -37,10 +97,12 @@ const AddBlogPage = () => {
 
         {/* Author */}
         <div className="form-group">
-          <label htmlFor="author">Author</label>
+          <label htmlFor="createdBy">Author</label>
           <input
+            value={createdBy}
+            onChange={(e) => setCreatedBy(e.target.value)}
             type="text"
-            id="author"
+            id="createdBy"
             placeholder="Enter author name"
             required
           />
@@ -49,24 +111,41 @@ const AddBlogPage = () => {
         {/* Category */}
         <div className="form-group">
           <label htmlFor="category">Category</label>
-          <select id="category" required>
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            id="category"
+            required
+          >
             <option value="">Select a category</option>
-            <option value="technology">Technology</option>
-            <option value="lifestyle">Lifestyle</option>
-            <option value="education">Education</option>
-            <option value="marketing">Marketing</option>
-            <option value="biotechnology">BioTechnology</option>
+            {categories.map((cat, index) => (
+              <option key={index} value={cat}>
+                {cat.charAt(0).toUpperCase() + cat.slice(1)}{" "}
+                {/* Capitalize first letter */}
+              </option>
+            ))}
           </select>
         </div>
 
         {/* Upload Image */}
         <div className="form-group">
           <label htmlFor="image">Upload Image</label>
-          <input type="file" id="image" accept="image/*" required />
+          <input
+            type="file"
+            id="image"
+            accept="image/*"
+            onChange={handleImageChange}
+            required
+          />
+          {imagePrev && (
+            <div className="image-preview">
+              <img src={imagePrev} alt="Preview" width="150" />
+            </div>
+          )}
           <small className="mandatory">*Uploading an image is mandatory.</small>
         </div>
 
-        {/* Public/Private */}
+        {/* Public/Private Visibility */}
         <div className="form-group">
           <label>Visibility</label>
           <div className="visibility-options">
@@ -74,8 +153,9 @@ const AddBlogPage = () => {
               <input
                 type="radio"
                 name="visibility"
-                checked={isPublic}
-                onChange={() => setIsPublic(true)}
+                value="public"
+                checked={isView === "public"}
+                onChange={() => setIsView("public")}
               />
               Public
             </label>
@@ -83,8 +163,9 @@ const AddBlogPage = () => {
               <input
                 type="radio"
                 name="visibility"
-                checked={!isPublic}
-                onChange={() => setIsPublic(false)}
+                value="private"
+                checked={isView === "private"}
+                onChange={() => setIsView("private")}
               />
               Private
             </label>
