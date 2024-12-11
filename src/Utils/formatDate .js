@@ -1,5 +1,5 @@
 
-const formatDate = (isoDate) => {
+export const formatDate = (isoDate) => {
   const date = new Date(isoDate);
   return date.toLocaleString("en-IN", {
     year: "numeric",
@@ -21,4 +21,11 @@ const formatDate = (isoDate) => {
 //   );
 // };
 
-export default formatDate;
+
+
+
+export const formatDateOnly = (isoDate) => {
+  const date = new Date(isoDate);
+  return date.toISOString().split("T")[0]; // Extracts YYYY-MM-DD
+};
+

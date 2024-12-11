@@ -2,7 +2,7 @@ import React from "react";
 import "./User.scss";
 import Button from "../buttom/Buttom";
 import img from "../../assets/image/profile.webp";
-import formatDate from "../../Utils/formatDate ";
+import {formatDate} from "../../Utils/formatDate ";
 
 function User({ users }) {
   // console.log(users);

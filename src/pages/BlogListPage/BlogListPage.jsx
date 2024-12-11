@@ -1,37 +1,53 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import BlogCard from "../../components/blogCrad/BlogCard";
 import "./BlogListPage.scss";
+import { useDispatch, useSelector } from "react-redux";
+import {getAllBlogs } from "../../redux/action/blogs";
 
 const BlogListPage = () => {
   const navigate = useNavigate();
 
-  const [blogs] = useState(
-    new Array(12).fill(null).map((_, index) => ({
-      id: index + 1,
-      title: `Blog Title ${index + 1}`,
-      date: `2024-12-0${(index % 9) + 1}`,
-      image: "https://via.placeholder.com/150",
-      isPrivate: Math.random() > 0.5,
-    }))
-  );
+  // Dummy blog data
+ 
 
-  const itemsPerPage = 8;
+// const [blogs] = useState(
+//   Array.from({ length: 12 }, (_, index) => ({
+//     _id: index + 1,
+//     title: `Blog Title ${index + 1}`,
+//     createdAt: `2024-12-${String((index % 9) + 1).padStart(2, "0")}`, // Ensures two-digit days
+//     image: "https://via.placeholder.com/300x200", // Fixed and clearer placeholder size
+//     isPrivate: Math.random() > 0.5, // Random boolean for isPrivate
+//   }))
+// );
+
+
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    dispatch(getAllBlogs());
+    
+  }, [dispatch])
+
+  const { loading : blogloading, error: blogerror , blogs } = useSelector(
+    (state) => state.blog
+  );
+  console.log(blogs)
+  
+
+  const itemsPerPage = 9;
   const [currentPage, setCurrentPage] = useState(1);
 
-  const handlePagination = (page) => {
-    setCurrentPage(page);
-  };
-
-  const handleAddSubtitle = (blogId) => {
-    navigate(`/add-subtitle/${blogId}`);
-  };
-
+  // Pagination Logic
   const paginatedBlogs = blogs.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-
   const totalPages = Math.ceil(blogs.length / itemsPerPage);
+
+  const handlePagination = (page) => setCurrentPage(page);
+
+ 
 
   return (
     <div className="blog-list-page">
@@ -56,32 +72,18 @@ const BlogListPage = () => {
           />
         </div>
 
+        {/* Render BlogCard components */}
         <div className="blogs-container">
-          {paginatedBlogs.map((blog) => (
-            <div key={blog.id} className="blog-card">
-              <img src={blog.image} alt={blog.title} />
-              <div className="blog-details">
-                <h3>{blog.title}</h3>
-                <p>{blog.date}</p>
-                <div className="actions">
-                  <button className="view">View</button>
-                  <button className="edit">Edit</button>
-                  <button className="visibility">
-                    {blog.isPrivate ? "Private" : "Public"}
-                  </button>
-                  <button className="delete">Delete</button>
-                  <button
-                    className="subtitle"
-                    onClick={() => handleAddSubtitle(blog.id)}
-                  >
-                    Add Subtitle
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+          {/* {paginatedBlogs.map((blog) => (
+            <BlogCard
+              key={blog.id}
+              blog={blog}
+            />
+          ))} */}
+          <BlogCard blogs={blogs}/>
         </div>
 
+        {/* Pagination */}
         <div className="pagination">
           {Array.from({ length: totalPages }).map((_, index) => (
             <button

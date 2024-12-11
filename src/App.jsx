@@ -26,10 +26,10 @@ const App = () => {
   );
   
 
-  const { loading : blogloading, error: blogerror , blogs } = useSelector(
-    (state) => state.blog
-  );
-  console.log(blogs)
+  // const { loading : blogloading, error: blogerror , blogs } = useSelector(
+  //   (state) => state.blog
+  // );
+  // console.log(blogs)
   
   // console.log(user)
 
@@ -37,7 +37,6 @@ const App = () => {
 
   useEffect(() => {
     dispatch(loadUser());
-    dispatch(getAllBlogs());
   }, [dispatch]);
 
 
