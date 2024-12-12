@@ -1,15 +1,18 @@
 import React from "react";
 import "./BlogCard.scss";
 import { useNavigate } from "react-router-dom";
-import {formatDateOnly} from "../../Utils/formatDate "
+import { formatDateOnly } from "../../Utils/formatDate ";
 
 const BlogCard = ({ blogs }) => {
   const navigate = useNavigate();
 
+  const handleViewButton = (blogId) => {
+    navigate(`/blog-details/${blogId}`);
+  };
+
   const handleAddSubtitle = (blogId) => {
     navigate(`/add-subtitle/${blogId}`);
   };
-
 
   return (
     <>
@@ -27,11 +30,14 @@ const BlogCard = ({ blogs }) => {
 
             {/* Action Buttons */}
             <div className="actions">
-              <button className="view">View</button>
-              {/* <button className="edit">Edit</button> */}
-              <button className="visibility">
-                {blog.isview}
+              <button
+                className="view"
+                onClick={() => handleViewButton(blog._id)}
+              >
+                View
               </button>
+              {/* <button className="edit">Edit</button> */}
+              <button className="visibility">{blog.isview}</button>
               <button className="delete">Delete</button>
               <button
                 className="subtitle"
