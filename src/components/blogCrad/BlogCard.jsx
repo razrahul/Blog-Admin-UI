@@ -2,12 +2,23 @@ import React from "react";
 import "./BlogCard.scss";
 import { useNavigate } from "react-router-dom";
 import {formatDateOnly} from "../../Utils/formatDate "
+import Button from "../conformationButtom/Button";
+import { useDispatch } from "react-redux";
+import { deleteBlog } from "../../redux/action/blogs";
 
 const BlogCard = ({ blogs }) => {
   const navigate = useNavigate();
 
   const handleAddSubtitle = (blogId) => {
     navigate(`/add-subtitle/${blogId}`);
+  };
+
+  const dispatch = useDispatch();
+   // Handle delete confirmation and dispatch the action
+   const handleDelete = (blogId) => {
+    // dispatch(deleteBlog(blogId)); // Dispatch the delete action
+    console.log(blogId)
+    dispatch(deleteBlog(blogId));
   };
 
 
@@ -32,7 +43,15 @@ const BlogCard = ({ blogs }) => {
               <button className="visibility">
                 {blog.isview}
               </button>
-              <button className="delete">Delete</button>
+             {/* Delete Button with Confirmation */}
+             <Button
+                onConfirm={() => handleDelete(blog._id)} 
+                title="Delete Blog"
+                description={`Are you sure you want to delete the blog titled "${blog.title}"?`}
+                buttonClass="delete"
+              >
+                Delete
+              </Button>
               <button
                 className="subtitle"
                 onClick={() => handleAddSubtitle(blog._id)}

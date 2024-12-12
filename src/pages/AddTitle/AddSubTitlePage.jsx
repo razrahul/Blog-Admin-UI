@@ -69,7 +69,7 @@ const AddSubtitlePage = () => {
       <form onSubmit={handleSubmit}>
         {/* Title No */}
         <div className="form-group">
-          <label>Title No</label>
+          <label>Index No</label>
           <input
             type="number"
             value={titleNo}

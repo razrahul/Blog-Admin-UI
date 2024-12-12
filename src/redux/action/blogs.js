@@ -10,6 +10,9 @@ import {
   addSubtitleRequest,
   addSubtitleSuccess,
   addSubtitleFail,
+  deleteBlogFail,
+  deleteBlogRequest,
+  deleteBlogSuccess,
   clearError,
   clearMessage,
 } from "../reducer/blogSlice.js";
@@ -89,3 +92,32 @@ export const addSubtitle = (blogId, subtitleData) => async (dispatch) => {
     );
   }
 };
+
+// Action to delete a blog
+
+export const deleteBlog = (blogId) => async (dispatch) => {
+  try {
+    dispatch(deleteBlogRequest()); // Start loading
+
+    // Send DELETE request to the server
+    const { data } = await axios.delete(`${server}/blogs/${blogId}`, {
+      withCredentials: true,
+    });
+
+    // Dispatch success action with blogId and message from the response
+    dispatch(deleteBlogSuccess({ blogId, message: data.message }));
+
+    // Optionally fetch all blogs again (if you need to refetch the list after deleting)
+    // dispatch(getAllBlogsRequest());
+    // const response = await axios.get(`${server}/blogs`);
+    // dispatch(getAllBlogsSuccess(response.data));
+    
+  } catch (error) {
+    dispatch(
+      deleteBlogFail(
+        error.response?.data?.message || "Failed to delete the blog"
+      )
+    );
+  }
+};
+
