@@ -1,9 +1,14 @@
 .add-subtitle-page {
     padding: 20px;
+    height: auto;
   
     h1 {
       margin-bottom: 20px;
       text-align: center;
+    }
+    h2{
+      text-align: center;
+      line-height: 20px;
     }
   
     form {
@@ -21,14 +26,25 @@
   
         input,
         textarea {
-          width: 100%;
-          padding: 10px;
-          border: 1px solid #ccc;
-          border-radius: 5px;
+        width: 100%;
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+
+          &:focus {
+            border-color: #007bff;
+          }
         }
-  
+
         textarea {
-          height: 100px;
+        resize: vertical;
+        }
+        
+        .mandatory {
+          font-size: 0.8rem;
+          color: red;
         }
       }
   

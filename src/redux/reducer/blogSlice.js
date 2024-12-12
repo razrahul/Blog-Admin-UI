@@ -39,6 +39,30 @@ const blogSlice = createSlice({
       state.error = action.payload;
     },
 
+     // Add Subtitle
+     addSubtitleRequest: (state) => {
+      state.loading = true;
+    },
+    addSubtitleSuccess: (state, action) => {
+      state.loading = false;
+      const { blogId, subtitle } = action.payload;
+    
+      // Find the blog and update the subtitles
+      state.blogs = state.blogs.map((blog) =>
+        blog._id === blogId
+          ? { ...blog, subtitles: [...blog.subtitles, subtitle] }
+          : blog
+      );
+    
+      state.message = "Subtitle added successfully!";
+    },
+    
+    addSubtitleFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+
     // Clear Errors and Messages
     clearError: (state) => {
       state.error = null;
@@ -56,6 +80,9 @@ export const {
   createBlogRequest,
   createBlogSuccess,
   createBlogFail,
+  addSubtitleRequest,
+  addSubtitleSuccess,
+  addSubtitleFail,
   clearError,
   clearMessage,
 } = blogSlice.actions;

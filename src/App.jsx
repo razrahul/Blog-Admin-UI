@@ -9,7 +9,7 @@ const BlogListPage = lazy(() => import('./pages/BlogListPage/BlogListPage'))
 const ContactPage = lazy(() => import('./pages/Contact/ContactPage'))
 const LoginPage = lazy(() => import('./components/Login/Login'))
 
-import AddSubtitlePage from "./components/AddTitle/AddSubTitlePage";
+const AddSubtitlePage = lazy(() => import('./pages/AddTitle/AddSubTitlePage'))
 import "./App.scss";
 
 import { useDispatch, useSelector } from 'react-redux';
