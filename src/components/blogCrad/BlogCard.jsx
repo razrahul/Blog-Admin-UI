@@ -9,6 +9,10 @@ import { deleteBlog } from "../../redux/action/blogs";
 const BlogCard = ({ blogs }) => {
   const navigate = useNavigate();
 
+  const handleViewButton = (blogId) => {
+    navigate(`/blog-details/${blogId}`);
+  };
+
   const handleAddSubtitle = (blogId) => {
     navigate(`/add-subtitle/${blogId}`);
   };
@@ -38,10 +42,11 @@ const BlogCard = ({ blogs }) => {
 
             {/* Action Buttons */}
             <div className="actions">
-              <button className="view">View</button>
-              {/* <button className="edit">Edit</button> */}
-              <button className="visibility">
-                {blog.isview}
+              <button
+                className="view"
+                onClick={() => handleViewButton(blog._id)}
+              >
+                View
               </button>
              {/* Delete Button with Confirmation */}
              <Button
@@ -52,6 +57,9 @@ const BlogCard = ({ blogs }) => {
               >
                 Delete
               </Button>
+              {/* <button className="edit">Edit</button> */}
+              <button className="visibility">{blog.isview}</button>
+              <button className="delete">Delete</button>
               <button
                 className="subtitle"
                 onClick={() => handleAddSubtitle(blog._id)}
