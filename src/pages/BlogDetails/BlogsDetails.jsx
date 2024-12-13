@@ -1,15 +1,42 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./BlogDetails.scss";
 import ContactForm from "../../components/Contact_Form/ContactForm";
 import Comments from "../../components/Comments/Comments";
 import BlogSubTitle from "../../components/BlogSubTitle/BlogSubTitle";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllBlogs } from "../../redux/action/blogs";
 
 const BlogsDetails = () => {
-  const [isShareOpen, setIsShareOpen] = useState(false);
+  const { blogId } = useParams();
+  const dispatch = useDispatch();
 
-  const toggleSharePopup = () => {
-    setIsShareOpen(!isShareOpen);
-  };
+  
+  const { loading, error, blogs } = useSelector((state) => state.blog);
+
+  useEffect(() => {
+    // Fetch blogs if they aren't already loaded
+    if (!(blogs && blogs.length > 0)) {
+      dispatch(getAllBlogs());
+      console.log("useEffect called")
+    }
+  }, [dispatch, blogs]);
+
+  
+  const blog = blogs && blogs.find((b) => b._id === blogId);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading blog details: {error}</div>;
+  }
+
+  if (!blog) {
+    return <div>Blog not found or still loading...</div>;
+  }
 
   return (
     <div className="blog-container">
@@ -17,51 +44,52 @@ const BlogsDetails = () => {
       <nav className="breadcrumb-nav">
         <ul>
           <li>
-            <a href="/about" className="breadcrumb-link">
+            <Link to="/about" className="breadcrumb-link">
               Home
-            </a>
+            </Link>
           </li>
           <li>/</li>
           <li>
-            <a href="/blog" className="breadcrumb-link">
+            <Link to="/blog-list" className="breadcrumb-link">
               Blogs
-            </a>
+            </Link>
           </li>
           <li>/</li>
-          <li className="breadcrumb-title">What is Software Development?</li>
+          <li className="breadcrumb-title">{blog.title}</li>
         </ul>
       </nav>
 
       {/* Title Section */}
       <div className="title-section">
-        <h1 className="title">What is Software Development?</h1>
+        <h1 className="title">{blog.title}</h1>
         <div className="title-info">
-          <p className="description">
-            A deep dive into the world of software development and how it works.
-          </p>
+          <p className="description">{blog.subdescription}</p>
         </div>
       </div>
 
-      {/* Blog Content Section */}
-      <div className="content-section">
-        <div className="left-section">
-          <img
-            src="/img/blog/img1.jpeg"
-            alt="Software Development"
-            className="image"
-          />
-        </div>
+      {/* Blog Content image */}
+      <div className="content-img">
+        <img
+          src={blog.poster?.url || "/placeholder.jpg"} // Fallback image
+          alt={blog.title}
+          className="image"
+        />
+      </div>
+
+      <div className="content-text">
+        <h2 className="section-title">{blog.title}</h2>
+        <p className="paragraph">{blog.description}</p>
       </div>
 
       {/* BlogSubtitleDetails */}
       <div>
-        <BlogSubTitle />
+        <BlogSubTitle subtitle={blog.Subtitle} />
       </div>
 
       {/* Comments Section */}
-      <div>
+      {/* <div>
         <Comments />
-      </div>
+      </div> */}
 
       {/* Contact Form */}
       <div>

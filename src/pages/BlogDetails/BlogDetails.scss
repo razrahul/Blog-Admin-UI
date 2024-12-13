@@ -1,11 +1,14 @@
 .blog-container {
+  margin: 0px;
   font-family: Arial, sans-serif;
   background-color: #f9fafb;
   padding: 20px;
-  
+  padding-top: 0px;
+
   // Breadcrumb Navigation
   .breadcrumb-nav {
-    margin-bottom: 20px;
+    margin-bottom: 0px;
+    margin-top: 0px;
 
     ul {
       list-style: none;
@@ -17,7 +20,7 @@
         font-size: 14px;
         color: #4b5563;
         margin-right: 8px;
-        
+
         .breadcrumb-link {
           text-decoration: none;
           color: inherit;
@@ -37,38 +40,58 @@
 
   // Title Section
   .title-section {
-    margin-bottom: 40px;
-
+    margin-top: 0px;
+    margin-bottom: 0px;
     .title {
       font-size: 36px;
       font-weight: 600;
       color: #1f2937;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
     }
 
     .description {
+      margin-top: 0px;
       font-size: 16px;
       color: #6b7280;
-      margin-bottom: 20px;
+      // margin-bottom: 20px;
     }
   }
-  
-  // Popular Blog Views
-  .popular-blogs {
-    margin-top: 40px;
 
-    .section-title {
-      font-size: 24px;
+  // Content img
+  .content-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // margin-bottom: 20px;
+
+      img {
+        max-width: 80%;
+        width: 50rem;
+        height: 30rem;
+        // height: auto; 
+        border-radius: 8px;
+      }
+    
+  }
+
+  // Content Text
+  .content-text {
+    // display: flex;
+    // flex-direction: column;
+
+    h2 {
+      font-size: 28px;
       font-weight: 600;
       color: #1f2937;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
 
-    .blog-cards {
-      display: flex;
-      gap: 20px;
+    p{
+      font-size: 16px;
+      color: #6b7280;
+      margin-top: 0px;
     }
   }
 
-
+  
 }

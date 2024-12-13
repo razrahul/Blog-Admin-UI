@@ -10,7 +10,7 @@ const BlogCard = ({ blogs }) => {
   const navigate = useNavigate();
 
   const handleViewButton = (blogId) => {
-    navigate(`/blog-details/${blogId}`);
+    navigate(`/blog-list/${blogId}`);
   };
 
   const handleAddSubtitle = (blogId) => {
@@ -59,7 +59,6 @@ const BlogCard = ({ blogs }) => {
               </Button>
               {/* <button className="edit">Edit</button> */}
               <button className="visibility">{blog.isview}</button>
-              <button className="delete">Delete</button>
               <button
                 className="subtitle"
                 onClick={() => handleAddSubtitle(blog._id)}
