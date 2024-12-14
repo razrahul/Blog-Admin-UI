@@ -15,16 +15,14 @@ const AddSubtitlePage = () => {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
 
-  // filter to blog
+  // Filter to find the specific blog
   const {
-    loading: blogloading,
-    error: blogerror,
+    loading: blogLoading,
+    error: blogError,
     blogs,
   } = useSelector((state) => state.blog);
-  // console.log(blogs)
-  const blog = blogs.find((blog) => blog._id === blogId);
 
-  console.log(blog);
+  const blog = blogs.find((blog) => blog._id === blogId);
 
   // Handle image upload
   const handleImageChange = (e) => {
@@ -37,13 +35,13 @@ const AddSubtitlePage = () => {
       reader.onloadend = () => setImagePrev(reader.result);
       reader.readAsDataURL(file);
     } else {
-      setImagePrev(""); // Clear preview if no file is selected
+      setImagePrev("");
     }
   };
 
   const dispatch = useDispatch();
 
-  // Handle form submission
+  // Handle Subtitle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     const mySubtitle = new FormData();
@@ -54,28 +52,38 @@ const AddSubtitlePage = () => {
 
     dispatch(addSubtitle(blogId, mySubtitle));
 
-    //Reset form fields
+    // Reset form fields
     setTitleNo("");
     setSubtitle("");
     setDescription("");
     setImage(null);
+    setImagePrev("");
 
-    console.log(titleNo, subtitle, description, image);
     alert(`Subtitle added for Blog ID: ${blogId}`);
   };
 
+  // Handle FAQ form submission
   const handleSubmitFAQ = (e) => {
     e.preventDefault();
+    // You can dispatch an action here to handle FAQ submission
+    console.log(faqNo, question, answer);
+    alert(`FAQ added for Blog ID: ${blogId}`);
+
+    // Reset FAQ form fields
+    setFaqNo("");
+    setQuestion("");
+    setAnswer("");
   };
 
   return (
     <div className="add-main">
       <div className="add-subtitle-page">
-        <h1>Add Subtitle </h1>
+        <h1>Add Subtitle</h1>
         <h2>Blog ID: {blogId}</h2>
-        {blog ? <h2>Title: {blog.title}</h2> : null}
+        {blog && <h2>Title: {blog.title}</h2>}
+
         <form onSubmit={handleSubmit}>
-          {/* Title No */}
+          {/* Index No */}
           <div className="form-group">
             <label>Index No</label>
             <input
@@ -85,7 +93,7 @@ const AddSubtitlePage = () => {
               placeholder="Enter Title No"
               required
             />
-            <small className="mandatory">*Title No will be Unique.</small>
+            <small className="mandatory">*Index No must be unique.</small>
           </div>
 
           {/* Subtitle */}
@@ -125,9 +133,6 @@ const AddSubtitlePage = () => {
                 <img src={imagePrev} alt="Preview" width="150" />
               </div>
             )}
-            <small className="mandatory">
-              *Uploading an image is not mandatory.
-            </small>
           </div>
 
           <button type="submit" className="submit-button">
@@ -135,9 +140,10 @@ const AddSubtitlePage = () => {
           </button>
         </form>
       </div>
-      <div className="add-faq">
-        <h2>Add FAQ </h2>
 
+      {/* FAQ Section */}
+      <div className="add-faq">
+        <h2>Add FAQ</h2>
         <form onSubmit={handleSubmitFAQ}>
           {/* Question No */}
           <div className="form-group">
@@ -149,17 +155,17 @@ const AddSubtitlePage = () => {
               placeholder="Enter Question No"
               required
             />
-            <small className="mandatory">*Question No should be Unique.</small>
+            <small className="mandatory">*Question No must be unique.</small>
           </div>
 
-          {/* Questions */}
+          {/* Question */}
           <div className="form-group">
             <label>Question</label>
             <input
               type="text"
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
-              placeholder="Ask Question"
+              placeholder="Ask a Question"
               required
             />
           </div>
@@ -170,7 +176,7 @@ const AddSubtitlePage = () => {
             <textarea
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
-              placeholder="Reply Answer"
+              placeholder="Enter Answer"
               required
             ></textarea>
           </div>
