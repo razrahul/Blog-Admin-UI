@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import "./AddSubtitlePage.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { addSubtitle } from "../../redux/action/blogs";
+import { addSubtitle, addFAQ } from "../../redux/action/blogs";
 
 const AddSubtitlePage = () => {
   const { blogId } = useParams();
@@ -65,9 +65,16 @@ const AddSubtitlePage = () => {
   // Handle FAQ form submission
   const handleSubmitFAQ = (e) => {
     e.preventDefault();
-    // You can dispatch an action here to handle FAQ submission
-    console.log(faqNo, question, answer);
-    alert(`FAQ added for Blog ID: ${blogId}`);
+    const faqData = {
+      indexNo: faqNo,
+      question,
+      answer,
+    };
+    
+    // console.log(faqNo, question, answer);
+    console.log(faqData)
+    dispatch(addFAQ(blogId, faqData));
+    alert(`FAQ added at IndexNO: ${faqNo}`);
 
     // Reset FAQ form fields
     setFaqNo("");
