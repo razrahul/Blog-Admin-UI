@@ -52,7 +52,7 @@
 
     .visibility-options {
       display: flex;
-      flex-direction: column; // Stack options vertically on small screens
+      flex-direction: row; 
       gap: 15px;
 
       label {
