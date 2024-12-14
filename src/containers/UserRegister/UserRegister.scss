@@ -1,0 +1,175 @@
+.user-register-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    background-color: #f4f7fc;
+    min-height: 100vh;
+  
+    h1 {
+      font-size: 2rem;
+      color: #333;
+      margin-bottom: 20px;
+      text-align: center;  /* Center the title */
+    }
+  
+    .registration-form {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      width: 100%;
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+  
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 20px;
+  
+      label {
+        font-size: 1rem;
+        color: #333;
+        margin-bottom: 8px;
+      }
+  
+      input {
+        padding: 12px;
+        font-size: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        outline: none;
+        transition: border-color 0.3s;
+  
+        &:focus {
+          border-color: #007bff;
+        }
+      }
+  
+      input[type="tel"] {
+        -webkit-appearance: none;
+        -moz-appearance: textfield;
+        appearance: none; /* Hide input spinner on mobile */
+      }
+  
+      small {
+        font-size: 0.9rem;
+        color: #ff6b6b;
+        margin-top: 5px;
+      }
+    }
+  
+    .role-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+  
+      label {
+        display: flex;
+        align-items: center;
+        font-size: 1rem;
+        color: #333;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 6px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+  
+        input[type="radio"] {
+          margin-right: 8px;
+          cursor: pointer;
+        }
+  
+        &:hover {
+          background-color: #f1f1f1;
+          color: #007bff;
+        }
+  
+        input[type="radio"]:checked {
+          background-color: #007bff;
+          color: #fff;
+        }
+  
+        input[type="radio"]:checked + span {
+          font-weight: bold;
+          color: #007bff;
+        }
+      }
+  
+      label span {
+        margin-left: 8px;
+      }
+    }
+  
+    .error-message {
+      color: #ff6b6b;
+      font-size: 0.9rem;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+  
+    .submit-button {
+      padding: 12px;
+      font-size: 1rem;
+      color: #fff;
+      background-color: #007bff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+  
+      &:hover {
+        background-color: #0056b3;
+      }
+  
+      &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+    }
+  }
+  
+  /* Media Query for Tablets and Below */
+  @media (max-width: 768px) {
+    .user-register-page {
+      padding: 20px;
+    }
+  
+    .registration-form {
+      padding: 20px;
+      max-width: 100%;
+    }
+  
+    h1 {
+      font-size: 1.5rem;  /* Adjust h1 size for mobile */
+    }
+  
+    .submit-button {
+      font-size: 1.1rem;  /* Make the button text slightly larger for mobile */
+    }
+  }
+  
+  /* Media Query for Mobile Phones */
+  @media (max-width: 480px) {
+    .user-register-page {
+      padding: 15px;
+    }
+  
+    .registration-form {
+      padding: 15px;
+      max-width: 100%;
+    }
+  
+    h1 {
+      font-size: 1.3rem;  /* Make the title smaller for extra small screens */
+    }
+  
+    .submit-button {
+      padding: 14px;
+      font-size: 1.2rem;  /* Adjust button size */
+    }
+  }
+  
