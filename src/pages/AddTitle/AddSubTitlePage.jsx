@@ -62,7 +62,8 @@ const AddSubtitlePage = () => {
   };
 
   return (
-    <div className="add-subtitle-page">
+    <div className="add-main">
+      <div className="add-subtitle-page">
       <h1>Add Subtitle for </h1>
       <h2>Blog ID: {blogId}</h2>
       {blog ? <h2>Title: {blog.title}</h2>:null}
@@ -124,6 +125,10 @@ const AddSubtitlePage = () => {
           Add Subtitle
         </button>
       </form>
+    </div>
+    <div className="add-faq">
+    <h1>Add FAQ for </h1>
+    </div>
     </div>
   );
 };

@@ -1,4 +1,6 @@
-.add-subtitle-page {
+.add-main{
+  display: flex;
+  .add-subtitle-page {
     padding: 20px;
     height: auto;
   
@@ -67,3 +69,4 @@
     }
   }
   
+}
