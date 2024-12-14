@@ -18,13 +18,13 @@ const AddBlogPage = () => {
     const file = e.target.files[0];
     setImage(file);
 
-    // Create a preview for the image
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImagePrev(reader.result);
-    };
+    // Generate a preview for the uploaded image
     if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => setImagePrev(reader.result);
       reader.readAsDataURL(file);
+    } else {
+      setImagePrev("");
     }
   };
 
