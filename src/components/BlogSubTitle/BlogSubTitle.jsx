@@ -1,23 +1,32 @@
 import React from "react";
 import "./BlogSubTitle.scss";
 
-const BlogSubTitle = ({ subtitle }) => {
-  // console.log(subtitle);
+const BlogSubTitle = ({ subtitle, FAQ }) => {
+  // Sort subtitles by indexNo
+  const sortedSubtitles = [...subtitle].sort((a, b) => a.indexNo - b.indexNo);
+  // console.log(sortedSubtitles)
+
+  // Sort FAQs by indexNo
+  const sortedFAQs = [...FAQ].sort((a, b) => a.indexNo - b.indexNo);
+
   return (
     <>
       {/* Table of Contents */}
       <div className="table-of-contents">
         <h3 className="toc-title">Table of Contents</h3>
-        {subtitle.map((item, index) => (
-          <ul key={index} className="toc-list">
-            <li>{item.title}</li>
-          </ul>
-        ))}
+        <ul className="toc-list">
+          {sortedSubtitles.map((item, index) => (
+            <li key={item._id}>{item.title}</li>
+          ))}
+          {sortedFAQs.length > 0 && (
+            <li>Frequently Asked Questions</li>
+          )}
+        </ul>
       </div>
 
       {/* Detailed Content Section */}
-      {subtitle.map((item, index) => (
-        <div key={index} className="subtitle-content">
+      {sortedSubtitles.map((item, index) => (
+        <div key={item._id} className="subtitle-content">
           <h3 className="subtitle-title">{item.title}</h3>
           <p className="subtitle-dec">{item.description}</p>
           {item.poster && item.poster.public_id ? (
@@ -27,6 +36,23 @@ const BlogSubTitle = ({ subtitle }) => {
           ) : null}
         </div>
       ))}
+
+      {/* FAQ Section */}
+      {sortedFAQs.length > 0 && (
+        <div className="faq-section">
+          <h3>Frequently Asked Questions</h3>
+          <ul>
+            {sortedFAQs.map((faq, index) => (
+              <li key={faq._id}>
+                <strong>
+                  Q{faq.indexNo}: {faq.question}
+                </strong>
+                <p>A: {faq.answer}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </>
   );
 };

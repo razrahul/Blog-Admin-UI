@@ -10,6 +10,9 @@ import {
   addSubtitleRequest,
   addSubtitleSuccess,
   addSubtitleFail,
+  addFAQRequest,
+  addFAQSuccess,
+  addFAQFail,
   deleteBlogFail,
   deleteBlogRequest,
   deleteBlogSuccess,
@@ -62,19 +65,19 @@ export const createBlog = (blogData) => async (dispatch) => {
 
 export const addSubtitle = (blogId, subtitleData) => async (dispatch) => {
   try {
-    dispatch(addSubtitleRequest()); 
+    dispatch(addSubtitleRequest());
 
-   
-    const { data } = await axios.post(`${server}/blogs/${blogId}`,
-    subtitleData, 
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      withCredentials: true,
-    });
+    const { data } = await axios.post(
+      `${server}/blogs/${blogId}`,
+      subtitleData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true,
+      }
+    );
 
-    
     dispatch(
       addSubtitleSuccess({
         blogId,
@@ -82,7 +85,6 @@ export const addSubtitle = (blogId, subtitleData) => async (dispatch) => {
       })
     );
   } catch (error) {
-   
     dispatch(
       addSubtitleFail(
         error.response && error.response.data.message
@@ -90,6 +92,25 @@ export const addSubtitle = (blogId, subtitleData) => async (dispatch) => {
           : error.message
       )
     );
+  }
+};
+
+//Action to create a FAQ
+export const addFAQ = (blogId, faqData) => async (dispatch) => {
+  try {
+    dispatch(addFAQRequest()); // Start loading state
+
+    // API call to backend
+    const { data } = await axios.post(`${server}/addfaq/${blogId}`, faqData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    });
+
+    dispatch(addFAQSuccess({ blogId, FAQ: data.FAQ }));
+  } catch (error) {
+    dispatch(addFAQFail(error.response?.data?.message || "Failed to add FAQ"));
   }
 };
 
@@ -111,7 +132,6 @@ export const deleteBlog = (blogId) => async (dispatch) => {
     // dispatch(getAllBlogsRequest());
     // const response = await axios.get(`${server}/blogs`);
     // dispatch(getAllBlogsSuccess(response.data));
-    
   } catch (error) {
     dispatch(
       deleteBlogFail(
@@ -120,4 +140,3 @@ export const deleteBlog = (blogId) => async (dispatch) => {
     );
   }
 };
-

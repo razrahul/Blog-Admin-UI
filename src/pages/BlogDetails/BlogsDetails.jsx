@@ -83,7 +83,7 @@ const BlogsDetails = () => {
 
       {/* BlogSubtitleDetails */}
       <div>
-        <BlogSubTitle subtitle={blog.Subtitle} />
+        <BlogSubTitle subtitle={blog.Subtitle} FAQ={blog.FAQ} />
       </div>
 
       {/* Comments Section */}

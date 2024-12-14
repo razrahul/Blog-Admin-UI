@@ -62,6 +62,29 @@ const blogSlice = createSlice({
       state.error = action.payload;
     },
 
+     // Add FAQ
+    addFAQRequest: (state) => {
+      state.loading = true;
+    },
+    addFAQSuccess: (state, action) => {
+      state.loading = false;
+      const { blogId, FAQ } = action.payload;
+
+      // Update the specific blog's FAQ
+      state.blogs = state.blogs.map((blog) =>
+        blog._id === blogId
+          ? { ...blog, FAQ: [...blog.FAQ, FAQ] }
+          : blog
+      );
+
+      state.message = "FAQ added successfully!";
+    },
+    addFAQFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+
     // delete Blog reducer:
     deleteBlogRequest: (state) => {
       state.loading = true;
@@ -100,6 +123,9 @@ export const {
   addSubtitleRequest,
   addSubtitleSuccess,
   addSubtitleFail,
+  addFAQRequest,
+  addFAQSuccess,
+  addFAQFail,
   deleteBlogRequest,
   deleteBlogSuccess,
   deleteBlogFail,
