@@ -30,6 +30,15 @@ const UserRegister = () => {
     setRole("");
   };
 
+  const roles = [
+    "SuperAdmin",
+    "Admin",
+    "Developer",
+    "Content Writer",
+    "Designer",
+    "Other",
+  ];
+
   return (
     <>
       <div className="user-register-page">
@@ -85,71 +94,22 @@ const UserRegister = () => {
               required
             />
           </div>
-
+          {/* //role */}
           <div className="form-group">
             <label>Role</label>
-            <div className="role-options">
-              <label>
-                <input
-                  type="radio"
-                  name="role"
-                  value="SuperAdmin"
-                  checked={role === "SuperAdmin"}
-                  onChange={(e) => setRole(e.target.value)}
-                />
-                SuperAdmin
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="role"
-                  value="Admin"
-                  checked={role === "Admin"}
-                  onChange={(e) => setRole(e.target.value)}
-                />
-                Admin
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="role"
-                  value="Developer"
-                  checked={role === "Developer"}
-                  onChange={(e) => setRole(e.target.value)}
-                />
-                Developer
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="role"
-                  value="Content Writer"
-                  checked={role === "Content Writer"}
-                  onChange={(e) => setRole(e.target.value)}
-                />
-                Content Writer
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="role"
-                  value="Designer"
-                  checked={role === "Designer"}
-                  onChange={(e) => setRole(e.target.value)}
-                />
-                Designer
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="role"
-                  value="Other"
-                  checked={role === "Other"}
-                  onChange={(e) => setRole(e.target.value)}
-                />
-                Other
-              </label>
-            </div>
+            <select
+              name="role"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              className="role-dropdown"
+            >
+              <option value="">Select Role</option>
+              {roles.map((role, index) => (
+                <option key={index} value={role}>
+                  {role}
+                </option>
+              ))}
+            </select>
           </div>
 
           <button type="submit" className="submit-button">

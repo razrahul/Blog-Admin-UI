@@ -14,7 +14,8 @@ import "./App.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { loadUser } from "./redux/action/userAction";
 import { getAllBlogs } from "./redux/action/blogs";
-const  BlogsDetails = lazy(() => import("./pages/BlogDetails/BlogsDetails"));
+import UserRegister from "./containers/UserRegister/UserRegister";
+const BlogsDetails = lazy(() => import("./pages/BlogDetails/BlogsDetails"));
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -56,12 +57,10 @@ const App = () => {
             <div className="content">
               <Routes>
                 <Route path="/users" element={<UsersPage />} />
+                <Route path="/register" element={<UserRegister />} />
                 <Route path="/add-blog" element={<AddBlogPage />} />
                 <Route path="/blog-list" element={<BlogListPage />} />
-                <Route
-                  path="/blog-list/:blogId"
-                  element={<BlogsDetails />}
-                />
+                <Route path="/blog-list/:blogId" element={<BlogsDetails />} />
                 <Route
                   path="/add-subtitle/:blogId"
                   element={<AddSubtitlePage />}
