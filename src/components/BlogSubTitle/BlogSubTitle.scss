@@ -39,6 +39,29 @@
       color: #1f2937;
       margin-bottom: 10px;
     }
+    .subtitle-actions button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-left: 8px;
+      font-size: 1.2rem; // Adjust size
+      color: #555;
+    
+      &:hover {
+        color: #000;
+      }
+    }
+    
+    .toc-list li {
+      display: flex;
+      align-items: center;
+    }
+    
+    .toc-list li svg {
+      margin-right: 8px;
+      color: #333;
+    }
+    
 
     .subtitle-dec {
       font-size: 16px;

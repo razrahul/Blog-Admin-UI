@@ -12,6 +12,15 @@ const BlogsDetails = () => {
   const { blogId } = useParams();
   const dispatch = useDispatch();
 
+  const handleEdit = (id) => {
+    console.log("Edit item with ID:", id, blogId);
+  };
+  
+  const handleDelete = (id) => {
+    console.log("Delete item with ID:", id, blogId);
+  };
+  
+
   
   const { loading, error, blogs } = useSelector((state) => state.blog);
 
@@ -83,7 +92,7 @@ const BlogsDetails = () => {
 
       {/* BlogSubtitleDetails */}
       <div>
-        <BlogSubTitle subtitle={blog.Subtitle} FAQ={blog.FAQ} />
+        <BlogSubTitle subtitle={blog.Subtitle} FAQ={blog.FAQ} onEdit={handleEdit} onDelete={handleDelete} />
       </div>
 
       {/* Comments Section */}

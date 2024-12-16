@@ -1,7 +1,8 @@
 import React from "react";
 import "./BlogSubTitle.scss";
+import { FaUsers, FaEdit, FaTrash } from "react-icons/fa"; // Import icons
 
-const BlogSubTitle = ({ subtitle, FAQ }) => {
+const BlogSubTitle = ({ subtitle, FAQ, onEdit, onDelete }) => {
   // Sort subtitles by indexNo
   const sortedSubtitles = [...subtitle].sort((a, b) => a.indexNo - b.indexNo);
   // console.log(sortedSubtitles)
@@ -18,16 +19,34 @@ const BlogSubTitle = ({ subtitle, FAQ }) => {
           {sortedSubtitles.map((item, index) => (
             <li key={item._id}>{item.title}</li>
           ))}
-          {sortedFAQs.length > 0 && (
-            <li>Frequently Asked Questions</li>
-          )}
+          {sortedFAQs.length > 0 && <li>Frequently Asked Questions</li>}
         </ul>
       </div>
 
       {/* Detailed Content Section */}
-      {sortedSubtitles.map((item, index) => (
+      {sortedSubtitles.map((item) => (
         <div key={item._id} className="subtitle-content">
-          <h3 className="subtitle-title">{item.title}</h3>
+          <div className="subtitle-header">
+            <h3 className="subtitle-title">{item.title}</h3>
+            <div className="subtitle-actions">
+              {/* Edit Icon */}
+              <button
+                className="edit-btn"
+                onClick={() => onEdit(item._id)}
+                title="Edit"
+              >
+                <FaEdit />
+              </button>
+              {/* Delete Icon */}
+              <button
+                className="delete-btn"
+                onClick={() => onDelete(item._id)}
+                title="Delete"
+              >
+                <FaTrash />
+              </button>
+            </div>
+          </div>
           <p className="subtitle-dec">{item.description}</p>
           {item.poster && item.poster.public_id ? (
             <div className="subtitle-image">
