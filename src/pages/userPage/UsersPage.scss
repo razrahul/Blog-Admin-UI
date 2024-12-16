@@ -1,10 +1,46 @@
+/* Users Page Styles */
 .users-page {
+  padding: 20px;  
+  background-color: #f4f7fc;  
+
+  /* User Main Section */
+  .user-main {
+    margin-bottom: 30px;  
+    display: flex;
+    justify-content: space-between;  
+    align-items: center;  
+    
+
     h1 {
-      font-size: 2rem;
-      margin-bottom: 20px;
-      text-align: center;
+      margin: 0;
+      font-size: 3rem;
+
+      color: #333;  
     }
-  
-   
+
+    /* Button styling */
+    button {
+      background-color: rgb(10, 168, 173);  
+      color: white; 
+      font-size: 1rem;  
+      padding: 12px 20px;  
+      border: none;
+      border-radius: 6px;  
+      cursor: pointer;
+      transition: background-color 0.3s ease;  
+
+      &:hover {
+        background-color: rgb(8, 142, 147);  
+      }
+
+      &:focus {
+        outline: none;  
+      }
+
+      &:active {
+        background-color: rgb(7, 121, 125); 
+      }
+    }
   }
-  
+
+}

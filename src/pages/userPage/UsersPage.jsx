@@ -5,6 +5,8 @@ import img from "../../assets/image/profile.webp";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllUsers } from "../../redux/action/admin";
+import { Link } from "react-router-dom";
+import { FaUsers } from "react-icons/fa";
 
 const UsersPage = () => {
   const cuetem_users = [
@@ -47,7 +49,15 @@ const UsersPage = () => {
 
   return (
     <div className="users-page">
-      <h1>Authentic user</h1>
+      <div className="user-main">
+        <h1>Authentic User</h1>
+        <Link to="/register">
+          <button>
+            <FaUsers />
+            Add User
+          </button>
+        </Link>
+      </div>
       <User users={users} />
     </div>
   );
