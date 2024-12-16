@@ -1,39 +1,37 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import BlogCard from "../../components/blogCrad/BlogCard";
 import "./BlogListPage.scss";
 import { useDispatch, useSelector } from "react-redux";
-import {getAllBlogs } from "../../redux/action/blogs";
+import { getAllBlogs } from "../../redux/action/blogs";
 
 const BlogListPage = () => {
   const navigate = useNavigate();
 
   // Dummy blog data
- 
 
-// const [blogs] = useState(
-//   Array.from({ length: 12 }, (_, index) => ({
-//     _id: index + 1,
-//     title: `Blog Title ${index + 1}`,
-//     createdAt: `2024-12-${String((index % 9) + 1).padStart(2, "0")}`, // Ensures two-digit days
-//     image: "https://via.placeholder.com/300x200", // Fixed and clearer placeholder size
-//     isview: Math.random() > 0.5, // Random boolean for isPrivate
-//   }))
-// );
-
+  // const [blogs] = useState(
+  //   Array.from({ length: 12 }, (_, index) => ({
+  //     _id: index + 1,
+  //     title: `Blog Title ${index + 1}`,
+  //     createdAt: `2024-12-${String((index % 9) + 1).padStart(2, "0")}`, // Ensures two-digit days
+  //     image: "https://via.placeholder.com/300x200", // Fixed and clearer placeholder size
+  //     isview: Math.random() > 0.5, // Random boolean for isPrivate
+  //   }))
+  // );
 
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     dispatch(getAllBlogs());
-    
-  }, [dispatch])
+  }, [dispatch]);
 
-  const { loading : blogloading, error: blogerror , blogs } = useSelector(
-    (state) => state.blog
-  );
-  console.log(blogs)
-  
+  const {
+    loading: blogloading,
+    error: blogerror,
+    blogs,
+  } = useSelector((state) => state.blog);
+  console.log(blogs);
 
   const itemsPerPage = 9;
   const [currentPage, setCurrentPage] = useState(1);
@@ -47,16 +45,15 @@ const BlogListPage = () => {
 
   const handlePagination = (page) => setCurrentPage(page);
 
- 
-
   return (
     <div className="blog-list-page">
       <div className="sidebar">
         <h2>Categories</h2>
         <ul>
           <li>All Blogs</li>
-          <li>Marketing</li>
-          <li>IT</li>
+          <li>Technology</li>
+          <li>LifeStyle</li>
+          <li>Education</li>
           <li>Finance</li>
           <li>Design</li>
         </ul>
@@ -80,7 +77,7 @@ const BlogListPage = () => {
               blog={blog}
             />
           ))} */}
-          <BlogCard blogs={blogs}/>
+          <BlogCard blogs={blogs} />
         </div>
 
         {/* Pagination */}

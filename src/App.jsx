@@ -7,6 +7,7 @@ const AddBlogPage = lazy(() => import("./pages/AddBlog/AddBlogPage"));
 const BlogListPage = lazy(() => import("./pages/BlogListPage/BlogListPage"));
 const ContactPage = lazy(() => import("./pages/Contact/ContactPage"));
 const LoginPage = lazy(() => import("./components/Login/Login"));
+import "react-quill/dist/quill.snow.css"; // import styles
 
 const AddSubtitlePage = lazy(() => import("./pages/AddTitle/AddSubTitlePage"));
 import "./App.scss";

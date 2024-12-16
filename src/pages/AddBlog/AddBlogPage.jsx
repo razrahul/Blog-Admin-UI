@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./AddBlogPage.scss";
+import ReactQuill from "react-quill";
 import { useDispatch } from "react-redux";
 import { createBlog } from "../../redux/action/blogs";
 
@@ -65,6 +66,35 @@ const AddBlogPage = () => {
     "biotechnology",
   ];
 
+  const moduels = {
+    toolbar: [
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      ["bold", "itaclic", "underline", "strike", "blockquote"],
+      [
+        { list: "ordered" },
+        { list: "bullter" },
+        { indent: "-1" },
+        { indent: "+1" },
+      ],
+      ["clean"],
+      ["link", "image"],
+    ],
+  };
+
+  const formats = [
+    "header",
+    "bold",
+    "itaclic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "bullet",
+    "indent",
+    "link",
+    "image",
+  ];
+
   return (
     <div className="create-blog-page">
       <h1>Create Blog Page</h1>
@@ -85,14 +115,17 @@ const AddBlogPage = () => {
         {/* Description */}
         <div className="form-group">
           <label htmlFor="description">Description</label>
-          <textarea
+          <ReactQuill
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             id="description"
             placeholder="Enter blog description"
             rows="5"
             required
-          ></textarea>
+            theme="snow"
+            modules={moduels}
+            formats={formats}
+          ></ReactQuill>
         </div>
 
         {/* Author */}

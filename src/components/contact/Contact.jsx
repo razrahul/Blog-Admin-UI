@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import './Contact.scss';
+import React, { useState } from "react";
+import "./Contact.scss";
 
 const Contact = ({ requests }) => {
   // State to manage replies and the submitted requests
@@ -26,16 +26,15 @@ const Contact = ({ requests }) => {
       // Clear the reply input after submission
       setReplies((prevReplies) => ({
         ...prevReplies,
-        [id]: '',
+        [id]: "",
       }));
     } else {
-      alert('Reply message cannot be empty.');
+      alert("Reply message cannot be empty.");
     }
   };
 
   return (
     <div className="contact-container">
-      <h1>Contact Requests</h1>
       <div className="request-list">
         {requests.map((request) => (
           <div className="request-card" key={request.id}>
@@ -49,7 +48,9 @@ const Contact = ({ requests }) => {
             </div>
             <div className="request-info-right">
               <div className="request-message">
-                <p><strong>Message:</strong> {request.message}</p>
+                <p>
+                  <strong>Message:</strong> {request.message}
+                </p>
               </div>
               <div className="reply-section">
                 {/* Display previous replies */}
@@ -65,10 +66,14 @@ const Contact = ({ requests }) => {
                   <>
                     <textarea
                       placeholder="Write a reply..."
-                      value={replies[request.id] || ''}
-                      onChange={(e) => handleReplyChange(request.id, e.target.value)}
+                      value={replies[request.id] || ""}
+                      onChange={(e) =>
+                        handleReplyChange(request.id, e.target.value)
+                      }
                     />
-                    <button onClick={() => handleReplySubmit(request.id)}>Send Reply</button>
+                    <button onClick={() => handleReplySubmit(request.id)}>
+                      Send Reply
+                    </button>
                   </>
                 )}
               </div>

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
+import ReactQuill from "react-quill";
 import "./AddSubtitlePage.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { addSubtitle, addFAQ } from "../../redux/action/blogs";
@@ -70,9 +71,9 @@ const AddSubtitlePage = () => {
       question,
       answer,
     };
-    
+
     // console.log(faqNo, question, answer);
-    console.log(faqData)
+    console.log(faqData);
     dispatch(addFAQ(blogId, faqData));
     alert(`FAQ added at IndexNO: ${faqNo}`);
 
@@ -81,6 +82,36 @@ const AddSubtitlePage = () => {
     setQuestion("");
     setAnswer("");
   };
+
+  //ReactQuill
+  const moduels = {
+    toolbar: [
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      ["bold", "itaclic", "underline", "strike", "blockquote"],
+      [
+        { list: "ordered" },
+        { list: "bullter" },
+        { indent: "-1" },
+        { indent: "+1" },
+      ],
+      ["clean"],
+      ["link", "image"],
+    ],
+  };
+
+  const formats = [
+    "header",
+    "bold",
+    "itaclic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "bullet",
+    "indent",
+    "link",
+    "image",
+  ];
 
   return (
     <div className="add-main">
@@ -118,12 +149,15 @@ const AddSubtitlePage = () => {
           {/* Description */}
           <div className="form-group">
             <label>Description</label>
-            <textarea
+            <ReactQuill
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Enter Description"
               required
-            ></textarea>
+              theme="snow"
+              modules={moduels}
+              formats={formats}
+            ></ReactQuill>
           </div>
 
           {/* Upload Image */}
@@ -180,12 +214,15 @@ const AddSubtitlePage = () => {
           {/* Answer */}
           <div className="form-group">
             <label>Answer</label>
-            <textarea
+            <ReactQuill
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
               placeholder="Enter Answer"
               required
-            ></textarea>
+              theme="snow"
+              modules={moduels}
+              formats={formats}
+            ></ReactQuill>
           </div>
 
           <button type="submit" className="submit-button">

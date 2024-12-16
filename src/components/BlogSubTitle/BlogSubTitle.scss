@@ -1,107 +1,130 @@
+// Table of Contents
+.table-of-contents {
+  margin-top: 0;
+  padding: 15px;
+  background-color: #e5e7eb;
+  
+  .toc-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
 
-  .table-of-contents {
-    margin-top: 0px;
-    gap: 0px;
-    padding: 15px;
-    background-color:#e5e7eb;
+  .toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 
-    .toc-title {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 10px;
-    }
+    li {
+      font-size: 16px;
+      color: #4b5563;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
 
-    .toc-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
+      &:before {
+        content: "• ";
+        color: #2563eb;
+      }
 
-      li {
-        font-size: 16px;
-        color: #4b5563;
-        margin-bottom: 5px;
-
-        &:before {
-          content: "• ";
-          color: #2563eb;
-        }
+      svg {
+        margin-right: 8px;
+        color: #333;
       }
     }
   }
- 
-   // Detailed Content Section
-  .subtitle-content {
-    margin: 0;  
+}
+
+// Detailed Content Section
+.subtitle-content {
+  margin: 0;
+
+  .subtitle-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
 
     .subtitle-title {
       font-size: 24px;
       font-weight: 600;
       color: #1f2937;
-      margin-bottom: 10px;
+      margin-bottom: 0;
     }
-    .subtitle-actions button {
-      background: none;
-      border: none;
-      cursor: pointer;
-      margin-left: 8px;
-      font-size: 1.2rem; // Adjust size
-      color: #555;
-    
-      &:hover {
-        color: #000;
-      }
-    }
-    
-    .toc-list li {
+
+    .subtitle-actions {
       display: flex;
       align-items: center;
-    }
-    
-    .toc-list li svg {
-      margin-right: 8px;
-      color: #333;
-    }
-    
+      gap: 2px;
 
-    .subtitle-dec {
-      font-size: 16px;
-      color: #6b7280;
+    
+    }
+  }
+
+  .subtitle-dec {
+    font-size: 16px;
+    color: #6b7280;
+    margin-bottom: 10px;
+    line-height: 1.6;
+  }
+
+  .subtitle-image {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+
+    img {
+      width: 40rem;
+      height: 25rem;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+  }
+}
+
+// FAQ Section
+.faq-section {
+  margin-top: 20px;
+  
+  h3 {
+    font-size: 24px;
+    color: #1f2937;
+    margin-bottom: 10px;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+
+    li {
+      font-weight: 100;
       margin-bottom: 10px;
-      margin-top: 0;
-      line-height: 1.6;
     }
 
-    .subtitle-image {
-      display: flex;
-      justify-content: center;
-      
-      img{
-        width: 40rem;
-        height: 25rem;
-        border-radius: 8px;
-        object-fit: cover;
-        margin-bottom: 15px;
-      }
+    p {
+      margin-top: 5px;
+    }
+  }
+}
+
+// Edit and Delete Button Styles
+.subtitle-actions {
+  .edit-btn {
+    color: #28a745; 
+    font-size: 1rem; 
+
+    &:hover {
+      color: #218838; 
     }
   }
 
-  .faq-section{
-      margin-bottom: 0;
-      h3{
-        font-size: 24px;
-        color: #1f2937;
-        margin-bottom: 10px;
-        margin-top: 0;
-      }
-      ul{
-        margin: 0;
+  .delete-btn {
+    color: #dc3545; 
+    font-size: 1rem; 
+    
 
-        li{
-          font-weight: 100;
-          // list-style-type: none;
-        }
-        p{
-          margin-top: 5px;
-        }
-      }
+    &:hover {
+      color: #c82333; 
+    }
   }
+}
