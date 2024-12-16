@@ -3,7 +3,15 @@ import { server } from "../store";
 import{
     getAllUsersRequest,
     getAllUsersSuccess,
-    getAllUsersFail
+    getAllUsersFail,
+    updateUserVerificationRequest,
+    updateUserVerificationSuccess,
+    updateUserVerificationFail,
+    updateUserBlockRequest,
+    updateUserBlockSuccess,
+    updateUserBlockFail,
+    clearError,
+    clearMessage
 } from '../reducer/adminSlice.js'
 
 
@@ -26,5 +34,46 @@ export const getAllUsers = () => async (dispatch) => {
     }
   };
   
-  // Authorization: `Bearer ${localStorage.getItem('token')}`, // Assuming the token is in localStorage
+ 
+// update Verifaction
+
+export const updateUserVerification = (userId) => async (dispatch) => {
+  try {
+    dispatch(updateUserVerificationRequest());
+
+    const { data } = await axios.put(
+      `${server}/admin/user/${userId}`,
+      {},
+      {
+       withCredentials: true
+      }
+     
+   );
+
+    dispatch(updateUserVerificationSuccess({ message: data.message, userId }));
+  } catch (error) {
+    dispatch(updateUserVerificationFail(error.response?.data?.message || 'Something went wrong'));
+  }
+};
+
+// updare Block action
+
+export const updateUserBlock = (userId) => async (dispatch) => {
+  try {
+    dispatch(updateUserBlockRequest());
+
+    const { data } = await axios.put(
+      `${server}/admin/block/${userId}`,
+      {},
+      {
+        withCredentials: true
+      }
+    );
+
+    dispatch(updateUserBlockSuccess({ message: data.message, userId }));
+  } catch (error) {
+    dispatch(updateUserBlockFail(error.response?.data?.message || 'Something went wrong'));
+  }
+}
+
   

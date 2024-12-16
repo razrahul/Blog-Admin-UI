@@ -2,7 +2,10 @@ import React from "react";
 import "./User.scss";
 import Button from "../buttom/Buttom";
 import img from "../../assets/image/profile.webp";
-import {formatDate} from "../../Utils/formatDate ";
+import { formatDate } from "../../Utils/formatDate ";
+import ConfirmButton from "../conformationButtom/Button";
+import { useDispatch } from "react-redux";
+import { updateUserVerification, updateUserBlock } from "../../redux/action/admin";
 
 function User({ users }) {
   // console.log(users);
@@ -12,6 +15,20 @@ function User({ users }) {
 
   const handleCancel = () => {
     alert("Cancelled!");
+  };
+
+  const dispatch = useDispatch();
+
+  const handleVerfication = (userId,verfy) => {
+      console.log(userId,verfy)
+      dispatch(updateUserVerification(userId));
+      alert(`${verfy ? "User Not Verfied!":" User Verifrd!"}`)
+    };
+
+  const handleBlock = (userId, Ide) => {
+    console.log(userId,Ide)
+    dispatch(updateUserBlock(userId));
+    alert(`${Ide ? "User Unblocked!":"User Blocked!"}`)
   };
 
   return (
@@ -37,12 +54,23 @@ function User({ users }) {
               <Button onConfirm={handleConfirm} onCancel={handleCancel}>
                 {user.isview}
               </Button>
-              <Button onConfirm={handleConfirm} onCancel={handleCancel}>
+              <ConfirmButton
+                onConfirm={() => handleVerfication(user._id,user.isVerified)}
+                title="Verfication User"
+                description={`Are you sure you want to Update Verfication  "${user && user.isVerified? "Not Verify": "Verify"  }"?`}
+                buttonClass="verify"
+              >
                 {user && user.isVerified ? "Verify" : "Not Verify"}
-              </Button>
-              <Button onConfirm={handleConfirm} onCancel={handleCancel}>
-                {user && user.isblocked ? "Block" : "unblock"}
-              </Button>
+              </ConfirmButton>
+              <ConfirmButton
+                onConfirm={() => handleBlock(user._id,user.isblocked)}
+                // title="Block User"
+                title={user && user.isblocked ? "UnBlock User" : "Block USer"}
+                description={`Are you sure you want to  "${user && user.isblocked? "unBlock": "Block"  }"  the user:  ${user.name} ?`}
+                buttonClass="block"
+              >
+                {user && user.isblocked ? "Block" : "unBlock"}
+              </ConfirmButton>
             </div>
           </div>
         ))}
