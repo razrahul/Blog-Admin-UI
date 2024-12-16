@@ -8,29 +8,30 @@ import { getAllUsers } from "../../redux/action/admin";
 
 const UsersPage = () => {
   const cuetem_users = [
-    { name: "Prahlad Nag",
+    {
+      name: "Prahlad Nag",
       img_url: img,
-      role: "developer", 
+      role: "developer",
       email: "nags8513@gmail.com",
-      number: '+91 9561032056',
-      createdAt: '2024-09-13',
-     },
-      
+      number: "+91 9561032056",
+      createdAt: "2024-09-13",
+    },
+
     {
       name: "Sourav Nag",
       img_url: img,
       role: "contentwriter",
       email: "prahladnag102@gmail.com",
-      number: '+91 9012345785',
-      createdAt: '2024-09-13',
+      number: "+91 9012345785",
+      createdAt: "2024-09-13",
     },
     {
       name: "Mukesh Kumar",
       img_url: img,
       role: "developer",
       email: "kumarmukesh852201@gmail.com",
-      number: '+91 9165198125',
-      createdAt: '2024-09-13',
+      number: "+91 9165198125",
+      createdAt: "2024-09-13",
     },
   ];
 
@@ -44,7 +45,6 @@ const UsersPage = () => {
 
   // console.log(users)
 
-  
   return (
     <div className="users-page">
       <h1>Authentic user</h1>
