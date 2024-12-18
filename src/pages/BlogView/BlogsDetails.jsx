@@ -15,24 +15,21 @@ const BlogsDetails = () => {
   const handleEdit = (id) => {
     console.log("Edit item with ID:", id, blogId);
   };
-  
+
   const handleDelete = (id) => {
     console.log("Delete item with ID:", id, blogId);
   };
-  
 
-  
   const { loading, error, blogs } = useSelector((state) => state.blog);
 
   useEffect(() => {
     // Fetch blogs if they aren't already loaded
     if (!(blogs && blogs.length > 0)) {
       dispatch(getAllBlogs());
-      console.log("useEffect called")
+      console.log("useEffect called");
     }
   }, [dispatch, blogs]);
 
-  
   const blog = blogs && blogs.find((b) => b._id === blogId);
 
   if (loading) {
@@ -87,14 +84,20 @@ const BlogsDetails = () => {
 
       <div className="content-text">
         <h2 className="section-title">{blog.title}</h2>
-        <p className="paragraph">{blog.description}</p>
+        <div
+          className="paragraph"
+          dangerouslySetInnerHTML={{ __html: blog.description }}></div>
       </div>
 
       {/* BlogSubtitleDetails */}
       <div>
-        <BlogSubTitle subtitle={blog.Subtitle} FAQ={blog.FAQ} onEdit={handleEdit} onDelete={handleDelete} />
+        <BlogSubTitle
+          subtitle={blog.Subtitle}
+          FAQ={blog.FAQ}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
       </div>
-
       {/* Comments Section */}
       {/* <div>
         <Comments />

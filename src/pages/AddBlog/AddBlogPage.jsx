@@ -3,6 +3,7 @@ import "./AddBlogPage.scss";
 import ReactQuill from "react-quill";
 import { useDispatch } from "react-redux";
 import { createBlog } from "../../redux/action/blogs";
+import "react-quill/dist/quill.snow.css";
 
 const AddBlogPage = () => {
   const [title, setTitle] = useState("");
@@ -43,6 +44,7 @@ const AddBlogPage = () => {
 
     // Dispatch the action to create a blog
     dispatch(createBlog(myBlog));
+    console.log(title, description, createdBy, category, image, isView);
 
     // Reset form fields
     setTitle("");
@@ -52,8 +54,6 @@ const AddBlogPage = () => {
     setImage("");
     setImagePrev("");
     setIsView(true);
-
-    console.log(title, description, createdBy, category, image, isView);
 
     alert("Blog created successfully!");
   };
@@ -66,25 +66,25 @@ const AddBlogPage = () => {
     "biotechnology",
   ];
 
-  const moduels = {
+  const modules = {
     toolbar: [
       [{ header: [1, 2, 3, 4, 5, 6, false] }],
-      ["bold", "itaclic", "underline", "strike", "blockquote"],
+      ["bold", "italic", "underline", "strike", "blockquote"],
       [
         { list: "ordered" },
-        { list: "bullter" },
+        { list: "bullet" },
         { indent: "-1" },
         { indent: "+1" },
       ],
-      ["clean"],
       ["link", "image"],
+      ["clean"], // Remove formatting
     ],
   };
 
   const formats = [
     "header",
     "bold",
-    "itaclic",
+    "italic",
     "underline",
     "strike",
     "blockquote",
@@ -116,16 +116,13 @@ const AddBlogPage = () => {
         <div className="form-group">
           <label htmlFor="description">Description</label>
           <ReactQuill
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            id="description"
-            placeholder="Enter blog description"
-            rows="5"
-            required
-            theme="snow"
-            modules={moduels}
+          className="react-quill"
+            value={description} // State for ReactQuill content
+            onChange={setDescription} // Update state directly
+            modules={modules}
             formats={formats}
-          ></ReactQuill>
+            placeholder="Enter blog description"
+          />
         </div>
 
         {/* Author */}

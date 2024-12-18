@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loadUser } from "./redux/action/userAction";
 import { getAllBlogs } from "./redux/action/blogs";
 import UserRegister from "./containers/UserRegister/UserRegister";
-const BlogsDetails = lazy(() => import("./pages/BlogDetails/BlogsDetails"));
+const BlogsDetails = lazy(() => import("./pages/BlogView/BlogsDetails"));
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

@@ -47,7 +47,12 @@ const BlogSubTitle = ({ subtitle, FAQ, onEdit, onDelete }) => {
               </button>
             </div>
           </div>
-          <p className="subtitle-dec">{item.description}</p>
+          {/* <p className="subtitle-dec">{item.description}</p> */}
+          {/* Correctly render HTML content */}
+          <div
+            className="subtitle-dec"
+            dangerouslySetInnerHTML={{ __html: item.description }}
+          ></div>
           {item.poster && item.poster.public_id ? (
             <div className="subtitle-image">
               <img src={item.poster.url} alt={item.title} />

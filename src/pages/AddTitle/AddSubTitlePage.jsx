@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import Quill from "quill";
 import "./AddSubtitlePage.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { addSubtitle, addFAQ } from "../../redux/action/blogs";
@@ -12,9 +14,7 @@ const AddSubtitlePage = () => {
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
   const [imagePrev, setImagePrev] = useState("");
-  const [faqNo, setFaqNo] = useState("");
-  const [question, setQuestion] = useState("");
-  const [answer, setAnswer] = useState("");
+  
 
   // Filter to find the specific blog
   const {
@@ -53,6 +53,8 @@ const AddSubtitlePage = () => {
 
     dispatch(addSubtitle(blogId, mySubtitle));
 
+    console.log(titleNo,subtitle,description,image)
+
     // Reset form fields
     setTitleNo("");
     setSubtitle("");
@@ -63,56 +65,49 @@ const AddSubtitlePage = () => {
     alert(`Subtitle added for Blog ID: ${blogId}`);
   };
 
-  // Handle FAQ form submission
-  const handleSubmitFAQ = (e) => {
-    e.preventDefault();
-    const faqData = {
-      indexNo: faqNo,
-      question,
-      answer,
-    };
-
-    // console.log(faqNo, question, answer);
-    console.log(faqData);
-    dispatch(addFAQ(blogId, faqData));
-    alert(`FAQ added at IndexNO: ${faqNo}`);
-
-    // Reset FAQ form fields
-    setFaqNo("");
-    setQuestion("");
-    setAnswer("");
-  };
+  
 
   //ReactQuill
-  const moduels = {
-    toolbar: [
-      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-      ["bold", "itaclic", "underline", "strike", "blockquote"],
-      [
-        { list: "ordered" },
-        { list: "bullter" },
-        { indent: "-1" },
-        { indent: "+1" },
-      ],
-      ["clean"],
-      ["link", "image"],
-    ],
-  };
+  // Overwrite the default link behavior
+const Link = Quill.import("formats/link");
 
-  const formats = [
-    "header",
-    "bold",
-    "itaclic",
-    "underline",
-    "strike",
-    "blockquote",
-    "list",
-    "bullet",
-    "indent",
-    "link",
-    "image",
-  ];
+class CustomLink extends Link {
+  static create(value) {
+    const node = super.create(value);
+    node.setAttribute("target", "_blank"); // Ensure links open in a new tab
+    return node;
+  }
+}
 
+Quill.register(CustomLink, true);
+
+const modules = {
+  toolbar: [
+    [{ header: "1" }, { header: "2" }, { font: [] }],
+    [{ size: [] }],
+    ["bold", "italic", "underline", "strike"],
+    [{ list: "ordered" }, { list: "bullet" }],
+    ["link", "image", "video"],
+    ["clean"], // Clear formatting
+  ],
+};
+
+const formats = [
+  "header",
+  "font",
+  "size",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "list",
+  "bullet",
+  "link",
+  "image",
+  "video",
+];
+
+  
   return (
     <div className="add-main">
       <div className="add-subtitle-page">
@@ -150,14 +145,14 @@ const AddSubtitlePage = () => {
           <div className="form-group">
             <label>Description</label>
             <ReactQuill
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Enter Description"
-              required
               theme="snow"
-              modules={moduels}
+              value={description}
+              onChange={setDescription}
+              modules={modules}
               formats={formats}
-            ></ReactQuill>
+              placeholder="Enter blog description"
+              required
+            />
           </div>
 
           {/* Upload Image */}
@@ -182,54 +177,7 @@ const AddSubtitlePage = () => {
         </form>
       </div>
 
-      {/* FAQ Section */}
-      <div className="add-faq">
-        <h2>Add FAQ</h2>
-        <form onSubmit={handleSubmitFAQ}>
-          {/* Question No */}
-          <div className="form-group">
-            <label>Question No</label>
-            <input
-              type="number"
-              value={faqNo}
-              onChange={(e) => setFaqNo(e.target.value)}
-              placeholder="Enter Question No"
-              required
-            />
-            <small className="mandatory">*Question No must be unique.</small>
-          </div>
-
-          {/* Question */}
-          <div className="form-group">
-            <label>Question</label>
-            <input
-              type="text"
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              placeholder="Ask a Question"
-              required
-            />
-          </div>
-
-          {/* Answer */}
-          <div className="form-group">
-            <label>Answer</label>
-            <ReactQuill
-              value={answer}
-              onChange={(e) => setAnswer(e.target.value)}
-              placeholder="Enter Answer"
-              required
-              theme="snow"
-              modules={moduels}
-              formats={formats}
-            ></ReactQuill>
-          </div>
-
-          <button type="submit" className="submit-button">
-            Add Q&A
-          </button>
-        </form>
-      </div>
+      
     </div>
   );
 };

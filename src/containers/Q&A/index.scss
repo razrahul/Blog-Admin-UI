@@ -1,56 +1,29 @@
-.add-main {
-  // display: flex;
-  // flex-direction: row; 
-  // justify-content: space-between;
-  // align-items: flex-start; 
-  // gap: 20px;
-  // padding: 20px;
-  margin-top: 0;
-  // background-color: #f8f9fa;
-  min-height: 100vh;
-  flex-wrap: nowrap; 
-}
-
-.add-subtitle-page {
-  margin-top: 0;
-  padding-top: 0;
-  padding-bottom: 30px;
-  // background-color: #fff;
-  border-radius: 12px;
-  // box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  // width: 55%;
-  transition: all 0.3s ease-in-out;
-
-  h1 {
-    margin-bottom: 20px;
-    text-align: center;
-    font-size: 30px;
-    color: #333;
-  }
-
-  h2 {
-    text-align: center;
-    font-size: 24px;
-    color: #555;
-    margin-bottom: 20px;
-    line-height: 20px;
-  }
-
-  form {
-    max-width: 600px;
-    margin: auto;
-
+.add-faq {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    width: 30%;
+    transition: all 0.3s ease-in-out;
+  
+    h2 {
+      text-align: center;
+      font-size: 24px;
+      color: #555;
+      margin-bottom: 20px;
+    }
+  
     .form-group {
       margin-bottom: 25px;
-
+  
       label {
         display: block;
-        font-weight: bold;
+        font-weight: 600;
         margin-bottom: 8px;
         font-size: 1.1rem;
         color: #333;
       }
-
+  
       input,
       textarea {
         width: 100%;
@@ -60,25 +33,25 @@
         border-radius: 8px;
         outline: none;
         transition: border-color 0.3s ease, box-shadow 0.3s ease;
-
+  
         &:focus {
           border-color: #007bff;
           box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
         }
       }
-
+  
       textarea {
         resize: vertical;
         min-height: 120px;
       }
-
+  
       .mandatory {
         font-size: 0.85rem;
         color: #ff6b6b;
         margin-top: 5px;
       }
     }
-
+  
     .submit-button {
       display: block;
       width: 100%;
@@ -91,17 +64,16 @@
       border-radius: 8px;
       cursor: pointer;
       transition: background-color 0.3s ease, transform 0.2s ease;
-
+  
       &:hover {
         background-color: #0056b3;
         transform: translateY(-2px);
       }
-
+  
       &:disabled {
         background-color: #ccc;
         cursor: not-allowed;
       }
     }
   }
-}
-
+  
