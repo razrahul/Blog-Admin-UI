@@ -1,14 +1,23 @@
-import React from "react";
+import React,{useEffect} from "react";
 import "./BlogSubTitle.scss";
-import { FaUsers, FaEdit, FaTrash } from "react-icons/fa"; // Import icons
+import { Link, useLocation } from "react-router-dom"; // Import Link
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 const BlogSubTitle = ({ subtitle, FAQ, onEdit, onDelete }) => {
   // Sort subtitles by indexNo
   const sortedSubtitles = [...subtitle].sort((a, b) => a.indexNo - b.indexNo);
-  // console.log(sortedSubtitles)
-
-  // Sort FAQs by indexNo
   const sortedFAQs = [...FAQ].sort((a, b) => a.indexNo - b.indexNo);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      const element = document.getElementById(location.hash.slice(1));
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [location]);
 
   return (
     <>
@@ -16,16 +25,27 @@ const BlogSubTitle = ({ subtitle, FAQ, onEdit, onDelete }) => {
       <div className="table-of-contents">
         <h3 className="toc-title">Table of Contents</h3>
         <ul className="toc-list">
-          {sortedSubtitles.map((item, index) => (
-            <li key={item._id}>{item.title}</li>
+          {sortedSubtitles.map((item) => (
+            <li key={item._id}>
+              {/* Link to the section */}
+              <Link to={`#subtitle-${item._id}`} className="toc-link">
+                {item.title}
+              </Link>
+            </li>
           ))}
-          {sortedFAQs.length > 0 && <li>Frequently Asked Questions</li>}
+          {sortedFAQs.length > 0 && (
+            <li>
+              <Link to="#faq-section" className="toc-link">
+                Frequently Asked Questions
+              </Link>
+            </li>
+          )}
         </ul>
       </div>
 
       {/* Detailed Content Section */}
       {sortedSubtitles.map((item) => (
-        <div key={item._id} className="subtitle-content">
+        <div key={item._id} id={`subtitle-${item._id}`} className="subtitle-content">
           <div className="subtitle-header">
             <h3 className="subtitle-title">{item.title}</h3>
             <div className="subtitle-actions">
@@ -47,8 +67,7 @@ const BlogSubTitle = ({ subtitle, FAQ, onEdit, onDelete }) => {
               </button>
             </div>
           </div>
-          {/* <p className="subtitle-dec">{item.description}</p> */}
-          {/* Correctly render HTML content */}
+          {/* Render HTML content */}
           <div
             className="subtitle-dec"
             dangerouslySetInnerHTML={{ __html: item.description }}
@@ -63,10 +82,10 @@ const BlogSubTitle = ({ subtitle, FAQ, onEdit, onDelete }) => {
 
       {/* FAQ Section */}
       {sortedFAQs.length > 0 && (
-        <div className="faq-section">
+        <div id="faq-section" className="faq-section">
           <h3>Frequently Asked Questions</h3>
           <ul>
-            {sortedFAQs.map((faq, index) => (
+            {sortedFAQs.map((faq) => (
               <li key={faq._id}>
                 <strong>
                   Q{faq.indexNo}: {faq.question}

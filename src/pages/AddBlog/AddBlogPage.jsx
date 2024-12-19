@@ -116,7 +116,7 @@ const AddBlogPage = () => {
         <div className="form-group">
           <label htmlFor="description">Description</label>
           <ReactQuill
-          className="react-quill"
+            className="react-quill"
             value={description} // State for ReactQuill content
             onChange={setDescription} // Update state directly
             modules={modules}

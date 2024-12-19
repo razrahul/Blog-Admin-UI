@@ -66,21 +66,6 @@ const AddSubtitlePage = () => {
   };
 
   
-
-  //ReactQuill
-  // Overwrite the default link behavior
-const Link = Quill.import("formats/link");
-
-class CustomLink extends Link {
-  static create(value) {
-    const node = super.create(value);
-    node.setAttribute("target", "_blank"); // Ensure links open in a new tab
-    return node;
-  }
-}
-
-Quill.register(CustomLink, true);
-
 const modules = {
   toolbar: [
     [{ header: "1" }, { header: "2" }, { font: [] }],
@@ -145,6 +130,7 @@ const formats = [
           <div className="form-group">
             <label>Description</label>
             <ReactQuill
+            className="react-quill"
               theme="snow"
               value={description}
               onChange={setDescription}
