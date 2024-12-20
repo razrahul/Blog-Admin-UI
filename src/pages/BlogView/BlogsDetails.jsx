@@ -1,26 +1,35 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./BlogDetails.scss";
 import ContactForm from "../../components/Contact_Form/ContactForm";
 import Comments from "../../components/Comments/Comments";
 import BlogSubTitle from "../../components/BlogSubTitle/BlogSubTitle";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllBlogs } from "../../redux/action/blogs";
+import { getAllBlogs, deleteSubtitle } from "../../redux/action/blogs";
 
 const BlogsDetails = () => {
   const { blogId } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleEdit = (id) => {
-    console.log("Edit item with ID:", id, blogId);
+  const handleEdit = (subtitleId) => {
+
+    console.log("Edit item with ID:", subtitleId, blogId);
   };
 
-  const handleDelete = (id) => {
-    console.log("Delete item with ID:", id, blogId);
+  const handleDelete = (subtitleId) => {
+    dispatch(deleteSubtitle(blogId, subtitleId));
+    console.log("Delete item with ID:", subtitleId, blogId);
+  
+    // Delay navigation slightly to ensure state updates first
+    setTimeout(() => {
+      navigate(`/blog-list/${blogId}`);
+    }, 500);
   };
+  
 
-  const { loading, error, blogs } = useSelector((state) => state.blog);
+  const { loading, error, blogs, message } = useSelector((state) => state.blog);
 
   useEffect(() => {
     // Fetch blogs if they aren't already loaded
@@ -36,8 +45,12 @@ const BlogsDetails = () => {
     return <div>Loading...</div>;
   }
 
+  if(message){
+    return <div>Message loading Blog Message :{message}</div>
+  }
+
   if (error) {
-    return <div>Error loading blog details: {error}</div>;
+    return <div>Error loading blog details Error: {error}</div>;
   }
 
   if (!blog) {

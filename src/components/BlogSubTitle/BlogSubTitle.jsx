@@ -1,7 +1,8 @@
-import React,{useEffect} from "react";
+import React, { useEffect } from "react";
 import "./BlogSubTitle.scss";
 import { Link, useLocation } from "react-router-dom"; // Import Link
 import { FaEdit, FaTrash } from "react-icons/fa";
+import Button from "../conformationButtom/Button";
 
 const BlogSubTitle = ({ subtitle, FAQ, onEdit, onDelete }) => {
   // Sort subtitles by indexNo
@@ -45,26 +46,47 @@ const BlogSubTitle = ({ subtitle, FAQ, onEdit, onDelete }) => {
 
       {/* Detailed Content Section */}
       {sortedSubtitles.map((item) => (
-        <div key={item._id} id={`subtitle-${item._id}`} className="subtitle-content">
+        <div
+          key={item._id}
+          id={`subtitle-${item._id}`}
+          className="subtitle-content"
+        >
           <div className="subtitle-header">
             <h3 className="subtitle-title">{item.title}</h3>
             <div className="subtitle-actions">
               {/* Edit Icon */}
-              <button
+              {/* <button
                 className="edit-btn"
                 onClick={() => onEdit(item._id)}
                 title="Edit"
               >
                 <FaEdit />
-              </button>
+              </button> */}
+              <Button
+                onConfirm={() => onEdit(item._id)}
+                title="Edit Subtitle"
+                description={`Are you sure you want to Edit the subtitle titled "${item.title}"?`}
+                buttonClass="edit-btn"
+              >
+                <FaEdit  />
+              </Button>
               {/* Delete Icon */}
-              <button
+              {/* <button
                 className="delete-btn"
                 onClick={() => onDelete(item._id)}
                 title="Delete"
               >
                 <FaTrash />
-              </button>
+              </button> */}
+              {/* Delete Button with Confirmation */}
+              <Button
+                onConfirm={() => onDelete(item._id)}
+                title="Delete Subtitle"
+                description={`Are you sure you want to delete the subtitle titled "${item.title}"?`}
+                buttonClass="delete-Btn"
+              >
+                <FaTrash  />
+              </Button>
             </div>
           </div>
           {/* Render HTML content */}

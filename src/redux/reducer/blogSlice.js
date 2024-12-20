@@ -62,7 +62,35 @@ const blogSlice = createSlice({
       state.error = action.payload;
     },
 
-     // Add FAQ
+    // Delete Subtitle
+    deleteSubtitleRequest: (state) => {
+      state.loading = true;
+    },
+    deleteSubtitleSuccess: (state, action) => {
+      state.loading = false;
+      const { blogId, subtitleId, message } = action.payload;
+    
+      state.blogs = state.blogs.map((blog) =>
+        blog._id === blogId
+          ? {
+              ...blog,
+              subtitles: blog.subtitles?.filter(
+                (subtitle) => subtitle._id !== subtitleId
+              ) || [], // Fallback to an empty array
+            }
+          : blog
+      );
+    
+      state.message = message; // Use the success message from the action payload
+    },
+    
+    
+    deleteSubtitleFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    // Add FAQ
     addFAQRequest: (state) => {
       state.loading = true;
     },
@@ -72,9 +100,7 @@ const blogSlice = createSlice({
 
       // Update the specific blog's FAQ
       state.blogs = state.blogs.map((blog) =>
-        blog._id === blogId
-          ? { ...blog, FAQ: [...blog.FAQ, FAQ] }
-          : blog
+        blog._id === blogId ? { ...blog, FAQ: [...blog.FAQ, FAQ] } : blog
       );
 
       state.message = "FAQ added successfully!";
@@ -83,7 +109,6 @@ const blogSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-
 
     // delete Blog reducer:
     deleteBlogRequest: (state) => {
@@ -129,6 +154,9 @@ export const {
   deleteBlogRequest,
   deleteBlogSuccess,
   deleteBlogFail,
+  deleteSubtitleRequest,
+  deleteSubtitleSuccess,
+  deleteSubtitleFail,
   clearError,
   clearMessage,
 } = blogSlice.actions;

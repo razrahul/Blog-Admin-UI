@@ -16,6 +16,9 @@ import {
   deleteBlogFail,
   deleteBlogRequest,
   deleteBlogSuccess,
+  deleteSubtitleRequest,
+  deleteSubtitleSuccess,
+  deleteSubtitleFail,
   clearError,
   clearMessage,
 } from "../reducer/blogSlice.js";
@@ -87,6 +90,49 @@ export const addSubtitle = (blogId, subtitleData) => async (dispatch) => {
   } catch (error) {
     dispatch(
       addSubtitleFail(
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+      )
+    );
+  }
+};
+
+//delete Subtitle
+
+export const deleteSubtitle = (blogId, subtitleId) => async (dispatch) => {
+  try {
+    dispatch(deleteSubtitleRequest());
+
+    const { data } = await axios.delete(
+      `${server}/deletesubtitle?blogId=${blogId}&subtitleId=${subtitleId}`,
+      {
+       withCredentials: true
+      }
+     
+   );
+
+    // Send DELETE request to the server
+    // const { data } = await axios.delete(
+    //   `${server}/deletesubtitle?blogId=${blogId}&subtitleId=${subtitleId}}`,
+    //   {
+    //     withCredentials: true,
+    //   }
+    // );
+
+    
+    dispatch(
+      deleteSubtitleSuccess({
+        blogId,
+        subtitleId,
+        message: data.message, // Ensure backend sends this
+      })
+    );
+    
+    
+  } catch (error) {
+    dispatch(
+      deleteSubtitleFail(
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message
