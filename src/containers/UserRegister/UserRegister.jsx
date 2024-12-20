@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import "./UserRegister.scss";
+import { useDispatch } from "react-redux";
+import { register } from "../../redux/action/userAction";
+import { MdMarkEmailUnread } from "react-icons/md";
 
 const UserRegister = () => {
   const [name, setName] = useState("");
@@ -7,33 +10,67 @@ const UserRegister = () => {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
+  const [image, setImage] = useState(null);
+   const [imagePrev, setImagePrev] = useState("");
   const [error, setError] = useState("");
+
+  const dispatch = useDispatch();
+
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImage(file);
+
+    // Generate a preview for the uploaded image
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => setImagePrev(reader.result);
+      reader.readAsDataURL(file);
+    } else {
+      setImagePrev("");
+    }
+  };
 
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
 
     // Simple validation
-    if (!name || !email || !phone || !password || !role) {
-      setError("All fields are required!");
+    if (!name || !email || !password ) {
+      setError("name, email and password fields are required!");
       return;
     }
 
-    // Process registration
+    const myForm = new FormData();
+    myForm.append("name", name);
+    myForm.append("email", email);
+    myForm.append("number", phone);
+    myForm.append("password", password);
+    myForm.append("role", role);
+    myForm.append("file", image);
+
+
+    dispatch(register(myForm));
+
+    console.log("User data: ", name, email, phone, password, role, image);
+
     alert("User Registered Successfully!");
 
-    // Clear form fields after submission
-    setName("");
-    setEmail("");
-    setPhone("");
-    setPassword("");
-    setRole("");
+    //reset all states
+    setName(""); 
+    setEmail("")
+    setPhone("")
+    setPassword("")
+    setRole(null)
+    setImage("")
   };
+
+ 
 
   const roles = [
     "SuperAdmin",
     "Admin",
-    "Developer",
+    "Devloper",
     "Content Writer",
     "Designer",
     "Other",
@@ -94,7 +131,7 @@ const UserRegister = () => {
               required
             />
           </div>
-          {/* //role */}
+
           <div className="form-group">
             <label>Role</label>
             <select
@@ -112,6 +149,21 @@ const UserRegister = () => {
             </select>
           </div>
 
+          {/* Upload Image */}
+          <div className="form-group">
+            <label htmlFor="image">Upload Image (Optional)</label>
+            <input
+              type="file"
+              id="image"
+              accept="image/*"
+              onChange={handleImageChange}
+            />
+            {imagePrev && (
+              <div className="image-preview">
+                <img src={imagePrev} alt="Preview" width="150" />
+              </div>
+            )}
+          </div>
           <button type="submit" className="submit-button">
             Register
           </button>

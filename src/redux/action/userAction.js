@@ -1,6 +1,6 @@
 // redux/userActions.js
-import axios from 'axios';
-import { server } from '../store.js';
+import axios from "axios";
+import { server } from "../store.js";
 import {
   loginRequest,
   loginSuccess,
@@ -14,8 +14,7 @@ import {
   loadUserRequest,
   loadUserSuccess,
   loadUserFail,
-} from '../reducer/userSlice.js';
-
+} from "../reducer/userSlice.js";
 
 // Login Action
 export const login = (email, password) => async (dispatch) => {
@@ -25,15 +24,12 @@ export const login = (email, password) => async (dispatch) => {
     const { data } = await axios.post(
       `${server}/login`,
       { email, password },
-      { headers: { 'Content-Type': 'application/json' }, 
-      withCredentials: true }
+      { headers: { "Content-Type": "application/json" }, withCredentials: true }
     );
-    
 
     dispatch(loginSuccess(data));
   } catch (error) {
-    
-    dispatch(loginFail(error.response?.data?.message  || 'Login Failed'));
+    dispatch(loginFail(error.response?.data?.message || "Login Failed"));
   }
 };
 
@@ -44,15 +40,19 @@ export const register = (formData) => async (dispatch) => {
   try {
     dispatch(registerRequest());
 
-    const { data } = await axios.post(
-      `${server}/register`,
-      formData,
-      { headers: { 'Content-Type': 'multipart/form-data' }, withCredentials: true }
+    const { data } = await axios.post(`${server}/register`, 
+      formData, 
+     {
+       headers: { "Content-Type": "multipart/form-data" },
+       withCredentials: true,
+     }
     );
 
     dispatch(registerSuccess(data));
   } catch (error) {
-    dispatch(registerFail(error.response?.data?.message || 'Registration Failed'));
+    dispatch(
+      registerFail(error.response?.data?.message || "Registration Failed")
+    );
   }
 };
 
@@ -65,7 +65,9 @@ export const loadUser = () => async (dispatch) => {
 
     dispatch(loadUserSuccess(data.user));
   } catch (error) {
-    dispatch(loadUserFail(error.response?.data?.message || 'Failed to load user'));
+    dispatch(
+      loadUserFail(error.response?.data?.message || "Failed to load user")
+    );
   }
 };
 
@@ -74,15 +76,12 @@ export const logout = () => async (dispatch) => {
   try {
     dispatch(logoutRequest());
 
-    const { data } = await axios.get(`${server}/logout`, { withCredentials: true });
+    const { data } = await axios.get(`${server}/logout`, {
+      withCredentials: true,
+    });
 
     dispatch(logoutSuccess(data.message));
   } catch (error) {
-    dispatch(logoutFail(error.response?.data?.message || 'Logout Failed'));
+    dispatch(logoutFail(error.response?.data?.message || "Logout Failed"));
   }
 };
-
-
-
-
-

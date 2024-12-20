@@ -4,12 +4,12 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 30px;
+  padding: 0 30px 30px 30px;
+  margin-top: 0;
   background-color: #f4f7fc;
   min-height: 100vh;
   box-sizing: border-box;
 
-  /* Title Styling */
   h1 {
     font-size: 2rem;
     color: #333;
@@ -17,127 +17,81 @@
     text-align: center;
   }
 
-  /* Form Styling */
   .registration-form {
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 30px;
-    width: 100%;
-    max-width: 500px;
+    width: 65%;
+    max-width: 100vw;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-  }
+    gap: 15px;
 
-  /* Form Group Styles */
-  .form-group {
-    display: flex;
-    flex-direction: column;
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      // gap: 0px;
+      line-height: 1;
 
-    label {
-      font-size: 1rem;
-      color: #333;
-      margin-bottom: 8px;
-    }
+      label {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #333;
+        margin-bottom: 8px;
+      }
 
-    /* Input Styling */
-    input,
-    select {
-      padding: 12px;
-      font-size: 1rem;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      outline: none;
-      transition: border-color 0.3s;
+      input,
+      select {
+        padding: 12px;
+        font-size: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        outline: none;
 
-      &:focus {
-        border-color: #007bff;
+        &:focus {
+          border-color: #007bff;
+        }
+      }
+
+      .file-input {
+        padding: 8px;
+        font-size: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        outline: none;
+
+        &:focus {
+          border-color: #007bff;
+        }
+      }
+
+      .file-name {
+        margin-top: 8px;
+        font-size: 0.9rem;
+        color: #555;
+      }
+
+      .error-message {
+        color: red;
+        font-size: 0.9rem;
+        text-align: center;
       }
     }
 
-    /* Error Message Styling */
-    .error-message {
-      color: red;
-      font-size: 0.9rem;
-      text-align: center;
-      margin-top: 10px;
+    .submit-button {
+      padding: 12px;
+      font-size: 1rem;
+      color: #fff;
+      background-color: #007bff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #0056b3;
+      }
     }
-  }
-
-  /* Role Dropdown */
-  .role-dropdown {
-    font-size: 1rem;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    outline: none;
-    transition: border-color 0.3s;
-    background-color: #fff;
-
-    &:focus {
-      border-color: #007bff;
-    }
-  }
-
-  /* Submit Button */
-  .submit-button {
-    padding: 12px;
-    font-size: 1rem;
-    color: #fff;
-    background-color: #007bff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-
-    &:hover {
-      background-color: #0056b3;
-    }
-
-    &:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
-    }
-  }
-}
-
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
-  .user-register-page {
-    padding: 20px;
-  }
-
-  .registration-form {
-    padding: 20px;
-    max-width: 100%;
-  }
-
-  h1 {
-    font-size: 1.5rem;
-  }
-
-  .submit-button {
-    font-size: 1.1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .user-register-page {
-    padding: 15px;
-  }
-
-  .registration-form {
-    padding: 15px;
-    max-width: 100%;
-  }
-
-  h1 {
-    font-size: 1.3rem;
-  }
-
-  .submit-button {
-    padding: 14px;
-    font-size: 1.2rem;
   }
 }
