@@ -11,10 +11,10 @@ const LoginPage = () => {
   const dispatch = useDispatch();
 
   
-  const { loading, error, isAuthenticated, user } = useSelector(
+  const { loading, error,message, isAuthenticated, user } = useSelector(
     (state) => state.user
   );
-  // console.log(user)
+  // console.log(user,error,message,isAuthenticated)
 
   //show , Hide Password Section 
   const togglePasswordVisibility = () => {
@@ -61,6 +61,7 @@ const LoginPage = () => {
           <span>Don't have an account? </span>
           <a href="#signup">Sign up</a>
         </div>
+        {error ? <div className="error-message">{error}</div>: null}
       </div>
     </div>
   );
