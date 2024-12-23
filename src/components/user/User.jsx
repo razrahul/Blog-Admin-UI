@@ -1,23 +1,22 @@
 import React from "react";
 import "./User.scss";
-import Button from "../buttom/Buttom";
 import img from "../../assets/image/profile.webp";
 import { formatDate } from "../../Utils/formatDate ";
 import ConfirmButton from "../conformationButtom/Button";
 import { useDispatch } from "react-redux";
-import { updateUserVerification, updateUserBlock } from "../../redux/action/admin";
+import { updateUserVerification, updateUserBlock, deleteUser } from "../../redux/action/admin";
 
 function User({ users }) {
   // console.log(users);
-  const handleConfirm = () => {
-    alert("Confirmed!");
-  };
-
-  const handleCancel = () => {
-    alert("Cancelled!");
-  };
+ 
 
   const dispatch = useDispatch();
+
+  const handledelete = (userId) => {
+    console.log("delete", userId);
+    dispatch(deleteUser(userId));
+    alert("User Deleted!")
+  };
 
   const handleVerfication = (userId,verfy) => {
       console.log(userId,verfy)
@@ -51,9 +50,14 @@ function User({ users }) {
               <p>{formatDate(user.createdAt)} </p>
             </div>
             <div className="user-auth">
-              <Button onConfirm={handleConfirm} onCancel={handleCancel}>
-                {user.isview}
-              </Button>
+              <ConfirmButton
+                onConfirm={() => handledelete(user._id)}
+                title="Delete User"
+                description={`Are you sure you want to Delete User: "${user && user.name }"?`}
+                buttonClass="delete"
+              >
+                Delete
+              </ConfirmButton>
               <ConfirmButton
                 onConfirm={() => handleVerfication(user._id,user.isVerified)}
                 title="Verfication User"

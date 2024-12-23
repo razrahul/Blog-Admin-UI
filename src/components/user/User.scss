@@ -48,13 +48,30 @@
         font-size: 0.9rem;
         border: none;
         border-radius: 5px;
-        background-color: #4caf50;
         color: white;
         cursor: pointer;
         transition: background-color 0.3s ease;
 
+      }
+      .delete {
+        background-color: #f44336;
+
         &:hover {
-          background-color: #45a049;
+          background-color: #e53935;
+        }
+      }
+      .verify {
+        background-color: #3d8ccd;
+
+        &:hover {
+          background-color: #1e87db;
+        }
+      }
+      .block {
+        background-color: #d89d25;
+
+        &:hover {
+          background-color: #eba10d;
         }
       }
     }

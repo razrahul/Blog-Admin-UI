@@ -10,6 +10,9 @@ import{
     updateUserBlockRequest,
     updateUserBlockSuccess,
     updateUserBlockFail,
+    deleteUserRequest,
+    deleteUserSuccess,
+    deleteUserFail,
     clearError,
     clearMessage
 } from '../reducer/adminSlice.js'
@@ -31,6 +34,26 @@ export const getAllUsers = () => async (dispatch) => {
       dispatch(getAllUsersSuccess(data));
     } catch (error) {
       dispatch(getAllUsersFail(error.response?.data?.message || 'Something went wrong'))
+    }
+  };
+
+  //Delete User
+
+ export const deleteUser = (userId) => async (dispatch) => {
+    try {
+      dispatch(deleteUserRequest());
+
+      const { data } = await axios.delete(
+        `${server}/admin/user/${userId}`,
+        {
+         withCredentials: true
+        }
+
+     );
+
+      dispatch(deleteUserSuccess({ message: data.message, userId }));
+    } catch (error) {
+      dispatch(deleteUserFail(error.response?.data?.message || 'Something went wrong'));
     }
   };
   

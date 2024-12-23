@@ -23,6 +23,22 @@ const adminSlice = createSlice({
       state.error = action.payload;
     },
 
+    // Delete User
+    deleteUserRequest: (state) => {
+      state.loading = true;
+    },
+    deleteUserSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload.message;
+      
+      const deletedUserId = action.payload.userId;
+      state.users = state.users.filter((user) => user._id !== deletedUserId);
+    },
+    deleteUserFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
 
     // Update User Verification
     updateUserVerificationRequest: (state) => {
@@ -82,6 +98,9 @@ export const {
   updateUserBlockRequest,
   updateUserBlockSuccess,
   updateUserBlockFail,
+  deleteUserRequest,
+  deleteUserSuccess,
+  deleteUserFail,
   clearError,
   clearMessage,
 } = adminSlice.actions;
