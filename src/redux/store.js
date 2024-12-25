@@ -15,4 +15,9 @@ const store = configureStore({
 export default store;
 
 
-export const server = "http://localhost:5000/api/v1";
+// export const server = "http://localhost:5000/api/v1";
+
+
+// export const server = import.meta.env.VITE_BACKEND_URL;
+
+export const server = import.meta.env.VITE_BACKEND_URL;
