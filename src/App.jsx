@@ -51,7 +51,7 @@ const App = () => {
         ) : (
           <>
             <div className="content-fix">
-              <Navbar /> {/* Left Navbar */}
+              <Navbar user={user} /> {/* Left Navbar */}
             </div>
 
             {/* Right-Side Dynamic Content */}

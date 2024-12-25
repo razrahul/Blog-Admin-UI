@@ -13,20 +13,19 @@ import {
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/action/userAction.js";
 
-const Navbar = () => {
+const Navbar = ({ user }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-
   };
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
-    const handleLogout = () => {
-      dispatch(logout())
-    };
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
   return (
     <div className="navbar">
@@ -44,9 +43,11 @@ const Navbar = () => {
         <NavLink to="/contact" activeClassName="active">
           <FaBell /> Contact
         </NavLink>
-        <NavLink to="/users" activeClassName="active">
-          <FaUsers /> Users
-        </NavLink>
+        {user && user.role === "SuperAdmin" && (
+          <NavLink to="/users" activeClassName="active">
+            <FaUsers /> Users
+          </NavLink>
+        )}
         <button className="logout" onClick={handleLogout}>
           <FaSignOutAlt /> Logout
         </button>
