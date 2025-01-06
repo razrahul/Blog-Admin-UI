@@ -3,8 +3,8 @@ import "./Profile.scss";
 
 const Profile = ({ user = {} }) => {
   const [isEditing, setIsEditing] = useState(false);
-  
-  // Ensure all properties are safely accessed or default to an empty string if undefined
+
+  // Default userData initialization
   const [userData, setUserData] = useState({
     avatar: user.avatar || "https://via.placeholder.com/150",
     name: user.name || "",
@@ -14,9 +14,22 @@ const Profile = ({ user = {} }) => {
     password: "",
   });
 
+  // Handle input change
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
+  };
+
+  // Handle image upload
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setUserData((prevData) => ({ ...prevData, avatar: reader.result }));
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleEditClick = () => setIsEditing(true);
@@ -33,16 +46,27 @@ const Profile = ({ user = {} }) => {
       </div>
       <div className="profile-content">
         <div className="avatar-section">
-          <img src={userData.avatar} alt="Avatar" className="avatar" />
-          {isEditing && (
-            <input
-              type="text"
-              name="avatar"
-              value={userData.avatar}
-              onChange={handleInputChange}
-              placeholder="Avatar URL"
-            />
-          )}
+          <div className="avatar-wrapper">
+            <img src={userData.avatar} alt="Avatar" className="avatar" />
+            {isEditing && (
+              <div className="image-inputs">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="file-input"
+                />
+                <input
+                  type="text"
+                  name="avatar"
+                  value={userData.avatar}
+                  onChange={handleInputChange}
+                  placeholder="Avatar URL"
+                  className="avatar-url-input"
+                />
+              </div>
+            )}
+          </div>
         </div>
         <div className="user-details">
           <div className="detail-item">
@@ -96,6 +120,7 @@ const Profile = ({ user = {} }) => {
                 <option value="Admin">Admin</option>
                 <option value="Developer">Developer</option>
                 <option value="Tester">Tester</option>
+                <option value="User">User</option>
               </select>
             ) : (
               <span>{userData.role}</span>
@@ -129,47 +154,4 @@ const Profile = ({ user = {} }) => {
   );
 };
 
-// Main App component
-const App = () => {
-  // List of users (Array of profile data)
-  const users = [
-    {
-      avatar: "https://via.placeholder.com/150/FF0000",
-      name: "Alice",
-      email: "alice@example.com",
-      number: "123-456-7890",
-      role: "Admin",
-    },
-    {
-      avatar: "https://via.placeholder.com/150/00FF00",
-      name: "Bob",
-      email: "bob@example.com",
-      number: "098-765-4321",
-      role: "Developer",
-    },
-    {
-      avatar: "https://via.placeholder.com/150/0000FF",
-      name: "Charlie",
-      email: "charlie@example.com",
-      number: "111-222-3333",
-      role: "Tester",
-    },
-    // Example of a user with missing avatar to check if the default works
-    {
-      name: "Diana",
-      email: "diana@example.com",
-      number: "333-444-5555",
-      role: "User",
-    },
-  ];
-
-  return (
-    <div className="profiles-container">
-      {users.map((user, index) => (
-        <Profile key={index} user={user} />
-      ))}
-    </div>
-  );
-};
-
-export default App;
+export default Profile;

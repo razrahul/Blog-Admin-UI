@@ -32,7 +32,7 @@ const BlogCard = ({ blogs }) => {
         <div key={blog._id} className="blog-card">
           {/* Blog Image */}
           <div className="image-container">
-            <img src={blog.poster.url} alt={blog.title} />
+            <img src={blog.poster.url || "https://via.placeholder.com/150"} alt={blog.title || "Default Image"} />
           </div>
 
           {/* Blog Details */}
