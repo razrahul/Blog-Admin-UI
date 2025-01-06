@@ -1,128 +1,220 @@
-/* General Styles */
+/* Contact page styling */
 .contact-container {
-  padding: 20px; /* Default padding */
-  font-family: 'Arial', sans-serif;
-
-  @media (max-width: 768px) {
-    padding: 0px; /* Adjust padding for smaller screens */
-  }
-
-  h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 2rem;
-    color: #333;
-
-    @media (max-width: 480px) {
-      font-size: 1.5rem; /* Smaller heading on small screens */
-    }
-  }
-}
-
-/* Request List */
-.request-list {
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-}
 
-.request-card {
-  display: flex;
-  flex-wrap: wrap; /* Enables wrapping on smaller screens */
-  justify-content: space-between;
-  gap: 15px;
-  background-color: #f9f9f9;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    padding: 10px;
-  }
-
-  .request-info,
-  .request-info-right {
+  // Search Bar Styling
+  .search-bar {
     display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-width: 250px;
-
-    @media (max-width: 768px) {
-      width: 100%; /* Take full width on small screens */
-    }
-  }
-}
-
-/* Request Information */
-.request-info {
-  font-size: 0.9rem;
-
-  p {
-    margin: 5px 0;
-  }
-
-  .request-date {
-    font-size: 0.85rem;
-    color: #666;
-  }
-}
-
-/* Right Section for Messages and Replies */
-.request-info-right {
-  .request-message {
+    justify-content: flex-end;
     margin-bottom: 10px;
 
-    p {
-      font-size: 0.9rem;
-      color: #555;
+    input {
+      width: 100%;
+      max-width: 400px;
+      padding: 8px 12px;
+      font-size: 14px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      background-color: #fafafa;
+      transition: border-color 0.3s ease;
+      
+      &::placeholder {
+        color: #aaa;
+      }
+
+      &:focus {
+        border-color: #3f51b5;
+        outline: none;
+      }
     }
   }
 
+  // DataTable customizations
+  .rdt_TableHeader {
+    background-color: #3f51b5;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    text-align: center;
+    padding: 10px;
+
+    th {
+      font-size: 16px; /* Increase the font size of all headers */
+      font-weight: 700; /* Make the headers bold */
+    }
+
+    th:nth-child(1), /* For Name column */
+    th:nth-child(2) { /* For Email column */
+      font-size: 18px; /* Increase the font size specifically for Name and Email */
+      font-weight: 700; /* Ensure boldness for Name and Email columns */
+    }
+  }
+
+  .rdt_TableRow {
+    &:hover {
+      background-color: #f4f6f9;
+      transition: background-color 0.3s ease;
+    }
+  }
+
+  .rdt_TableHead th,
+  .rdt_TableBody td {
+    padding: 10px;
+    text-align: left;
+    font-size: 12px;
+    color: #333;
+  }
+
+  // Customizing the pagination buttons
+  .rdt_Pagination {
+    padding: 10px 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    .rdt_PaginationItem {
+      padding: 8px 12px;
+      margin: 0 4px;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #e0e0e0;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #3f51b5;
+        color: white;
+      }
+
+      &.rdt_PaginationItem--active {
+        background-color: #3f51b5;
+        color: white;
+      }
+    }
+  }
+
+  // Styling for the Reply Section
   .reply-section {
     margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 
     textarea {
-      width: 100%; /* Full width on all screens */
       padding: 10px;
-      border: 1px solid #ccc;
+      border: 1px solid #ddd;
       border-radius: 5px;
-      min-height: 80px;
-      resize: vertical;
+      font-size: 12px;
+      resize: none;
+      height: 80px;
+      background-color: #fff;
+      transition: border-color 0.3s ease;
 
-      @media (max-width: 480px) {
-        padding: 8px;
+      &:focus {
+        border-color: #3f51b5;
+        outline: none;
       }
     }
 
     button {
-      width: 100%;
-      padding: 10px;
-      background-color: #4CAF50;
-      color: white;
+      padding: 8px 12px;
+      background-color: #3f51b5;
       border: none;
+      color: white;
+      font-size: 12px;
       border-radius: 5px;
-      font-size: 1rem;
-      margin-top: 10px;
       cursor: pointer;
-      transition: background-color 0.3s;
+      transition: background-color 0.3s ease;
 
       &:hover {
-        background-color: #45a049;
-      }
-
-      @media (max-width: 480px) {
-        padding: 8px;
-        font-size: 0.9rem;
+        background-color: #2c387e;
       }
     }
+  }
 
-    .reply-message {
-      background-color: #e6f7e6;
-      padding: 10px;
-      margin-top: 10px;
-      border-radius: 5px;
-      font-size: 0.9rem;
+  // Styling for the Reply Message
+  .reply-message {
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+
+    strong {
+      font-size: 14px;
+      color: #333;
+    }
+
+    p {
+      font-size: 12px;
+      color: #555;
+    }
+  }
+}
+
+/* Responsive Design for Tablets and Mobile Devices */
+
+// For tablets and small screens
+@media (max-width: 768px) {
+  .contact-container {
+    padding: 10px;
+
+    .rdt_TableHeader th,
+    .rdt_TableBody td {
+      font-size: 12px;
+      padding: 8px;
+    }
+
+    .rdt_PaginationItem {
+      padding: 6px 10px;
+      font-size: 10px;
+    }
+
+    .reply-section {
+      textarea {
+        height: 70px;
+        font-size: 11px;
+      }
+
+      button {
+        padding: 6px 10px;
+        font-size: 10px;
+      }
+    }
+  }
+}
+
+// For mobile devices
+@media (max-width: 480px) {
+  .contact-container {
+    padding: 8px;
+
+    .rdt_TableHeader th,
+    .rdt_TableBody td {
+      font-size: 10px;
+      padding: 6px;
+    }
+
+    .rdt_PaginationItem {
+      padding: 5px 8px;
+      font-size: 8px;
+    }
+
+    .reply-section {
+      textarea {
+        height: 60px;
+        font-size: 10px;
+      }
+
+      button {
+        padding: 5px 8px;
+        font-size: 8px;
+      }
     }
   }
 }

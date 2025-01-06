@@ -14,7 +14,7 @@ const AddSubtitlePage = () => {
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
   const [imagePrev, setImagePrev] = useState("");
-  
+  const [isView, setIsView] = useState("");
 
   // Filter to find the specific blog
   const {
@@ -50,10 +50,11 @@ const AddSubtitlePage = () => {
     mySubtitle.append("title", subtitle);
     mySubtitle.append("description", description);
     mySubtitle.append("file", image);
+    mySubtitle.append("isview", isView);
 
     dispatch(addSubtitle(blogId, mySubtitle));
 
-    console.log(titleNo,subtitle,description,image)
+    console.log(titleNo, subtitle, description, image,isView);
 
     // Reset form fields
     setTitleNo("");
@@ -61,38 +62,37 @@ const AddSubtitlePage = () => {
     setDescription("");
     setImage(null);
     setImagePrev("");
+    setIsView(true);
 
     alert(`Subtitle added for Blog ID: ${blogId}`);
   };
 
-  
-const modules = {
-  toolbar: [
-    [{ header: "1" }, { header: "2" }, { font: [] }],
-    [{ size: [] }],
-    ["bold", "italic", "underline", "strike"],
-    [{ list: "ordered" }, { list: "bullet" }],
-    ["link", "image", "video"],
-    ["clean"], // Clear formatting
-  ],
-};
+  const modules = {
+    toolbar: [
+      [{ header: "1" }, { header: "2" }, { font: [] }],
+      [{ size: [] }],
+      ["bold", "italic", "underline", "strike"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      ["link", "image", "video"],
+      ["clean"], // Clear formatting
+    ],
+  };
 
-const formats = [
-  "header",
-  "font",
-  "size",
-  "bold",
-  "italic",
-  "underline",
-  "strike",
-  "list",
-  "bullet",
-  "link",
-  "image",
-  "video",
-];
+  const formats = [
+    "header",
+    "font",
+    "size",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "list",
+    "bullet",
+    "link",
+    "image",
+    "video",
+  ];
 
-  
   return (
     <div className="add-main">
       <div className="add-subtitle-page">
@@ -130,7 +130,7 @@ const formats = [
           <div className="form-group">
             <label>Description</label>
             <ReactQuill
-            className="react-quill"
+              className="react-quill"
               theme="snow"
               value={description}
               onChange={setDescription}
@@ -156,14 +156,38 @@ const formats = [
               </div>
             )}
           </div>
+          
+          <div className="form-group">
+          <label>Visibility</label>
+          <div className="visibility-options">
+            <label>
+              <input
+                type="radio"
+                name="visibility"
+                value="public"
+                checked={isView === "public"}
+                onChange={() => setIsView("public")}
+              />
+              Public
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="visibility"
+                value="private"
+                checked={isView === "private"}
+                onChange={() => setIsView("private")}
+              />
+              Private
+            </label>
+          </div>
+          </div>
 
           <button type="submit" className="submit-button">
             Add Subtitle
           </button>
         </form>
       </div>
-
-      
     </div>
   );
 };

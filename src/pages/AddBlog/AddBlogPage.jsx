@@ -10,7 +10,7 @@ const AddBlogPage = () => {
   const [description, setDescription] = useState("");
   const [createdBy, setCreatedBy] = useState("");
   const [category, setCategory] = useState("");
-  const [isView, setIsView] = useState("");
+
   const [image, setImage] = useState("");
   const [imagePrev, setImagePrev] = useState("");
 
@@ -35,16 +35,15 @@ const AddBlogPage = () => {
 
     // Prepare FormData
     const myBlog = new FormData();
-    myBlog.append("title", title);
+    myBlog.append("title", title); 
     myBlog.append("description", description);
     myBlog.append("createdBy", createdBy);
     myBlog.append("category", category);
     myBlog.append("file", image);
-    myBlog.append("isview", isView);
 
     // Dispatch the action to create a blog
     dispatch(createBlog(myBlog));
-    console.log(title, description, createdBy, category, image, isView);
+    console.log(title, description, createdBy, category, image);
 
     // Reset form fields
     setTitle("");
@@ -53,7 +52,6 @@ const AddBlogPage = () => {
     setCategory("");
     setImage("");
     setImagePrev("");
-    setIsView(true);
 
     alert("Blog created successfully!");
   };
@@ -125,19 +123,6 @@ const AddBlogPage = () => {
           />
         </div>
 
-        {/* Author */}
-        <div className="form-group">
-          <label htmlFor="createdBy">Author</label>
-          <input
-            value={createdBy}
-            onChange={(e) => setCreatedBy(e.target.value)}
-            type="text"
-            id="createdBy"
-            placeholder="Enter author name"
-            required
-          />
-        </div>
-
         {/* Category */}
         <div className="form-group">
           <label htmlFor="category">Category</label>
@@ -176,31 +161,6 @@ const AddBlogPage = () => {
         </div>
 
         {/* Public/Private Visibility */}
-        <div className="form-group">
-          <label>Visibility</label>
-          <div className="visibility-options">
-            <label>
-              <input
-                type="radio"
-                name="visibility"
-                value="public"
-                checked={isView === "public"}
-                onChange={() => setIsView("public")}
-              />
-              Public
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="visibility"
-                value="private"
-                checked={isView === "private"}
-                onChange={() => setIsView("private")}
-              />
-              Private
-            </label>
-          </div>
-        </div>
 
         {/* Submit */}
         <button type="submit" className="create-button">

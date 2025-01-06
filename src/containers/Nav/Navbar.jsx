@@ -8,6 +8,9 @@ import {
   FaUsers,
   FaSignOutAlt,
   FaBars,
+  FaTrashAlt,
+  FaCog,
+  FaUserCircle,
 } from "react-icons/fa";
 
 import { useDispatch } from "react-redux";
@@ -25,6 +28,7 @@ const Navbar = ({ user }) => {
 
   const handleLogout = () => {
     dispatch(logout());
+    navigate("/login");
   };
 
   return (
@@ -43,11 +47,22 @@ const Navbar = ({ user }) => {
         <NavLink to="/contact" activeClassName="active">
           <FaBell /> Contact
         </NavLink>
+        <NavLink to="/profile" activeClassName="active">
+          <FaUserCircle />
+          Profile
+        </NavLink>
         {user && user.role === "SuperAdmin" && (
           <NavLink to="/users" activeClassName="active">
             <FaUsers /> Users
           </NavLink>
         )}
+        <NavLink to="/recycle-bin" activeClassName="active">
+          <FaTrashAlt /> Recycle Bin
+        </NavLink>
+
+        <NavLink to="/more" activeClassName="active">
+          <FaCog /> More Items
+        </NavLink>
         <button className="logout" onClick={handleLogout}>
           <FaSignOutAlt /> Logout
         </button>

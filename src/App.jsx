@@ -16,6 +16,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { loadUser } from "./redux/action/userAction";
 import { getAllBlogs } from "./redux/action/blogs";
 import UserRegister from "./containers/UserRegister/UserRegister";
+import RecycleBinPage from "./pages/RecycleBin/RecycleBinPage";
+import MoreItemPage from "./pages/MoreItem/MoreItemPage";
+import Profile from "./pages/Profile/Profile";
 const BlogsDetails = lazy(() => import("./pages/BlogView/BlogsDetails"));
 
 const App = () => {
@@ -58,7 +61,10 @@ const App = () => {
             <div className="content">
               <Routes>
                 <Route path="/users" element={<UsersPage />} />
+                <Route path="/recycle-bin" element={<RecycleBinPage />} />
+                <Route path="/more" element={<MoreItemPage />}></Route>
                 <Route path="/register" element={<UserRegister />} />
+                <Route path="/profile" element={<Profile />} />
                 <Route path="/add-blog" element={<AddBlogPage />} />
                 <Route path="/blog-list" element={<BlogListPage />} />
                 <Route path="/blog-list/:blogId" element={<BlogsDetails />} />

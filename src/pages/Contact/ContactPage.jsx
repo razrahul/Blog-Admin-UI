@@ -27,6 +27,14 @@ const ContactPage = () => {
       date: "2024-09-19",
       message: "",
     },
+    {
+      id: 4,
+      name: "Abhyudya Singh",
+      email: "prahladnag102@gmail.com",
+      phone: "+91",
+      date: "2024-09-19",
+      message: "",
+    },
   ];
 
   return (

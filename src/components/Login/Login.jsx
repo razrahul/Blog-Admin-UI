@@ -57,10 +57,7 @@ const LoginPage = () => {
           </div>
           <button type="submit">Submit</button>
         </form>
-        <div className="create-account">
-          <span>Don't have an account? </span>
-          <a href="#signup">Sign up</a>
-        </div>
+     
         {error ? <div className="error-message">{error}</div>: null}
       </div>
     </div>
