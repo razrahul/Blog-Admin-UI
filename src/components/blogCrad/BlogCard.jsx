@@ -1,10 +1,11 @@
 import React from "react";
 import "./BlogCard.scss";
 import { useNavigate } from "react-router-dom";
-import {formatDateOnly} from "../../Utils/formatDate "
+import { formatDateOnly } from "../../Utils/formatDate ";
 import Button from "../conformationButtom/Button";
 import { useDispatch } from "react-redux";
 import { deleteBlog } from "../../redux/action/blogs";
+import { BsFillPeopleFill, BsPersonFillLock } from "react-icons/bs";
 
 const BlogCard = ({ blogs }) => {
   const navigate = useNavigate();
@@ -18,13 +19,12 @@ const BlogCard = ({ blogs }) => {
   };
 
   const dispatch = useDispatch();
-   // Handle delete confirmation and dispatch the action
-   const handleDelete = (blogId) => {
+  // Handle delete confirmation and dispatch the action
+  const handleDelete = (blogId) => {
     // dispatch(deleteBlog(blogId)); // Dispatch the delete action
-    console.log(blogId)
+    console.log(blogId);
     dispatch(deleteBlog(blogId));
   };
-
 
   return (
     <>
@@ -32,13 +32,26 @@ const BlogCard = ({ blogs }) => {
         <div key={blog._id} className="blog-card">
           {/* Blog Image */}
           <div className="image-container">
-            <img src={blog.poster.url || "https://via.placeholder.com/150"} alt={blog.title || "Default Image"} />
+            <img
+              src={blog.poster.url || "https://via.placeholder.com/150"}
+              alt={blog.title || "Default Image"}
+            />
           </div>
 
           {/* Blog Details */}
           <div className="blog-details">
             <h3 className="blog-title">{blog.title}</h3>
-            <p className="blog-date">{formatDateOnly(blog.createdAt)}</p>
+            <div className="blog-cat">
+              <p className="blog-view">
+                {blog.isview ? (
+                  <> <BsFillPeopleFill /> Public </>
+                ) : (
+                  <> <BsPersonFillLock /> Private </>
+                )}
+              </p>
+
+              <p className="blog-date">{formatDateOnly(blog.createdAt)}</p>
+            </div>
 
             {/* Action Buttons */}
             <div className="actions">
@@ -48,17 +61,19 @@ const BlogCard = ({ blogs }) => {
               >
                 View
               </button>
-             {/* Delete Button with Confirmation */}
-             <Button
-                onConfirm={() => handleDelete(blog._id)} 
+              {/* Delete Button with Confirmation */}
+              <Button
+                onConfirm={() => handleDelete(blog._id)}
                 title="Delete Blog"
                 description={`Are you sure you want to delete the blog titled "${blog.title}"?`}
                 buttonClass="delete"
               >
                 Delete
               </Button>
-              {/* <button className="edit">Edit</button> */}
-              <button className="visibility">{blog.isview}</button>
+              <button className="edit">Edit</button>
+              {/* <button className="visibility">
+                {blog.isview ? "Public" : "Private"}
+              </button> */}
               <button
                 className="subtitle"
                 onClick={() => handleAddSubtitle(blog._id)}

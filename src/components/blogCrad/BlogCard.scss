@@ -24,12 +24,38 @@
         font-size: 1.2rem;
         margin: 0 0 0.5rem;
       }
-  
-      .blog-date {
-        font-size: 0.9rem;
-        color: #777;
-        margin-bottom: 1rem;
+
+      .blog-cat{
+        display: flex;
+        justify-content: space-between;
+        // margin-bottom: 1rem;
+        
+        .blog-view {
+          width: 5.5rem;
+          height: 2rem;
+          color: black; 
+          font-size: 1rem;
+          font-weight: 700;
+          display: flex; // Flexbox for centering
+          justify-content: center; // Horizontally center
+          align-items: center; // Vertically center
+          text-align: center; // Ensures text alignment for inline elements
+        
+          &:hover { // Correct pseudo-class syntax
+           
+            background-color: #777;
+            border-radius: 0.3rem;
+            cursor: pointer; // Optional: indicates hoverable behavior
+          }
+        }
+        
+        .blog-date {
+          font-size: 0.9rem;
+          color: #777;
+        }
       }
+  
+      
   
       .actions {
         display: flex;
