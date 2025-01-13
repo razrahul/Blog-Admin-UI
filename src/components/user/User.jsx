@@ -47,10 +47,11 @@ function User({ users }) {
             </div>
             <div className="user-card" key={index}>
               <h3>{user.name}</h3>
-              <p>{user.role}</p>
-              <p>{user.email}</p>
-              <p>+91 {user.number} </p>
-              <p>{formatDate(user.createdAt)} </p>
+              <p>Comapny: {user.company.companyName}</p>
+              <p>Role: {user.role.name}</p>
+              <p>Email: {user.email}</p>
+              <p>Mo No: +91 {user.number} </p>
+              <p>Create: {formatDate(user.createdAt)} </p>
             </div>
             <div className="user-auth">
               <ConfirmButton

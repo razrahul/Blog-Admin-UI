@@ -51,11 +51,11 @@ const Navbar = ({ user }) => {
           <FaUserCircle />
           Profile
         </NavLink>
-        {/* {user && user.role === "SuperAdmin" && ( */}
+        {user && user.role.name === "SuperAdmin" && ( 
           <NavLink to="/users" activeClassName="active">
             <FaUsers /> Users
           </NavLink>
-        {/* )} */}
+        )} 
         <NavLink to="/recycle-bin" activeClassName="active">
           <FaTrashAlt /> Recycle Bin
         </NavLink>

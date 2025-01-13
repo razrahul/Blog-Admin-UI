@@ -2,16 +2,18 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Profile.scss";
 
-const Profile = ({ user = {} }) => {
+const Profile = ({user}) => {
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
 
+  console.log(user)
+
   const [userData, setUserData] = useState({
-    avatar: user.avatar || "https://via.placeholder.com/150",
+    avatar: user.avatar.url || "https://via.placeholder.com/150",
     name: user.name || "",
     email: user.email || "",
     number: user.number || "",
-    role: user.role || "User",
+    role: user.role.name || "User",
   });
 
   const handleInputChange = (e) => {

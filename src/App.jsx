@@ -65,7 +65,7 @@ const App = () => {
                 <Route path="/recycle-bin" element={<RecycleBinPage />} />
                 <Route path="/more" element={<MoreItemPage />}></Route>
                 <Route path="/register" element={<UserRegister />} />
-                <Route path="/profile" element={<Profile />} />
+                <Route path="/profile" element={<Profile user={user} />} />
                 <Route path="/change-password" element={<ChangePassword />} />
                 <Route path="/add-blog" element={<AddBlogPage />} />
                 <Route path="/blog-list" element={<BlogListPage />} />
