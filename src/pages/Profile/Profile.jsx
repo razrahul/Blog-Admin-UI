@@ -6,7 +6,6 @@ const Profile = ({user}) => {
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
 
-  console.log(user)
 
   const [userData, setUserData] = useState({
     avatar: user.avatar.url || "https://via.placeholder.com/150",
@@ -14,6 +13,7 @@ const Profile = ({user}) => {
     email: user.email || "",
     number: user.number || "",
     role: user.role.name || "User",
+    company: user.company.companyName || ""
   });
 
   const handleInputChange = (e) => {
@@ -115,6 +115,10 @@ const Profile = ({user}) => {
           <div className="detail-item">
             <label>Role:</label>
             <span>{userData.role}</span>
+          </div>
+          <div className="detail-item">
+            <label>Company:</label>
+            <span>{userData.company}</span>
           </div>
         </div>
       </div>
