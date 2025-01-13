@@ -1,44 +1,200 @@
-.more-item-page {
-    padding: 20px;
-    font-family: Arial, sans-serif;
-  
-    h2 {
-      font-size: 2rem;
-      margin-bottom: 20px;
-      color: #333;
-    }
-  
-    .dropdown-container {
-      margin-bottom: 20px;
-  
-      label {
-        margin-right: 10px;
-        font-size: 1rem;
-        color: #555;
-      }
-  
-      select {
-        padding: 10px;
-        font-size: 1rem;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        background-color: #f9f9f9;
-        cursor: pointer;
-  
-        &:focus {
-          outline: none;
-          border-color: #007bff;
-        }
-      }
-    }
-  
-    .selected-option {
-      font-size: 1.2rem;
-      color: #555;
-  
-      p {
-        margin: 0;
-      }
+/* MoreItemPage.scss */
+
+.dropdown-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+
+  .dropdown-toggle {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 4px;
+
+    &:hover {
+      background-color: #45a049;
     }
   }
+
+  .add-button {
+    background-color: #008cba;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 4px;
+
+    &:hover {
+      background-color: #007bb5;
+    }
+  }
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  width: 200px;
+  padding: 10px 0;
+  z-index: 10;
+  list-style: none;
+  margin: 0;
   
+  .dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+    font-size: 14px;
+
+    &:hover {
+      background-color: #f1f1f1;
+    }
+  }
+}
+
+.add-item-form {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+
+  h3 {
+    margin-bottom: 15px;
+    font-size: 18px;
+    color: #333;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+  }
+
+  input:focus,
+  textarea:focus {
+    outline: none;
+    border-color: #4caf50;
+  }
+
+  button {
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 4px;
+
+    &:hover {
+      background-color: #45a049;
+    }
+  }
+}
+
+.data-table-container {
+  margin-top: 30px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+
+  .edit-button,
+  .delete-button {
+    padding: 5px 10px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .edit-button {
+    background-color: #ffa500;
+    color: white;
+
+    &:hover {
+      background-color: #ff8c00;
+    }
+  }
+
+  .delete-button {
+    background-color: #f44336;
+    color: white;
+
+    &:hover {
+      background-color: #e53935;
+    }
+  }
+}
+
+/* MoreItemPage.scss */
+
+/* Modal styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content { 
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button {
+  padding: 10px 20px;
+  margin: 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: #45a049;
+  }
+}
+
+button.cancel {
+  background-color: #f44336;
+}
+
+button.cancel:hover {
+  background-color: #e53935;
+}
+
+button.cancel,
+button {
+  margin-top: 10px;
+}
+
+textarea, input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}

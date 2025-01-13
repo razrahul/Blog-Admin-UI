@@ -1,90 +1,127 @@
-import React, { useState } from "react";
-import "./RecycleBin.scss";
+import React, { useState } from 'react';
+import DataTable from 'react-data-table-component';
+import './RecycleBin.scss';
 
-const RecycleBin = () => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(null);
+const RecycleBinPage = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
 
-  const deletedItems = [
-    { id: 1, type: "Blog", title: "How to Learn React", description: "A complete guide to React development." },
-    { id: 2, type: "User", name: "John Doe", email: "john.doe@example.com" },
-    { id: 3, type: "Profile", avatar: "https://via.placeholder.com/100", name: "Jane Smith", role: "Admin" },
+  // Toggle dropdown open/close
+  const toggleDropdown = () => setIsOpen((prev) => !prev);
+
+  // Data for each category (Blog, Users, Contact)
+  const blogData = [
+    { id: 1, title: 'Blog Post 1', description: 'Description of Blog Post 1' },
+    { id: 2, title: 'Blog Post 2', description: 'Description of Blog Post 2' },
   ];
 
-  const handleDropdownToggle = (id) => {
-    setIsDropdownOpen(isDropdownOpen === id ? null : id);
+  const usersData = [
+    { id: 1, title: 'User 1', description: 'Description of User 1' },
+    { id: 2, title: 'User 2', description: 'Description of User 2' },
+  ];
+
+  const contactData = [
+    { id: 1, title: 'Contact 1', description: 'Description of Contact 1' },
+    { id: 2, title: 'Contact 2', description: 'Description of Contact 2' },
+  ];
+
+  // Columns for the DataTable
+  const columns = [
+    {
+      name: 'Title',
+      selector: (row) => row.title,
+      sortable: true,
+    },
+    {
+      name: 'Description',
+      selector: (row) => row.description,
+      sortable: true,
+    },
+    {
+      name: 'Actions',
+      cell: (row) => (
+        <div>
+          <button onClick={() => handleRestore(row)}>Restore</button>
+          <button onClick={() => handleDelete(row)}>Delete</button>
+        </div>
+      ),
+    },
+  ];
+
+  // Handle the restore action
+  const handleRestore = (row) => {
+    console.log(`Restoring: ${row.title}`);
   };
 
-  const handleAction = (action, id) => {
-    console.log(`${action} item with id: ${id}`);
-    setIsDropdownOpen(null); // Close the dropdown after action
+  // Handle the delete action
+  const handleDelete = (row) => {
+    console.log(`Deleting: ${row.title}`);
+  };
+
+  // Handle dropdown item click
+  const handleDropdownItemClick = (item) => {
+    setSelectedItem(item); // Update selected item
+    setIsOpen(false); // Close dropdown
   };
 
   return (
-    <div className="recycle-bin-container">
-      <h1>Recycle Bin</h1>
-      <div className="recycle-bin-content">
-        {deletedItems.map((item) => (
-          <div key={item.id} className="recycle-card">
-            <div className="card-details">
-              {item.type === "Blog" && (
-                <>
-                  <h3>{item.title}</h3>
-                  <p>{item.description}</p>
-                </>
-              )}
-              {item.type === "User" && (
-                <>
-                  <h3>{item.name}</h3>
-                  <p>{item.email}</p>
-                </>
-              )}
-              {item.type === "Profile" && (
-                <>
-                  <img src={item.avatar} alt="Profile Avatar" />
-                  <h3>{item.name}</h3>
-                  <p>Role: {item.role}</p>
-                </>
-              )}
-            </div>
+    <div>
+      {/* Dropdown toggle button */}
+      <button onClick={toggleDropdown} className="dropdown-toggle">
+        {selectedItem ? `Selected: ${selectedItem}` : 'Recycle Bin'}
+      </button>
 
-            {/* Dropdown button */}
-            <div className="card-actions">
-              <button
-                className="dropdown-btn"
-                onClick={() => handleDropdownToggle(item.id)}
-              >
-                •••
-              </button>
+      {/* Dropdown Menu */}
+      {isOpen && (
+        <ul className="dropdown-menu">
+          <li
+            className="dropdown-item"
+            onClick={() => handleDropdownItemClick('Blog')}
+          >
+            Blog
+          </li>
+          <li
+            className="dropdown-item"
+            onClick={() => handleDropdownItemClick('Users')}
+          >
+            Users
+          </li>
+          <li
+            className="dropdown-item"
+            onClick={() => handleDropdownItemClick('Contact')}
+          >
+            Contact
+          </li>
+        </ul>
+      )}
 
-              {/* Dropdown Menu */}
-              {isDropdownOpen === item.id && (
-                <div className="dropdown-menu">
-                  <button
-                    onClick={() => handleAction("Restore", item.id)}
-                    className="dropdown-item"
-                  >
-                    Restore
-                  </button>
-                  <button
-                    onClick={() => handleAction("Move to Folder", item.id)}
-                    className="dropdown-item"
-                  >
-                    Move to Folder
-                  </button>
-                  <button
-                    onClick={() => handleAction("Delete Permanently", item.id)}
-                    className="dropdown-item"
-                  >
-                    Delete Permanently
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
+      {/* Display DataTable based on selected item */}
+      {selectedItem === 'Blog' && (
+        <DataTable
+          title="Blog Items"
+          columns={columns}
+          data={blogData}
+          pagination
+        />
+      )}
+      {selectedItem === 'Users' && (
+        <DataTable
+          title="Users"
+          columns={columns}
+          data={usersData}
+          pagination
+        />
+      )}
+      {selectedItem === 'Contact' && (
+        <DataTable
+          title="Contact Items"
+          columns={columns}
+          data={contactData}
+          pagination
+        />
+      )}
     </div>
   );
 };
 
-export default RecycleBin;
+export default RecycleBinPage;

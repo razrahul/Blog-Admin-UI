@@ -19,6 +19,7 @@ import UserRegister from "./containers/UserRegister/UserRegister";
 import RecycleBinPage from "./pages/RecycleBin/RecycleBinPage";
 import MoreItemPage from "./pages/MoreItem/MoreItemPage";
 import Profile from "./pages/Profile/Profile";
+import ChangePassword from "./components/ChangePassword/ChangePassword";
 const BlogsDetails = lazy(() => import("./pages/BlogView/BlogsDetails"));
 
 const App = () => {
@@ -65,6 +66,7 @@ const App = () => {
                 <Route path="/more" element={<MoreItemPage />}></Route>
                 <Route path="/register" element={<UserRegister />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/change-password" element={<ChangePassword />} />
                 <Route path="/add-blog" element={<AddBlogPage />} />
                 <Route path="/blog-list" element={<BlogListPage />} />
                 <Route path="/blog-list/:blogId" element={<BlogsDetails />} />
