@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./BlogDetails.scss";
 import ContactForm from "../../components/Contact_Form/ContactForm";
 import Comments from "../../components/Comments/Comments";
@@ -12,12 +12,17 @@ const BlogsDetails = () => {
   const { blogId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const blogs = location.state;
+  // console.log(blogs)
 
   const handleEdit = (subtitleId) => {
 
     console.log("Edit item with ID:", subtitleId, blogId);
   };
 
+  // delete Subtitle
   const handleDelete = (subtitleId) => {
     dispatch(deleteSubtitle(blogId, subtitleId));
     console.log("Delete item with ID:", subtitleId, blogId);
@@ -29,33 +34,36 @@ const BlogsDetails = () => {
   };
   
 
-  const { loading, error, blogs, message } = useSelector((state) => state.blog);
+  const { loading, error, blogs: storeBlogs, message } = useSelector((state) => state.blog);
 
-  useEffect(() => {
-    // Fetch blogs if they aren't already loaded
-    if (!(blogs && blogs.length > 0)) {
-      dispatch(getAllBlogs());
-      console.log("useEffect called");
-    }
-  }, [dispatch, blogs]);
+  // useEffect(() => {
+  //   // Fetch blogs if they aren't already loaded
+  //   if (!(blogs && blogs.length > 0)) {
+  //     dispatch(getAllBlogs());
+  //     console.log("useEffect called");
+  //   }
+  // }, [dispatch, blogs]);
 
   const blog = blogs && blogs.find((b) => b._id === blogId);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  // console.log(blog)
+  // console.log(blog.Subtitle)
 
-  if(message){
-    return <div>Message loading Blog Message :{message}</div>
-  }
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
 
-  if (error) {
-    return <div>Error loading blog details Error: {error}</div>;
-  }
+ // if(message){
+ //  return <div>Message loading Blog Message :{message}</div>
+ // }
 
-  if (!blog) {
-    return <div>Blog not found or still loading...</div>;
-  }
+  // if (error) {
+  //   return <div>Error loading blog details Error: {error}</div>;
+  // }
+
+  // if (!blog) {
+  //   return <div>Blog not found or still loading...</div>;
+  // }
 
   return (
     <div className="blog-container">
@@ -106,7 +114,7 @@ const BlogsDetails = () => {
       <div>
         <BlogSubTitle
           subtitle={blog.Subtitle}
-          FAQ={blog.FAQ}
+          // FAQ={blog.FAQ}
           onEdit={handleEdit}
           onDelete={handleDelete}
         />

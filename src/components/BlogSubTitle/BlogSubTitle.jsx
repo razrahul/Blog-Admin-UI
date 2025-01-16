@@ -4,12 +4,14 @@ import { Link, useLocation } from "react-router-dom"; // Import Link
 import { FaEdit, FaTrash } from "react-icons/fa";
 import Button from "../conformationButtom/Button";
 
-const BlogSubTitle = ({ subtitle, FAQ, onEdit, onDelete }) => {
+const BlogSubTitle = ({ subtitle, onEdit, onDelete }) => {
   // Sort subtitles by indexNo
-  const sortedSubtitles = [...subtitle].sort((a, b) => a.indexNo - b.indexNo);
-  const sortedFAQs = [...FAQ].sort((a, b) => a.indexNo - b.indexNo);
+  // const sortedSubtitles = [...subtitle].sort((a, b) => a.indexNo - b.indexNo);
+  // const sortedFAQs = [...FAQ].sort((a, b) => a.indexNo - b.indexNo);
 
   const location = useLocation();
+
+  // console.log("subtitle", subtitle);
 
   useEffect(() => {
     if (location.hash) {
@@ -26,26 +28,36 @@ const BlogSubTitle = ({ subtitle, FAQ, onEdit, onDelete }) => {
       <div className="table-of-contents">
         <h3 className="toc-title">Table of Contents</h3>
         <ul className="toc-list">
-          {sortedSubtitles.map((item) => (
+          {subtitle.map((item) => (
             <li key={item._id}>
               {/* Link to the section */}
-              <Link to={`#subtitle-${item._id}`} className="toc-link">
+              <span
+                className="toc-link"
+                onClick={() => {
+                  const element = document.getElementById(
+                    `subtitle-${item._id}`
+                  );
+                  if (element) {
+                    element.scrollIntoView({ behavior: "smooth" });
+                  }
+                }}
+              >
                 {item.title}
-              </Link>
+              </span>
             </li>
           ))}
-          {sortedFAQs.length > 0 && (
+          {/* {sortedFAQs.length > 0 && (
             <li>
               <Link to="#faq-section" className="toc-link">
                 Frequently Asked Questions
               </Link>
             </li>
-          )}
+          )} */}
         </ul>
       </div>
 
       {/* Detailed Content Section */}
-      {sortedSubtitles.map((item) => (
+      {subtitle.map((item) => (
         <div
           key={item._id}
           id={`subtitle-${item._id}`}
@@ -55,29 +67,14 @@ const BlogSubTitle = ({ subtitle, FAQ, onEdit, onDelete }) => {
             <h3 className="subtitle-title">{item.title}</h3>
             <div className="subtitle-actions">
               {/* Edit Icon */}
-              {/* <button
-                className="edit-btn"
-                onClick={() => onEdit(item._id)}
-                title="Edit"
-              >
-                <FaEdit />
-              </button> */}
               <Button
                 onConfirm={() => onEdit(item._id)}
                 title="Edit Subtitle"
                 description={`Are you sure you want to Edit the subtitle titled "${item.title}"?`}
                 buttonClass="edit-btn"
               >
-                <FaEdit  />
+                <FaEdit />
               </Button>
-              {/* Delete Icon */}
-              {/* <button
-                className="delete-btn"
-                onClick={() => onDelete(item._id)}
-                title="Delete"
-              >
-                <FaTrash />
-              </button> */}
               {/* Delete Button with Confirmation */}
               <Button
                 onConfirm={() => onDelete(item._id)}
@@ -85,7 +82,7 @@ const BlogSubTitle = ({ subtitle, FAQ, onEdit, onDelete }) => {
                 description={`Are you sure you want to delete the subtitle titled "${item.title}"?`}
                 buttonClass="delete-Btn"
               >
-                <FaTrash  />
+                <FaTrash />
               </Button>
             </div>
           </div>
@@ -103,7 +100,7 @@ const BlogSubTitle = ({ subtitle, FAQ, onEdit, onDelete }) => {
       ))}
 
       {/* FAQ Section */}
-      {sortedFAQs.length > 0 && (
+      {/* {sortedFAQs.length > 0 && (
         <div id="faq-section" className="faq-section">
           <h3>Frequently Asked Questions</h3>
           <ul>
@@ -117,7 +114,7 @@ const BlogSubTitle = ({ subtitle, FAQ, onEdit, onDelete }) => {
             ))}
           </ul>
         </div>
-      )}
+      )} */}
     </>
   );
 };

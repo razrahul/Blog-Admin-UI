@@ -10,9 +10,13 @@ import { BsFillPeopleFill, BsPersonFillLock } from "react-icons/bs";
 const BlogCard = ({ blogs }) => {
   const navigate = useNavigate();
 
+
+  // All blogs send to blogpage
   const handleViewButton = (blogId) => {
-    navigate(`/blog-list/${blogId}`);
+    navigate(`/blog-list/${blogId}`, { state: blogs });
   };
+  
+  // console.log(blogs)
 
   const handleAddSubtitle = (blogId) => {
     navigate(`/add-subtitle/${blogId}`);
