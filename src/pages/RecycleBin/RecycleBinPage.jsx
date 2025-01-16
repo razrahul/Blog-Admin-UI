@@ -65,9 +65,9 @@ const RecycleBinPage = () => {
   };
 
   return (
-    <div>
-      {/* Dropdown toggle button */}
-      <button onClick={toggleDropdown} className="dropdown-toggle">
+    <div className="recycle-bin-container">
+      {/* Recycle Bin Button */}
+      <button onClick={toggleDropdown} className="recycle-bin-button">
         {selectedItem ? `Selected: ${selectedItem}` : 'Recycle Bin'}
       </button>
 
