@@ -42,6 +42,28 @@ const userSlice = createSlice({
       state.error = action.payload;
     },
 
+    // common for user Request and fail
+    userRequest: (state) => {
+      state.loading = true;
+    },
+    userFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    //update user profile
+    updateUserProfile(state, action) {
+      state.loading = false;
+      state.user = action.payload.user;
+      state.message = action.payload.message;
+    },
+
+    //reset Password
+    resetPassword(state, action) {
+      state.loading = false;
+      state.message = action.payload.message;
+    },
+
     // Logout Reducers
     logoutRequest: (state) => {
       state.loading = true;
@@ -99,6 +121,10 @@ export const {
   loadUserFail,
   clearError,
   clearMessage,
+  userRequest,
+  userFail,
+  updateUserProfile,
+  resetPassword
 } = userSlice.actions;
 
 // Export reducer

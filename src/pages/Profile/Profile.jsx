@@ -1,28 +1,34 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import "./Profile.scss";
+import { updateUserProfile  } from "../../redux/action/userAction.js";
 
 const Profile = ({user}) => {
+  const [userData, setUserData] = useState({
+    avatar: user.avatar.url,
+    name: user.name ,
+    email: user.email ,
+    number: user.number,
+    role: user.role.name ,
+    company: user.company.companyName 
+  });
+
+  const[name, setName] = useState(userData.name)
+  const[email, setEmail] = useState(userData.email)
+  const[number, setNumber] = useState(userData.number)
+  const [image, setImage] = useState("");
+  
+  //Some error to image error , image state change to after error then also show updated image (within again api)
+
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
 
-
-  const [userData, setUserData] = useState({
-    avatar: user.avatar.url || "https://via.placeholder.com/150",
-    name: user.name || "",
-    email: user.email || "",
-    number: user.number || "",
-    role: user.role.name || "User",
-    company: user.company.companyName || ""
-  });
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setUserData({ ...userData, [name]: value });
-  };
+  const dispatch = useDispatch();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
+    setImage(file);
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -30,12 +36,30 @@ const Profile = ({user}) => {
       };
       reader.readAsDataURL(file);
     }
+    
   };
 
-  const handleEditClick = () => setIsEditing(true);
-  const handleSaveClick = () => {
-    console.log("Updated User Data:", userData);
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Add logic to save the updated user data
+
+    const userData = new FormData();
+    userData.append("name", name);
+    userData.append("email", email);
+    userData.append("number", number);
+    userData.append("file", image);
+
+    dispatch(updateUserProfile(userData));
+
+   
     setIsEditing(false);
+
+    //after edit then after again edit show user value
+    setName(userData.name)
+    setEmail(userData.email)
+    setNumber(userData.number)
+    setImage("")
   };
 
   const handleChangePasswordClick = () => {
@@ -46,8 +70,9 @@ const Profile = ({user}) => {
     <div className="profile-container">
       <div className="profile-header">
         <h2>Profile</h2>
-        {!isEditing && <button onClick={handleEditClick}>Edit</button>}
+        {!isEditing && <button onClick={(e) => setIsEditing(true)}>Edit</button>}
       </div>
+      <form onSubmit={handleSubmit}>
       <div className="profile-content">
         <div className="avatar-section">
           <div className="avatar-wrapper">
@@ -60,53 +85,48 @@ const Profile = ({user}) => {
                   onChange={handleImageChange}
                   className="file-input"
                 />
-                <input
-                  type="text"
-                  name="avatar"
-                  value={userData.avatar}
-                  onChange={handleInputChange}
-                  placeholder="Avatar URL"
-                  className="avatar-url-input"
-                />
               </div>
             )}
           </div>
         </div>
         <div className="user-details">
           <div className="detail-item">
-            <label>Name:</label>
+            <label htmlFor="name">Name:</label>
             {isEditing ? (
               <input
                 type="text"
+                id="name"
                 name="name"
-                value={userData.name}
-                onChange={handleInputChange}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             ) : (
               <span>{userData.name}</span>
             )}
           </div>
           <div className="detail-item">
-            <label>Email:</label>
+            <label htmlFor="email">Email:</label>
             {isEditing ? (
               <input
                 type="email"
+                id="email"
                 name="email"
-                value={userData.email}
-                onChange={handleInputChange}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             ) : (
               <span>{userData.email}</span>
             )}
           </div>
           <div className="detail-item">
-            <label>Number:</label>
+            <label htmlFor="number">Number:</label>
             {isEditing ? (
               <input
                 type="text"
+                id="number"
                 name="number"
-                value={userData.number}
-                onChange={handleInputChange}
+                value={number}
+                onChange={(e) => setNumber(e.target.value)}
               />
             ) : (
               <span>{userData.number}</span>
@@ -124,7 +144,7 @@ const Profile = ({user}) => {
       </div>
       {isEditing && (
         <div className="profile-actions">
-          <button onClick={handleSaveClick} className="save-btn">
+          <button type="submit" className="save-btn">
             Save
           </button>
           <button onClick={() => setIsEditing(false)} className="cancel-btn">
@@ -132,6 +152,9 @@ const Profile = ({user}) => {
           </button>
         </div>
       )}
+      </form>
+
+      {/* password change */}
       <div className="change-password-section">
         <button onClick={handleChangePasswordClick} className="change-password-btn">
           Change Password

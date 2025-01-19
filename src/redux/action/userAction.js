@@ -14,7 +14,16 @@ import {
   loadUserRequest,
   loadUserSuccess,
   loadUserFail,
+  userRequest,
+  userFail,
+  updateUserProfile as updateUserProfileSuccess,
+  resetPassword as resetPassworddSuccess
 } from "../reducer/userSlice.js";
+
+import {
+  createUserSucess,
+  updateUserSuccess,
+} from "../reducer/adminSlice.js"
 
 // Login Action
 export const login = (email, password) => async (dispatch) => {
@@ -49,6 +58,7 @@ export const register = (formData) => async (dispatch) => {
     );
 
     dispatch(registerSuccess(data));
+    dispatch(createUserSucess(data));
   } catch (error) {
     dispatch(
       registerFail(error.response?.data?.message || "Registration Failed")
@@ -85,3 +95,44 @@ export const logout = () => async (dispatch) => {
     dispatch(logoutFail(error.response?.data?.message || "Logout Failed"));
   }
 };
+
+//update userprofile
+export const updateUserProfile = ( userData) => async (dispatch) => {
+  try {
+    dispatch(userRequest());
+
+    const { data } = await axios.put(
+      `${server}/me/update`,
+      userData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true,
+      }
+    );
+    //for user redux update
+    dispatch(updateUserProfileSuccess(data));
+    //for allUser admin redux update
+    dispatch(updateUserSuccess(data));
+  } catch (error) {
+    dispatch(userFail(error.response?.data?.message || 'Something went wrong'));
+  }
+}
+
+//change password
+export const resetPassword = (password, newpassword) => async (dispatch) => {
+  try {
+    dispatch(userRequest());
+
+    const { data } = await axios.put(`${server}/resetpassword`,
+    { password, newpassword },
+    {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    });
+    
+    dispatch(resetPassworddSuccess(data));
+  } catch (error) {
+    dispatch(userFail(error.response?.data?.message || 'Something went wrong'));
+  }
+}
+

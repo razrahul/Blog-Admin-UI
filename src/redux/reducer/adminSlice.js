@@ -3,12 +3,14 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   loading: false,
   users: [], // This will hold the list of users
+  deletedUsers: [],
+  user: {},
   error: null,
   message: null,
 };
 
 const adminSlice = createSlice({
-  name: 'user',
+  name: 'admin',
   initialState,
   reducers: {
     getAllUsersRequest: (state) => {
@@ -21,6 +23,38 @@ const adminSlice = createSlice({
     getAllUsersFail: (state, action) => {
       state.loading = false;
       state.error = action.payload;
+    },
+    // common for user Request and Fail
+    userRequest(state) {
+      state.loading = true;
+    },
+    userFail(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    //create user 
+    createUserSucess(state, action) {
+      state.users.push(action.payload.user);
+    },
+
+    //update user
+    updateUserSuccess: (state, action) => {
+      const updatedUser = action.payload.user;
+      state.users = state.users.map((user) =>
+        user._id === updatedUser._id ? { ...user, ...updatedUser } : user
+      );
+    },
+    
+    //All deleted user
+    alldeletedusers(state, action) {
+      state.loading = false;
+      state.deletedUsers = action.payload.users;
+    },
+
+    //Get user By Id
+    userById(state, action) {
+      state.loading = false;
+      state.user = action.payload.user;
     },
 
     // Delete User
@@ -103,6 +137,12 @@ export const {
   deleteUserFail,
   clearError,
   clearMessage,
+  userRequest,
+  userFail,
+  createUserSucess,
+  updateUserSuccess,
+  alldeletedusers,
+  userById
 } = adminSlice.actions;
 
 export default adminSlice.reducer;
