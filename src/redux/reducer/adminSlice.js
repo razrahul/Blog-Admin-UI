@@ -10,7 +10,7 @@ const initialState = {
 };
 
 const adminSlice = createSlice({
-  name: 'admin',
+  name: "admin",
   initialState,
   reducers: {
     getAllUsersRequest: (state) => {
@@ -32,7 +32,7 @@ const adminSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    //create user 
+    //create user
     createUserSucess(state, action) {
       state.users.push(action.payload.user);
     },
@@ -44,7 +44,7 @@ const adminSlice = createSlice({
         user._id === updatedUser._id ? { ...user, ...updatedUser } : user
       );
     },
-    
+
     //All deleted user
     alldeletedusers(state, action) {
       state.loading = false;
@@ -57,6 +57,20 @@ const adminSlice = createSlice({
       state.user = action.payload.user;
     },
 
+    // restore user
+    restoreUser(state, action) {
+      state.loading = false;
+
+      // Ensure users array exists before pushing
+      if (!state.users) {
+        state.users = [];
+      }
+      state.users.push(action.payload.user);
+      
+      state.deletedUsers = state.deletedUsers.filter(
+        (user) => user._id !== action.payload.user._id);
+    },
+
     // Delete User
     deleteUserRequest: (state) => {
       state.loading = true;
@@ -64,7 +78,7 @@ const adminSlice = createSlice({
     deleteUserSuccess: (state, action) => {
       state.loading = false;
       state.message = action.payload.message;
-      
+
       const deletedUserId = action.payload.userId;
       state.users = state.users.filter((user) => user._id !== deletedUserId);
     },
@@ -72,7 +86,6 @@ const adminSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-
 
     // Update User Verification
     updateUserVerificationRequest: (state) => {
@@ -85,7 +98,7 @@ const adminSlice = createSlice({
       const updatedUserId = action.payload.userId;
       state.users = state.users.map((user) =>
         user._id === updatedUserId
-          ? { ...user, isVerified: !user.isVerified } 
+          ? { ...user, isVerified: !user.isVerified }
           : user
       );
     },
@@ -142,7 +155,8 @@ export const {
   createUserSucess,
   updateUserSuccess,
   alldeletedusers,
-  userById
+  userById,
+  restoreUser
 } = adminSlice.actions;
 
 export default adminSlice.reducer;

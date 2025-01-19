@@ -14,10 +14,15 @@ import{
     deleteUserSuccess,
     deleteUserFail,
     clearError,
-    clearMessage
+    clearMessage,
+    userRequest,
+    userFail,
+    alldeletedusers,
+    userById,
+    restoreUser as restoreUserSuccess
 } from '../reducer/adminSlice.js'
 
-
+// Get All users
 export const getAllUsers = () => async (dispatch) => {
     try {
       dispatch(getAllUsersRequest());
@@ -96,6 +101,45 @@ export const updateUserBlock = (userId) => async (dispatch) => {
     dispatch(updateUserBlockSuccess({ message: data.message, userId }));
   } catch (error) {
     dispatch(updateUserBlockFail(error.response?.data?.message || 'Something went wrong'));
+  }
+}
+
+//Get All Deleted Users
+export const getAllDeletedUsers = () => async (dispatch) => {
+  try {
+    dispatch(userRequest());
+
+    const { data } = await axios.get(`${server}/admin/deletedusers`,
+      {
+        withCredentials: true
+      }
+    );
+
+    dispatch(alldeletedusers(data));
+    
+  } catch (error) {
+    dispatch(userFail(error.response?.data?.message || 'GEt All Deleted Users Failed'));
+    
+  }
+}
+
+//restore user
+export const restoreUser = (userId) => async (dispatch) => {
+  try {
+    dispatch(userRequest());
+
+    const { data } = await axios.put(`${server}/admin/restore/${userId}`,
+      {},
+      {
+        withCredentials: true
+      }
+    );
+
+    dispatch(restoreUserSuccess(data));
+    
+  } catch (error) {
+    dispatch(userFail(error.response?.data?.message || 'Restore User Failed'));
+    
   }
 }
 
