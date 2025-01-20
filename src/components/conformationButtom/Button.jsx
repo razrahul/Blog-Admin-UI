@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import "./Button.scss"; // Import SCSS
+import "./ConButton.scss"; // Import SCSS
 
 const DeleteButton = ({
   children,
@@ -22,17 +22,17 @@ const DeleteButton = ({
   return (
     <>
       {/* Delete Trigger Button */}
-      <button className={`delete-btn ${buttonClass}`} onClick={handleOpen}>
+      <button className={`Condelete-btn ${buttonClass}`} onClick={handleOpen}>
         {children || "Delete"}
       </button>
 
       {/* Confirmation Modal */}
       {open && (
-        <div className="modal-overlay">
-          <div className="modal">
+        <div className="buttton-overlay ">
+          <div className="buttton">
             <h2>{title}</h2>
             <p>{description}</p>
-            <div className="modal-actions">
+            <div className="buttton-actions">
               <button className="confirm-btn" onClick={handleConfirm}>
                 Confirm
               </button>
@@ -41,7 +41,8 @@ const DeleteButton = ({
               </button>
             </div>
           </div>
-        </div>
+          </div>
+        
       )}
     </>
   );

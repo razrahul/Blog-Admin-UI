@@ -27,11 +27,11 @@ const companySlice = createSlice({
         },
         getCompanyById(state, action) {
             state.loading = false;
-            state.company = action.payload;
+            state.company = action.payload.company;
         },
         getAllDeletedComapny(state, action) {
             state.loading = false;
-            state.deletedCompanies = action.payload;
+            state.deletedCompanies = action.payload.companies;
         },
         addCompany(state, action) {
             state.loading = false;

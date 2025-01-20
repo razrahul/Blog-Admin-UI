@@ -1,0 +1,74 @@
+// Style for the DataTable container
+.data-table-container {
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+// Style for the table title
+.data-table-container .rdt_TableHeader {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+// Style for the table rows
+.rdt_TableRow {
+  transition: all 0.3s ease-in-out;
+  
+  &:hover {
+    background-color: #f1f1f1;
+  }
+}
+
+// Style for the action buttons container
+.actions-container {
+  display: flex;
+  gap: 10px; // Space between buttons
+  align-items: center;
+}
+
+// Common button styling
+.restore-button {
+  background-color: #4caf50; // Green color for restore button
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    background-color: #45a049;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(72, 239, 72, 0.5);
+  }
+}
+
+// Delete button styling
+.delete-button {
+  background-color: #ff4d4f;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    background-color: #d9363e;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 77, 79, 0.5);
+  }
+}

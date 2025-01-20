@@ -7,10 +7,10 @@ import {
   getAllCategoriesSuccess,
   CategoriesFail,
   getCategoryById as getCategoryByIdSuccess,
-  getAllCategories as getAllCategoriesSuccess,
+  getAllDeletedCategories as getAllDeletedCategoriesSuccess,
   addCategory,
   updateCategory as updateCategorySuccess,
-  deleteCategory as deleteCategorySuccess,
+  deleteCategorySuccess,
   updateActivity as updateActivitySuccess,
 } from "../reducer/categotySlice.js";
 

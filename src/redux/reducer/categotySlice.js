@@ -25,11 +25,11 @@ const categorySlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
-        getCategoryByIdSuccess(state, action) {
+        getCategoryById(state, action) {
             state.loading = false;
             state.category = action.payload.category;
         },
-        getAllDeletedCategoriesSuccess(state, action) {
+        getAllDeletedCategories(state, action) {
             state.loading = false;
             state.deletedCategories = action.payload.categories;
         },
@@ -37,7 +37,7 @@ const categorySlice = createSlice({
             state.loading = false;
             state.categories.push(action.payload.category);
         },
-        updateCategorySuccess(state, action) {
+        updateCategory(state, action) {
             const index = state.categories.findIndex(category => category.id === action.payload.id); //category
             if (index !== -1) {
                 state.categories[index] = action.payload;
@@ -48,7 +48,7 @@ const categorySlice = createSlice({
             const {id, data} = action.payload;
             state.categories = state.categories.filter(category => category.id !== id);
         },
-        updateActivitySuccess(state, action) {
+        updateActivity(state, action) {
             state.loading = false;
             const {id, Category, message} = action.payload;  //category
             const index = state.categories.findIndex(category => category.id === id);
@@ -71,12 +71,12 @@ export const {
     CategoriesRequest,
     getAllCategoriesSuccess,
     CategoriesFail,
-    getCategoryByIdSuccess,
-    getAllDeletedCategoriesSuccess,
+    getCategoryById,
+    getAllDeletedCategories,
     addCategory,
-    updateCategorySuccess,
+    updateCategory,
     deleteCategorySuccess,
-    updateActivitySuccess,
+    updateActivity,
     clearMessage,
     clearError
 

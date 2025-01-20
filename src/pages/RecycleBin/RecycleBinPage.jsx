@@ -4,6 +4,10 @@ import BlogTable from "../../containers/Recycle/BlogTable";
 import UsersTable from "../../containers/Recycle/UsersTable";
 import ContactTable from "../../containers/Recycle/ContactTable";
 import "./RecycleBin.scss";
+import RolesTable from "../../containers/Recycle/RolesTable";
+import CategoryTable from "../../containers/Recycle/CategoryTable";
+import CompanyTable from "../../containers/Recycle/CompanyTable";
+
 
 const RecycleBinPage = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,6 +41,9 @@ const RecycleBinPage = () => {
           <li className="dropdown-item" onClick={() => handleDropdownItemClick("Blog")}>Blog</li>
           <li className="dropdown-item" onClick={() => handleDropdownItemClick("Users")}>Users</li>
           <li className="dropdown-item" onClick={() => handleDropdownItemClick("Contact")}>Contact</li>
+          <li className="dropdown-item" onClick={() => handleDropdownItemClick("Roles")}>Roles</li>
+          <li className="dropdown-item" onClick={() => handleDropdownItemClick("Category")}>Category</li>
+          <li className="dropdown-item" onClick={() => handleDropdownItemClick("Company")}>Company</li>
         </ul>
       )}
 
@@ -44,6 +51,9 @@ const RecycleBinPage = () => {
       {selectedItem === "Blog" && <BlogTable handleRestore={handleRestore} handleDelete={handleDelete} />}
       {selectedItem === "Users" && <UsersTable />}
       {selectedItem === "Contact" && <ContactTable handleRestore={handleRestore} handleDelete={handleDelete} />}
+      {selectedItem === "Roles" && <RolesTable />}
+      {selectedItem === "Category" && <CategoryTable />}
+      {selectedItem === "Company" && <CompanyTable />}
     </div>
   );
 };
