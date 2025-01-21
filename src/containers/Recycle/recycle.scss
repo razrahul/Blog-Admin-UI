@@ -27,6 +27,7 @@
 // Style for the action buttons container
 .actions-container {
   display: flex;
+  flex-direction: column;
   gap: 10px; // Space between buttons
   align-items: center;
 }

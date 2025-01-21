@@ -18,7 +18,7 @@ const UsersTable = () => {
 
   // Restore user function
   const handleRestore = (user) => {
-    console.log("Restoring User ID:", user._id);
+    // console.log("Restoring User ID:", user._id);
     dispatch(restoreUser(user._id));
   };
 
@@ -34,6 +34,11 @@ const UsersTable = () => {
     {
       name: "Role",
       selector: (row) => (row.role ? row.role.name : "N/A"), // Handle missing role data
+      sortable: true,
+    },
+    {
+      name: "Comapny",
+      selector: (row) => (row.company ?row.company.companyName : "N/A" ), // Handle missing company data
       sortable: true,
     },
     {

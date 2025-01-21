@@ -21,6 +21,7 @@ import MoreItemPage from "./pages/MoreItem/MoreItemPage";
 import Profile from "./pages/Profile/Profile";
 import ChangePassword from "./components/ChangePassword/ChangePassword";
 const BlogsDetails = lazy(() => import("./pages/BlogView/BlogsDetails"));
+const TransBlog = lazy(() => import("./containers/DeltedBlog/DeltedBlog"))
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -75,6 +76,7 @@ const App = () => {
                   element={<AddSubtitlePage />}
                 />
                 <Route path="/contact" element={<ContactPage />} />
+                <Route path="/recycle-bin/transBlog" element={<TransBlog />} />
               </Routes>
             </div>
           </>

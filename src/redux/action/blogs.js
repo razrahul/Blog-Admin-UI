@@ -21,6 +21,11 @@ import {
   deleteSubtitleFail,
   clearError,
   clearMessage,
+  blogRequest,
+  blogFail,
+  allDeletedBlogs,
+  getBlogById,
+  restoreBlog as restoreBlogSuccess,
 } from "../reducer/blogSlice.js";
 
 export const getAllBlogs = () => async (dispatch) => {
@@ -107,10 +112,9 @@ export const deleteSubtitle = (blogId, subtitleId) => async (dispatch) => {
     const { data } = await axios.delete(
       `${server}/deletesubtitle?blogId=${blogId}&subtitleId=${subtitleId}`,
       {
-       withCredentials: true
+        withCredentials: true,
       }
-     
-   );
+    );
 
     // Send DELETE request to the server
     // const { data } = await axios.delete(
@@ -120,7 +124,6 @@ export const deleteSubtitle = (blogId, subtitleId) => async (dispatch) => {
     //   }
     // );
 
-    
     dispatch(
       deleteSubtitleSuccess({
         blogId,
@@ -128,8 +131,6 @@ export const deleteSubtitle = (blogId, subtitleId) => async (dispatch) => {
         message: data.message, // Ensure backend sends this
       })
     );
-    
-    
   } catch (error) {
     dispatch(
       deleteSubtitleFail(
@@ -183,6 +184,58 @@ export const deleteBlog = (blogId) => async (dispatch) => {
       deleteBlogFail(
         error.response?.data?.message || "Failed to delete the blog"
       )
+    );
+  }
+};
+
+//All Delted Blogs
+export const getAllDeltedBlogs = () => async (dispatch) => {
+  try {
+    dispatch(blogRequest());
+
+    const { data } = await axios.get(`${server}/deletedblogs`, {
+      withCredentials: true,
+    });
+
+    dispatch(allDeletedBlogs(data));
+  } catch (error) {
+    dispatch(
+      blogFail(error.response?.data?.message || "Failed to fetch Delted blogs")
+    );
+  }
+};
+
+//get blog ny id
+export const getBlogsById = (blogId) => async (dispatch) => {
+  try {
+    dispatch(blogRequest());
+
+    const { data } = await axios.get(`${server}/blogs/${blogId}`, {
+      withCredentials: true,
+    });
+
+    dispatch(getBlogById(data));
+  } catch (error) {
+    dispatch(blogFail(error.response?.data?.message || "Failed to fetch blog"));
+  }
+};
+
+//restore Blog
+export const restoreBlog = (id) => async (dispatch) => {
+  try {
+    dispatch(blogRequest());
+
+    const { data } = await axios.put(`${server}/blog/restore/${id}`,
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+
+    dispatch(restoreBlogSuccess(data));
+  } catch (error) {
+    dispatch(
+      blogFail(error.response?.data?.message || "Failed to restore blog")
     );
   }
 };

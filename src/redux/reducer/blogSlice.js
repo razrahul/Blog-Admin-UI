@@ -3,6 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   loading: false,
   blogs: [], // Holds the list of blogs
+  deletedBlogs: [], // Holds the list of deleted blogs
+  blog: {}, // Holds the blog details
   message: null, // Success message
   error: null, // Error message
 };
@@ -37,6 +39,43 @@ const blogSlice = createSlice({
     createBlogFail: (state, action) => {
       state.loading = false;
       state.error = action.payload;
+    },
+
+    //add common blogRequest and blogfail
+    blogRequest: (state, action) => {
+      state.loading = true;
+    },
+    
+    blogFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    //get all deletd Blogs
+    allDeletedBlogs: (state, action) => {
+      state.loading = false;
+      state.deletedBlogs = action.payload.blogs;
+    },
+
+    //Get blog By Id
+    getBlogById: (state, action) => {
+      state.loading = false;
+      state.blog = action.payload.blog;
+    },
+
+    //restore Blogs
+    restoreBlog: (state, action) => {
+      state.loading = false;
+
+       // Ensure users array exists before pushing
+      if (!state.blogs) {
+        state.blogs = [];
+      }
+      state.blogs.push(action.payload.blog);
+
+      state.deletedBlogs = state.deletedBlogs.filter(
+        (blog) => blog._id !== action.payload.blog._id
+      );
     },
 
     // Add Subtitle
@@ -159,6 +198,11 @@ export const {
   deleteSubtitleFail,
   clearError,
   clearMessage,
+  blogRequest,
+  blogFail,
+  allDeletedBlogs,
+  getBlogById,
+  restoreBlog
 } = blogSlice.actions;
 
 export default blogSlice.reducer;
