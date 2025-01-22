@@ -10,9 +10,6 @@ import {
   addSubtitleRequest,
   addSubtitleSuccess,
   addSubtitleFail,
-  addFAQRequest,
-  addFAQSuccess,
-  addFAQFail,
   deleteBlogFail,
   deleteBlogRequest,
   deleteBlogSuccess,
@@ -26,6 +23,7 @@ import {
   allDeletedBlogs,
   getBlogById,
   restoreBlog as restoreBlogSuccess,
+  updateBlogSuccess
 } from "../reducer/blogSlice.js";
 
 export const getAllBlogs = () => async (dispatch) => {
@@ -64,6 +62,29 @@ export const createBlog = (blogData) => async (dispatch) => {
       createBlogFail(
         error.response?.data?.message ||
           "Failed to create the blog. Please try again."
+      )
+    );
+  }
+};
+
+//update blog
+export const updateBlog = (blogId, blogData) => async (dispatch) => {
+  try {
+    dispatch(blogRequest());
+
+    const { data } = await axios.put(`${server}/blogs/${blogId}`, blogData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      withCredentials: true,
+    });
+
+    dispatch(updateBlogSuccess(data));
+  } catch (error) {
+    dispatch(
+      blogFail(
+        error.response?.data?.message ||
+          "Failed to update the blog. Please try again."
       )
     );
   }
@@ -142,43 +163,19 @@ export const deleteSubtitle = (blogId, subtitleId) => async (dispatch) => {
   }
 };
 
-//Action to create a FAQ
-export const addFAQ = (blogId, faqData) => async (dispatch) => {
-  try {
-    dispatch(addFAQRequest()); // Start loading state
-
-    // API call to backend
-    const { data } = await axios.post(`${server}/addfaq/${blogId}`, faqData, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      withCredentials: true,
-    });
-
-    dispatch(addFAQSuccess({ blogId, FAQ: data.FAQ }));
-  } catch (error) {
-    dispatch(addFAQFail(error.response?.data?.message || "Failed to add FAQ"));
-  }
-};
 
 // Action to delete a blog
-
 export const deleteBlog = (blogId) => async (dispatch) => {
   try {
-    dispatch(deleteBlogRequest()); // Start loading
+    dispatch(deleteBlogRequest()); 
 
     // Send DELETE request to the server
     const { data } = await axios.delete(`${server}/blogs/${blogId}`, {
       withCredentials: true,
     });
 
-    // Dispatch success action with blogId and message from the response
     dispatch(deleteBlogSuccess({ blogId, message: data.message }));
 
-    // Optionally fetch all blogs again (if you need to refetch the list after deleting)
-    // dispatch(getAllBlogsRequest());
-    // const response = await axios.get(`${server}/blogs`);
-    // dispatch(getAllBlogsSuccess(response.data));
   } catch (error) {
     dispatch(
       deleteBlogFail(

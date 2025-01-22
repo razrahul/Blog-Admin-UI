@@ -1,15 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./AddBlogPage.scss";
 import ReactQuill from "react-quill";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createBlog } from "../../redux/action/blogs";
 import "react-quill/dist/quill.snow.css";
+import { getAllCategories } from "../../redux/action/categoryAction.js"
+import { getAllCompanies } from "../../redux/action/companyAction.js"
 
 const AddBlogPage = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [createdBy, setCreatedBy] = useState("");
-  const [category, setCategory] = useState("");
+  const [categoryId, setCategoryId] = useState("");
+  const [companyId, setCompanyId] = useState("");
 
   const [image, setImage] = useState("");
   const [imagePrev, setImagePrev] = useState("");
@@ -38,31 +41,52 @@ const AddBlogPage = () => {
     myBlog.append("title", title); 
     myBlog.append("description", description);
     myBlog.append("createdBy", createdBy);
-    myBlog.append("category", category);
+    myBlog.append("categoryId", categoryId);
+    myBlog.append("companyId", companyId);
     myBlog.append("file", image);
 
     // Dispatch the action to create a blog
     dispatch(createBlog(myBlog));
-    console.log(title, description, createdBy, category, image);
+    console.log(title, description, createdBy, categoryId,companyId, image);
 
     // Reset form fields
     setTitle("");
     setDescription("");
     setCreatedBy("");
-    setCategory("");
+    setCategoryId("");
+    setCompanyId("");
     setImage("");
     setImagePrev("");
 
     alert("Blog created successfully!");
   };
 
-  const categories = [
-    "technology",
-    "lifestyle",
-    "education",
-    "marketing",
-    "biotechnology",
-  ];
+  //category & Company
+
+  useEffect(() =>{
+    if(categories && categories.length === 0){
+      dispatch(getAllCategories());
+      // console.log("frathing category....")
+    }
+    if(companies && companies.length === 0){
+      dispatch(getAllCompanies());
+      // console.log("frathing company....")
+    }
+  },[dispatch])
+
+  const { categories } = useSelector((state) => state.category)
+
+  const {companies }= useSelector((state) => state.company)
+
+  // console.log(categories)
+
+  // const categories = [
+  //   "technology",
+  //   "lifestyle",
+  //   "education",
+  //   "marketing",
+  //   "biotechnology",
+  // ];
 
   const modules = {
     toolbar: [
@@ -127,15 +151,34 @@ const AddBlogPage = () => {
         <div className="form-group">
           <label htmlFor="category">Category</label>
           <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
+            value={categoryId}
+            onChange={(e) => setCategoryId(e.target.value)}
             id="category"
             required
           >
-            <option value="">Select a category</option>
+            <option value="">Select a Company</option>
             {categories.map((cat, index) => (
-              <option key={index} value={cat}>
-                {cat.charAt(0).toUpperCase() + cat.slice(1)}{" "}
+              <option key={cat._id} value={cat._id}>
+                {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}{" "}
+                {/* Capitalize first letter */}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Company */}
+        <div className="form-group">
+          <label htmlFor="company">Company(Website)</label>
+          <select
+            value={companyId}
+            onChange={(e) => setCompanyId(e.target.value)}
+            id="company"
+            required
+          >
+            <option value="">Select For a Website</option>
+            {companies.map((com, index) => (
+              <option key={com._id} value={com._id}>
+                {com.companyName.charAt(0).toUpperCase() + com.companyName.slice(1)}{" "}
                 {/* Capitalize first letter */}
               </option>
             ))}

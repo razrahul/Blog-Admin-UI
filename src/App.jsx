@@ -43,7 +43,7 @@ const App = () => {
     dispatch(loadUser());
   }, [dispatch]);
 
-  console.log(user);
+  // console.log(user);
 
   // const handleLogin = () => {
   //   setIsLoggedIn(true);

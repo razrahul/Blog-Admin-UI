@@ -78,6 +78,44 @@ const blogSlice = createSlice({
       );
     },
 
+    //update Blog
+    updateBlogSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload?.message;
+    
+      if (Array.isArray(state.blogs) && action.payload?.blog) {
+        state.blogs = state.blogs.map((blog) =>
+          blog._id === action.payload.blog._id ? action.payload.blog : blog
+        );
+      }
+    },
+    
+    //add Subtitle(new)
+    addSubtitle(state, action) {
+      // const { blogId, subtitle } = action.payload;
+    
+      // state.blogs = state.blogs.map((blog) => {
+      //   if (blog._id === blogId) {
+      //     if (!blog.Subtitle) {
+      //       blog.Subtitle = []; // Initialize if undefined
+      //     }
+      //     blog.Subtitle.push(subtitle); // Add subtitle
+      //   }
+      //   return blog; // Return updated blog
+      // });
+
+      return {
+        ...state,
+        blogs: state.blogs.map((blog) =>
+          blog._id === action.payload.blogId
+            ? { ...blog, Subtitle: [...(blog.Subtitle || []), action.payload.subtitle] }
+            : blog
+        ),
+      };
+    },
+    
+    
+
     // Add Subtitle
     addSubtitleRequest: (state) => {
       state.loading = true;
@@ -129,25 +167,6 @@ const blogSlice = createSlice({
       state.error = action.payload;
     },
 
-    // Add FAQ
-    addFAQRequest: (state) => {
-      state.loading = true;
-    },
-    addFAQSuccess: (state, action) => {
-      state.loading = false;
-      const { blogId, FAQ } = action.payload;
-
-      // Update the specific blog's FAQ
-      state.blogs = state.blogs.map((blog) =>
-        blog._id === blogId ? { ...blog, FAQ: [...blog.FAQ, FAQ] } : blog
-      );
-
-      state.message = "FAQ added successfully!";
-    },
-    addFAQFail: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
 
     // delete Blog reducer:
     deleteBlogRequest: (state) => {
@@ -155,10 +174,14 @@ const blogSlice = createSlice({
     },
     deleteBlogSuccess: (state, action) => {
       state.loading = false;
-      const blogId = action.payload;
+      const {blogId, message} = action.payload;
+
+      const deletdblog = state.blogs.find((blog) => blog._id === blogId);
 
       // Filter out the blog with the matching ID
       state.blogs = state.blogs.filter((blog) => blog._id !== blogId);
+
+      state.deletedBlogs = state.deletedBlogs.push(deletdblog)
 
       state.message = message; // Set the success message from the payload
     },
@@ -187,9 +210,6 @@ export const {
   addSubtitleRequest,
   addSubtitleSuccess,
   addSubtitleFail,
-  addFAQRequest,
-  addFAQSuccess,
-  addFAQFail,
   deleteBlogRequest,
   deleteBlogSuccess,
   deleteBlogFail,
@@ -202,7 +222,9 @@ export const {
   blogFail,
   allDeletedBlogs,
   getBlogById,
-  restoreBlog
+  restoreBlog,
+  updateBlogSuccess,
+  addSubtitle
 } = blogSlice.actions;
 
 export default blogSlice.reducer;
