@@ -4,7 +4,7 @@ import  userReducer from './reducer/userSlice.js';
 import  adminSlice from './reducer/adminSlice'
 import  blogSlice from './reducer/blogSlice.js';
 import  roleSlice from './reducer/roleSlice.js';
-// import  categorySlice from './reducer/categotySlice.js';
+import  categorySlice from './reducer/categotySlice.js';
 import  companySlice from './reducer/companySlice.js';
 
 const store = configureStore({
@@ -13,7 +13,7 @@ const store = configureStore({
     admin: adminSlice,
     blog : blogSlice,
     role : roleSlice,
-    // category: categorySlice,
+    category: categorySlice,
     company : companySlice
   },
 });
