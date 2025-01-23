@@ -1,29 +1,31 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import Quill from "quill";
 import "./AddSubtitlePage.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { addSubtitle, addFAQ } from "../../redux/action/blogs";
+import { addSubtitle } from "../../redux/action/blogs";
+import { createSubtitle } from "../../redux/action/subtitleAction"
 
 const AddSubtitlePage = () => {
   const { blogId } = useParams();
-  const [titleNo, setTitleNo] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
   const [imagePrev, setImagePrev] = useState("");
-  const [isView, setIsView] = useState("");
 
   // Filter to find the specific blog
-  const {
-    loading: blogLoading,
-    error: blogError,
-    blogs,
-  } = useSelector((state) => state.blog);
+  // const {
+  //   loading: blogLoading,
+  //   error: blogError,
+  //   blogs,
+  // } = useSelector((state) => state.blog);
 
-  const blog = blogs.find((blog) => blog._id === blogId);
+  // const blog = blogs.find((blog) => blog._id === blogId);
+  const location = useLocation();
+
+  const blog = location.state;   // use Navigate For Blog
 
   // Handle image upload
   const handleImageChange = (e) => {
@@ -46,23 +48,20 @@ const AddSubtitlePage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const mySubtitle = new FormData();
-    mySubtitle.append("indexNo", titleNo);
     mySubtitle.append("title", subtitle);
     mySubtitle.append("description", description);
     mySubtitle.append("file", image);
-    mySubtitle.append("isview", isView);
 
-    dispatch(addSubtitle(blogId, mySubtitle));
+    // dispatch(addSubtitle(blogId, mySubtitle));
+    dispatch(createSubtitle(blogId, mySubtitle));
 
-    console.log(titleNo, subtitle, description, image,isView);
+    console.log( subtitle, description, image);
 
     // Reset form fields
-    setTitleNo("");
     setSubtitle("");
     setDescription("");
     setImage(null);
     setImagePrev("");
-    setIsView(true);
 
     alert(`Subtitle added for Blog ID: ${blogId}`);
   };
@@ -97,22 +96,10 @@ const AddSubtitlePage = () => {
     <div className="add-main">
       <div className="add-subtitle-page">
         <h1>Add Subtitle</h1>
-        <h2>Blog ID: {blogId}</h2>
-        {blog && <h2>Title: {blog.title}</h2>}
+        {/* <h2>Blog ID: {blogId}</h2> */}
+        {blog && <h2>Blog: {blog.title}</h2>}
 
         <form onSubmit={handleSubmit}>
-          {/* Index No */}
-          <div className="form-group">
-            <label>Index No</label>
-            <input
-              type="number"
-              value={titleNo}
-              onChange={(e) => setTitleNo(e.target.value)}
-              placeholder="Enter Title No"
-              required
-            />
-            <small className="mandatory">*Index No must be unique.</small>
-          </div>
 
           {/* Subtitle */}
           <div className="form-group">
@@ -157,31 +144,6 @@ const AddSubtitlePage = () => {
             )}
           </div>
           
-          <div className="form-group">
-          <label>Visibility</label>
-          <div className="visibility-options">
-            <label>
-              <input
-                type="radio"
-                name="visibility"
-                value="public"
-                checked={isView === "public"}
-                onChange={() => setIsView("public")}
-              />
-              Public
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="visibility"
-                value="private"
-                checked={isView === "private"}
-                onChange={() => setIsView("private")}
-              />
-              Private
-            </label>
-          </div>
-          </div>
 
           <button type="submit" className="submit-button">
             Add Subtitle
