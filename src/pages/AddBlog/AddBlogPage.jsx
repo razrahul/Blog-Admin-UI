@@ -10,7 +10,6 @@ import { getAllCompanies } from "../../redux/action/companyAction.js"
 const AddBlogPage = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [createdBy, setCreatedBy] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [companyId, setCompanyId] = useState("");
 
@@ -40,19 +39,17 @@ const AddBlogPage = () => {
     const myBlog = new FormData();
     myBlog.append("title", title); 
     myBlog.append("description", description);
-    myBlog.append("createdBy", createdBy);
     myBlog.append("categoryId", categoryId);
     myBlog.append("companyId", companyId);
     myBlog.append("file", image);
 
     // Dispatch the action to create a blog
     dispatch(createBlog(myBlog));
-    console.log(title, description, createdBy, categoryId,companyId, image);
+    console.log(title, description, categoryId,companyId, image);
 
     // Reset form fields
     setTitle("");
     setDescription("");
-    setCreatedBy("");
     setCategoryId("");
     setCompanyId("");
     setImage("");
@@ -136,7 +133,7 @@ const AddBlogPage = () => {
 
         {/* Description */}
         <div className="form-group">
-          <label htmlFor="description">Description</label>
+          <label htmlFor="description">Description*(At least 20 characters)</label>
           <ReactQuill
             className="react-quill"
             value={description} // State for ReactQuill content
