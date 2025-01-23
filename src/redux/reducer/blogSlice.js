@@ -33,8 +33,8 @@ const blogSlice = createSlice({
     },
     createBlogSuccess: (state, action) => {
       state.loading = false;
+      state.blogs.unshift(action.payload.blog); // Add new blog
       state.message = action.payload?.message;
-      state.blogs = [...state.blogs, action.payload.blog]; // Add new blog
     },
     createBlogFail: (state, action) => {
       state.loading = false;
@@ -112,6 +112,24 @@ const blogSlice = createSlice({
             : blog
         ),
       };
+    },
+
+    //delete Subtitle
+    deleteSubtitleInBlogSlice(state, action) {
+      const { blogId, subtitleId, message } = action.payload;
+
+      state.blogs = state.blogs.map((blog) =>
+        blog._id === blogId
+          ? {
+              ...blog,
+              Subtitle: blog.Subtitle?.filter(
+                (subtitle) => subtitle._id !== subtitleId
+              ),
+            }
+          : blog
+      );
+
+      // state.message = message;
     },
     
     
@@ -224,7 +242,8 @@ export const {
   getBlogById,
   restoreBlog,
   updateBlogSuccess,
-  addSubtitle
+  addSubtitle,
+  deleteSubtitleInBlogSlice
 } = blogSlice.actions;
 
 export default blogSlice.reducer;

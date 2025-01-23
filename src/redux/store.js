@@ -6,6 +6,7 @@ import  blogSlice from './reducer/blogSlice.js';
 import  roleSlice from './reducer/roleSlice.js';
 import  categorySlice from './reducer/categotySlice.js';
 import  companySlice from './reducer/companySlice.js';
+import  subtitleSlice from './reducer/subtitleSlice.js';
 
 const store = configureStore({
   reducer: {
@@ -14,7 +15,8 @@ const store = configureStore({
     blog : blogSlice,
     role : roleSlice,
     category: categorySlice,
-    company : companySlice
+    company : companySlice,
+    subtitle: subtitleSlice,
   },
 });
 
