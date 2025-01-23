@@ -14,8 +14,9 @@ const BlogsDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const blogs = location.state;
+  const blog = location.state;
   // console.log(blogs)
+  // console.log(blog)
 
   const handleEdit = (subtitleId) => {
 
@@ -34,7 +35,7 @@ const BlogsDetails = () => {
   };
   
 
-  const { loading, error, blogs: storeBlogs, message } = useSelector((state) => state.blog);
+  // const { loading, error, blogs: storeBlogs, message } = useSelector((state) => state.blog);
 
   // useEffect(() => {
   //   // Fetch blogs if they aren't already loaded
@@ -44,7 +45,7 @@ const BlogsDetails = () => {
   //   }
   // }, [dispatch, blogs]);
 
-  const blog = blogs && blogs.find((b) => b._id === blogId);
+  // const blog = blogs && blogs.find((b) => b._id === blogId);
 
   // console.log(blog)
   // console.log(blog.Subtitle)
