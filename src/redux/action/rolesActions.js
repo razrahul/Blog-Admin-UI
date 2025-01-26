@@ -12,6 +12,7 @@ import {
   updateRole as updateRoleSuccess,
   deleteRole as deleteRoleSuccess,
   updateActivity as updateActivitySuccess,
+  restoreRole as restoreRoleSuccess,
 } from "../reducer/roleSlice.js";
 
 // Get All Roles
@@ -158,6 +159,27 @@ export const updateActivity = (id) => async (dispatch) => {
     return async (dispatch) => {
       dispatch(
         RolesFail(error.response?.data?.message || "Failed to update role")
+      );
+    };
+  }
+};
+
+//restore Role
+export const restoreRole = (id) => async (dispatch) => {
+  try {
+    dispatch(RolesRequest());
+
+    const { data } = await axios.put(`${server}/role/restore/${id}`,
+      {},
+      {
+      withCredentials: true,
+    });
+
+    dispatch(restoreRoleSuccess(data));
+  } catch (error) {
+    return async (dispatch) => {
+      dispatch(
+        RolesFail(error.response?.data?.message || "Failed to restore role")
       );
     };
   }

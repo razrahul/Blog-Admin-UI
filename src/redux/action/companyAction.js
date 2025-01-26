@@ -12,6 +12,7 @@ import {
   updateCompany as updateCompanySuccess,
   deleteCompany as deleteCompanySuccess,
   updateActivity as updateActivitySuccess,
+  restoreCompany as restoreCompanySuccess,
 } from "../reducer/companySlice.js";
 
 //Get All Company
@@ -180,3 +181,24 @@ export const updateActivity = (id) => async (dispatch) => {
     };
   }
 };
+
+//restore Compnay
+export const restoreCompany = (id) => async (dispatch) => {
+  try {
+    dispatch(companyRequest());
+
+    const { data } = await axios.put(`${server}/company/restore/${id}`,
+      {},
+      {
+      withCredentials: true,
+    });
+
+    dispatch(restoreCompanySuccess(data));
+  }catch (error) {
+    return async (dispatch) => {
+      dispatch(
+        companyFail(error.response?.data?.message || "Failed to restore company")
+      );
+    };
+  }
+}
