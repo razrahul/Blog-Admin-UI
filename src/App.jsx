@@ -15,12 +15,19 @@ import "./App.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { loadUser } from "./redux/action/userAction";
 import { getAllBlogs } from "./redux/action/blogs";
-import UserRegister from "./containers/UserRegister/UserRegister";
-import RecycleBinPage from "./pages/RecycleBin/RecycleBinPage";
-import MoreItemPage from "./pages/MoreItem/MoreItemPage";
-import Profile from "./pages/Profile/Profile";
-import ChangePassword from "./components/ChangePassword/ChangePassword";
+// import UserRegister from "./containers/UserRegister/UserRegister";
+const UserRegister = lazy(() => import("./containers/UserRegister/UserRegister"));
+// import RecycleBinPage from "./pages/RecycleBin/RecycleBinPage";
+const RecycleBinPage = lazy(() => import("./pages/RecycleBin/RecycleBinPage"));
+// import MoreItemPage from "./pages/MoreItem/MoreItemPage";
+const MoreItemPage = lazy(() => import("./pages/MoreItem/MoreItemPage"));
+// import Profile from "./pages/Profile/Profile";
+const Profile = lazy(() => import("./pages/Profile/Profile"));
+// import ChangePassword from "./components/ChangePassword/ChangePassword";
+const ChangePassword = lazy(() => import("./components/ChangePassword/ChangePassword"));
+// const BlogsDetails = lazy(() => import("./pages/BlogView/BlogsDetails"));
 const BlogsDetails = lazy(() => import("./pages/BlogView/BlogsDetails"));
+// const TransBlog = lazy(() => import("./containers/DeltedBlog/DeltedBlog"))
 const TransBlog = lazy(() => import("./containers/DeltedBlog/DeltedBlog"))
 
 const App = () => {
@@ -40,7 +47,11 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(loadUser());
+    if(!user){
+      dispatch(loadUser());
+      // console.log("load User called")
+    }
+    
   }, [dispatch]);
 
   // console.log(user);
