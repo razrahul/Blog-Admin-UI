@@ -29,6 +29,11 @@ const BlogCard = ({ blog }) => {
     dispatch(deleteBlog(blogId));
   };
 
+  const handleEditblog = (blog) => {
+    // console.log(blog)
+    navigate("/add-blog", { state: {blog, isEditable: !!blog} });
+  };
+
   return (
     <>
       {/* {blogs.map((blog) => ( */}
@@ -79,7 +84,10 @@ const BlogCard = ({ blog }) => {
             >
               Delete
             </Button>
-            <button className="edit">Edit</button>
+            <button 
+              className="edit"
+              onClick={() => handleEditblog(blog)}
+            >Edit</button>
             {/* <button className="visibility">
                 {blog.isview ? "Public" : "Private"}
               </button> */}

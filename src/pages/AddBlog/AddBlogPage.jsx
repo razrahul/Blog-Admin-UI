@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import "./AddBlogPage.scss";
 import ReactQuill from "react-quill";
 import { useDispatch, useSelector } from "react-redux";
-import { createBlog } from "../../redux/action/blogs";
+import { createBlog, updateBlog } from "../../redux/action/blogs";
 import "react-quill/dist/quill.snow.css";
 import { getAllCategories } from "../../redux/action/categoryAction.js"
 import { getAllCompanies } from "../../redux/action/companyAction.js"
+import { useLocation } from "react-router-dom";
 
 const AddBlogPage = () => {
   const [title, setTitle] = useState("");
@@ -58,9 +59,61 @@ const AddBlogPage = () => {
     alert("Blog created successfully!");
   };
 
-  //category & Company
+  //for edit 
+  const location = useLocation();
+  
+  const { blog = {}, isEditable = false } = location.state || {}; // Provide default values
+
+  // console.log(blog, isEditable)
+
+  //TODO:  update blog then isEditable : false and create Blog
+
+  const handleFormEdit = (e) => {
+    e.preventDefault();
+
+    // console.log("edit ho rha")
+    
+
+    // Prepare FormData
+    const myBlog = new FormData();
+    myBlog.append("title", title);
+    myBlog.append("description", description);
+    myBlog.append("categoryId", categoryId);
+    myBlog.append("companyId", companyId);
+    myBlog.append("file", image);
+
+    // Dispatch the action to create a blog
+    dispatch(updateBlog( blog._id, myBlog));
+    // console.log(myBlog, blog._id)
+    console.log(title, description, categoryId, companyId, image);
+
+    // isEditable = false
+
+    // Reset form fields
+    setTitle("");
+    setDescription("");
+    setCategoryId("");
+    setCompanyId("");
+    setImage("");
+    setImagePrev("");
+
+    alert("Blog Edited successfully!");
+  };
+
+
 
   useEffect(() =>{
+    //for Edit
+    if(isEditable){
+      setTitle(blog.title)
+      setDescription(blog.description)
+      setCategoryId(blog.category._id)
+      setCompanyId(blog.company._id)
+      if(blog?.poster){
+        setImagePrev(blog?.poster?.url)
+      }
+    }
+      //category & Company
     if(categories && categories.length === 0){
       dispatch(getAllCategories());
       // console.log("frathing category....")
@@ -69,7 +122,7 @@ const AddBlogPage = () => {
       dispatch(getAllCompanies());
       // console.log("frathing company....")
     }
-  },[dispatch])
+  },[dispatch, isEditable])
 
   const { categories } = useSelector((state) => state.category)
 
@@ -117,7 +170,7 @@ const AddBlogPage = () => {
   return (
     <div className="create-blog-page">
       <h1>Create Blog Page</h1>
-      <form onSubmit={handleFormSubmit} className="blog-form">
+      <form onSubmit={isEditable ? handleFormEdit : handleFormSubmit} className="blog-form">
         {/* Title */}
         <div className="form-group">
           <label htmlFor="title">Title</label>
@@ -190,7 +243,7 @@ const AddBlogPage = () => {
             id="image"
             accept="image/*"
             onChange={handleImageChange}
-            required
+            required={!isEditable} 
           />
           {imagePrev && (
             <div className="image-preview">
@@ -204,7 +257,7 @@ const AddBlogPage = () => {
 
         {/* Submit */}
         <button type="submit" className="create-button">
-          Create Blog
+        {isEditable ? "Update Blog" : "Create Blog"}
         </button>
       </form>
     </div>
