@@ -25,9 +25,24 @@ const subtitleSlice = createSlice({
         //create Subtitle
         createSubtitleSuccess(state, action) {
             state.loading = false;
-            state.subtitle = action.payload.subtitle;
+            state.subtitles.push(action.payload.subtitle);
             state.message = action.payload?.message;
         },
+        //update Subtitle
+        updateSubtitleSuccess(state, action) {
+            state.loading = false;
+            
+            if (!action.payload?.subtitle || !action.payload?.subtitle._id) return;
+        
+            state.subtitles = state.subtitles.map((subtitle) =>
+                subtitle._id === action.payload.subtitle._id 
+                    ? { ...subtitle, ...action.payload.subtitle } 
+                    : subtitle
+            );
+        
+            state.message = action.payload.message || "";
+        },
+        
         //get All Subtitles
         allSubtitles(state, action) {
             state.loading = false;
@@ -64,7 +79,8 @@ export const {
     allSubtitles,
     allDeltedSubtitles,
     subtitleById,
-    deleteSubtitle
+    deleteSubtitle,
+    updateSubtitleSuccess,
 } = subtitleSlice.actions;
 
 export default subtitleSlice.reducer;

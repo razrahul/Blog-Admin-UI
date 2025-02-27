@@ -9,12 +9,14 @@ import {
   allSubtitles,
   allDeltedSubtitles,
   subtitleById,
-  deleteSubtitle as deleteSubtitleSuccess
+  deleteSubtitle as deleteSubtitleSuccess,
+  updateSubtitleSuccess
 } from "../reducer/subtitleSlice.js";
 
 import{
     addSubtitle,
-    deleteSubtitleInBlogSlice
+    deleteSubtitleInBlogSlice,
+    updateSubtitleInBlogSlice
 } from "../reducer/blogSlice.js"
 
 //create Subtitle
@@ -61,6 +63,35 @@ export const deleteSubtitle = (id, blogId) => async (dispatch) => {
       dispatch(
         subtitleFail(
           error.response?.data?.message || "Failed to delete subtitle"
+        )
+      );
+    };
+  }
+};
+
+//update Subtitle
+export const updateSubtitle = (newBolgId, subtitleId, mySubtitle) => async (dispatch) => {
+  try {
+    dispatch(subtitleRequest());
+
+    const { data } = await axios.put(`${server}/updateSubtitle?blogId=${newBolgId}&subtitleId=${subtitleId}`,
+      mySubtitle,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true,
+      }
+    );
+
+    dispatch(updateSubtitleInBlogSlice({ blogId: newBolgId, subtitleId, updatedSubtitle: data.subtitle }));
+    dispatch(updateSubtitleSuccess(data));
+
+  } catch (error) {
+    return async (dispatch) => {
+      dispatch(
+        subtitleFail(
+          error.response?.data?.message || "Failed to update subtitle"
         )
       );
     };

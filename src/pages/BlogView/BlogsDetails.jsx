@@ -18,9 +18,11 @@ const BlogsDetails = () => {
   // console.log(blogs)
   // console.log(blog)
 
-  const handleEdit = (subtitleId) => {
+  const handleEdit = (Subtitle) => {
 
-    console.log("Edit item with ID:", subtitleId, blogId);
+    navigate(`/add-subtitle/${blogId}`, { state: {Subtitle, newBlogId:blogId, isEditable: !!Subtitle} })
+
+    console.log("Edit item with ID:", Subtitle, blogId);
   };
 
   // delete Subtitle
