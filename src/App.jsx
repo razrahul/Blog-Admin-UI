@@ -17,9 +17,12 @@ import { loadUser } from "./redux/action/userAction";
 import { getAllBlogs } from "./redux/action/blogs";
 import UserRegister from "./containers/UserRegister/UserRegister";
 import RecycleBinPage from "./pages/RecycleBin/RecycleBinPage";
-import MoreItemPage from "./pages/MoreItem/MoreItemPage";
+// import MoreItemPage from "./pages/MoreItem/MoreItemPage";
 import Profile from "./pages/Profile/Profile";
 import ChangePassword from "./components/ChangePassword/ChangePassword";
+import MCategoryTable from "./containers/MItem/MCategoryTable";
+import MRoleTable from "./containers/MItem/MRoleTable";
+import MCompanyTable from "./containers/MItem/MCompanyTable";
 const BlogsDetails = lazy(() => import("./pages/BlogView/BlogsDetails"));
 const TransBlog = lazy(() => import("./containers/DeltedBlog/DeltedBlog"))
 
@@ -66,7 +69,7 @@ const App = () => {
               <Routes>
                 <Route path="/users" element={<UsersPage />} />
                 <Route path="/recycle-bin" element={<RecycleBinPage />} />
-                <Route path="/more" element={<MoreItemPage />}></Route>
+                {/* <Route path="/more" element={<MoreItemPage />}></Route> */}
                 <Route path="/register" element={<UserRegister />} />
                 <Route path="/profile" element={<Profile user={user} />} />
                 <Route path="/change-password" element={<ChangePassword />} />
@@ -79,6 +82,11 @@ const App = () => {
                 />
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/recycle-bin/transBlog" element={<TransBlog />} />
+             {/* Add Category route of moreitem */}
+             <Route path="/category" element={<MCategoryTable/>}/>
+             <Route path="/role" element={<MRoleTable/>}/>
+             <Route path="/company" element={<MCompanyTable/>}/>
+             
               </Routes>
             </div>
           </>

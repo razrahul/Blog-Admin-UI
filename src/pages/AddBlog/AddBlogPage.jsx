@@ -2,27 +2,64 @@ import React, { useEffect, useState } from "react";
 import "./AddBlogPage.scss";
 import ReactQuill from "react-quill";
 import { useDispatch, useSelector } from "react-redux";
-import { createBlog } from "../../redux/action/blogs";
+import { createBlog, updateBlog } from "../../redux/action/blogs";
 import "react-quill/dist/quill.snow.css";
-import { getAllCategories } from "../../redux/action/categoryAction.js"
-import { getAllCompanies } from "../../redux/action/companyAction.js"
+import { getAllCategories } from "../../redux/action/categoryAction.js";
+import { getAllCompanies } from "../../redux/action/companyAction.js";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getAllBlogs } from "../../redux/action/blogs";
 
 const AddBlogPage = () => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [categoryId, setCategoryId] = useState("");
-  const [companyId, setCompanyId] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const existingBlog = location.state || null;
 
+  const [title, setTitle] = useState(existingBlog ? existingBlog.title : "");
+  const [description, setDescription] = useState(
+    existingBlog ? existingBlog.description : ""
+  );
+  const [categoryId, setCategoryId] = useState(
+    existingBlog ? existingBlog.categoryId : ""
+  );
+  const [companyId, setCompanyId] = useState(
+    existingBlog ? existingBlog.companyId : ""
+  );
+  const [isEditable, setIsEditable] = useState(Boolean(existingBlog));
   const [image, setImage] = useState("");
-  const [imagePrev, setImagePrev] = useState("");
+  const [imagePrev, setImagePrev] = useState(
+    existingBlog ? existingBlog.poster?.url : ""
+  );
 
   const dispatch = useDispatch();
 
+  // Fetch categories and companies when the component mounts
+  const { categories } = useSelector((state) => state.category);
+  const { companies } = useSelector((state) => state.company);
+
+  useEffect(() => {
+    if (!categories.length) {
+      dispatch(getAllCategories());
+    }
+    if (!companies.length) {
+      dispatch(getAllCompanies());
+    }
+  }, [dispatch, categories.length, companies.length]);
+
+  // Handle category selection change
+  const handleCategoryChange = (e) => {
+    setCategoryId(e.target.value);
+  };
+
+  // Handle company selection change
+  const handleCompanyChange = (e) => {
+    setCompanyId(e.target.value);
+  };
+
+  // Handle image upload and preview
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setImage(file);
 
-    // Generate a preview for the uploaded image
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => setImagePrev(reader.result);
@@ -32,22 +69,33 @@ const AddBlogPage = () => {
     }
   };
 
+  // Handle form submission
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
-    // Prepare FormData
+    // Prepare FormData to send as API request
     const myBlog = new FormData();
-    myBlog.append("title", title); 
+    myBlog.append("title", title);
     myBlog.append("description", description);
     myBlog.append("categoryId", categoryId);
     myBlog.append("companyId", companyId);
-    myBlog.append("file", image);
+    if (image) myBlog.append("file", image);
 
-    // Dispatch the action to create a blog
-    dispatch(createBlog(myBlog));
-    console.log(title, description, categoryId,companyId, image);
+    const blogData = {
+      title,
+      description,
+      categoryId,
+      companyId,
+      image,
+    };
 
-    // Reset form fields
+    if (isEditable) {
+      dispatch(updateBlog(blogData, existingBlog._id)); // Update the blog
+    } else {
+      dispatch(createBlog(blogData)); // Create a new blog
+    }
+
+    // Reset form fields after successful submission
     setTitle("");
     setDescription("");
     setCategoryId("");
@@ -55,48 +103,19 @@ const AddBlogPage = () => {
     setImage("");
     setImagePrev("");
 
-    alert("Blog created successfully!");
+    alert("Blog created/updated successfully!");
+
+    navigate("/blog-list"); // Navigate back to BlogList after submitting
   };
 
-  //category & Company
-
-  useEffect(() =>{
-    if(categories && categories.length === 0){
-      dispatch(getAllCategories());
-      // console.log("frathing category....")
-    }
-    if(companies && companies.length === 0){
-      dispatch(getAllCompanies());
-      // console.log("frathing company....")
-    }
-  },[dispatch])
-
-  const { categories } = useSelector((state) => state.category)
-
-  const {companies }= useSelector((state) => state.company)
-
-  // console.log(categories)
-
-  // const categories = [
-  //   "technology",
-  //   "lifestyle",
-  //   "education",
-  //   "marketing",
-  //   "biotechnology",
-  // ];
-
+  // Quill editor configurations
   const modules = {
     toolbar: [
       [{ header: [1, 2, 3, 4, 5, 6, false] }],
       ["bold", "italic", "underline", "strike", "blockquote"],
-      [
-        { list: "ordered" },
-        { list: "bullet" },
-        { indent: "-1" },
-        { indent: "+1" },
-      ],
+      [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
       ["link", "image"],
-      ["clean"], // Remove formatting
+      ["clean"],
     ],
   };
 
@@ -116,7 +135,7 @@ const AddBlogPage = () => {
 
   return (
     <div className="create-blog-page">
-      <h1>Create Blog Page</h1>
+      <h1>{isEditable ? "Edit Blog" : "Create Blog"}</h1>
       <form onSubmit={handleFormSubmit} className="blog-form">
         {/* Title */}
         <div className="form-group">
@@ -133,11 +152,13 @@ const AddBlogPage = () => {
 
         {/* Description */}
         <div className="form-group">
-          <label htmlFor="description">Description*(At least 20 characters)</label>
+          <label htmlFor="description">
+            Description*(At least 20 characters)
+          </label>
           <ReactQuill
             className="react-quill"
             value={description} // State for ReactQuill content
-            onChange={setDescription} // Update state directly
+            onChange={(value) => setDescription(value)} // Update state directly
             modules={modules}
             formats={formats}
             placeholder="Enter blog description"
@@ -147,17 +168,11 @@ const AddBlogPage = () => {
         {/* Category */}
         <div className="form-group">
           <label htmlFor="category">Category</label>
-          <select
-            value={categoryId}
-            onChange={(e) => setCategoryId(e.target.value)}
-            id="category"
-            required
-          >
-            <option value="">Select a Company</option>
-            {categories.map((cat, index) => (
+          <select value={categoryId || ""} onChange={handleCategoryChange} id="category" required>
+            <option value="">Select a Category</option>
+            {categories.map((cat) => (
               <option key={cat._id} value={cat._id}>
-                {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}{" "}
-                {/* Capitalize first letter */}
+                {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
               </option>
             ))}
           </select>
@@ -166,17 +181,11 @@ const AddBlogPage = () => {
         {/* Company */}
         <div className="form-group">
           <label htmlFor="company">Company(Website)</label>
-          <select
-            value={companyId}
-            onChange={(e) => setCompanyId(e.target.value)}
-            id="company"
-            required
-          >
+          <select value={companyId || ""} onChange={handleCompanyChange} id="company" required>
             <option value="">Select For a Website</option>
-            {companies.map((com, index) => (
+            {companies.map((com) => (
               <option key={com._id} value={com._id}>
-                {com.companyName.charAt(0).toUpperCase() + com.companyName.slice(1)}{" "}
-                {/* Capitalize first letter */}
+                {com.companyName.charAt(0).toUpperCase() + com.companyName.slice(1)}
               </option>
             ))}
           </select>
@@ -200,11 +209,9 @@ const AddBlogPage = () => {
           <small className="mandatory">*Uploading an image is mandatory.</small>
         </div>
 
-        {/* Public/Private Visibility */}
-
-        {/* Submit */}
+        {/* Submit Button */}
         <button type="submit" className="create-button">
-          Create Blog
+          {isEditable ? "Update" : "Create"}
         </button>
       </form>
     </div>

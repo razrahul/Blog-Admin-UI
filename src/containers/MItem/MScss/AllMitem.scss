@@ -1,0 +1,112 @@
+.category-container {
+    margin: 20px;
+    font-family: Arial, sans-serif;
+  
+    h3 {
+      text-align: center;
+      color: #333;
+    }
+  
+    .add-form {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+  
+      input, textarea {
+        margin: 10px 0;
+        padding: 8px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+  
+      button {
+        background-color: #00bfff;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+  
+      button:hover {
+        background-color: #008cba;
+      }
+    }
+  
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  
+      .modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        max-width: 400px;
+        width: 100%;
+      }
+  
+      button {
+        margin: 5px;
+      }
+    }
+  
+    .rdt_Table {
+      width: 100%;
+    }
+  
+    .rdt_TableHead {
+      background-color: #f4f4f4;
+    }
+  
+    .rdt_TableBody tr:nth-child(even) {
+      background-color: #fafafa;
+    }
+  
+    .rdt_TableRow {
+      cursor: pointer;
+    }
+  }
+  
+  .popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 300px;
+    text-align: center;
+  }
+  
+  .popup-content input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .popup-content button {
+    padding: 10px 15px;
+    margin: 10px;
+    cursor: pointer;
+  }
+  

@@ -4,50 +4,74 @@
   width: 100vw;
   overflow: hidden;
 
-  // Fixed Navbar
+  // Fixed Sidebar Navbar
   .content-fix {
     position: fixed;
     top: 0;
     left: 0;
     height: 100%;
-    width: 22vw; /* Adjust as needed */
-    background-color: #333; /* Example background */
-    color: #fff;
+    width: 18vw; /* Sidebar width for large screens */
+    background-color: #fff; 
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    z-index: 10;
+    z-index: 1000;
   }
 
-  // Scrollable Content
+  // Main Content
   .content {
-    margin-left: 22vw; /* Matches the fixed Navbar width */
+    margin-left: 18vw; /* Push content to match sidebar width */
     flex: 1;
     padding: 20px;
     background-color: #f9f9f9;
-    overflow-y: auto; /* Enables scrolling for this area */
-    height: 100vh; 
+    overflow-y: auto;
+    height: 100vh;
   }
 }
 
-@media (max-width: 780px) {
+// Medium Screens (Tablets)
+@media (max-width: 1024px) {
   .content-fix {
-    width: 15vw;
+    width: 20vw; /* Adjusted sidebar for tablets */
   }
 
   .content {
-    margin-left: 15vw;
+    margin-left: 20vw; 
   }
 }
 
-@media (max-width: 480px) {
+// Small Screens (Mobile)
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column; /* Stack Navbar and Content */
+  }
+
   .content-fix {
-    position: relative; 
-    width: 100vw;
-    height: auto;
+    position: fixed;
+    width: 100vw; 
+    height: 60px; /* Navbar height */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
   }
 
   .content {
     margin-left: 0;
-    margin-top: 60px; 
+    margin-top: 60px; /* Offset for navbar height */
+    padding: 15px;
   }
 }
 
+// Extra Small Screens
+@media (max-width: 480px) {
+  .content-fix {
+    height: 50px; /* Reduce navbar height */
+    padding: 10px;
+  }
+
+  .content {
+    margin-top: 50px;
+    padding: 10px;
+  }
+}
