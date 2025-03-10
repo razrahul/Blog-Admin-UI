@@ -12,6 +12,7 @@ import {
   updateCategory as updateCategorySuccess,
   deleteCategorySuccess,
   updateActivity as updateActivitySuccess,
+  restoreCategory as restoreCategorySuccess,
 } from "../reducer/categotySlice.js";
 
 //Get All Categories
@@ -166,6 +167,29 @@ export const updateActivity = (id) => async (dispatch) => {
       dispatch(
         CategoriesFail(
           error.response?.data?.message || "Failed to update category"
+        )
+      );
+    };
+  }
+};
+
+//restore Category
+export const restoreCategory = (id) => async (dispatch) => {
+  try {
+    dispatch(CategoriesRequest());
+
+    const { data } = await axios.put(`${server}/category/restore/${id}`,
+      {},
+      {
+        withCredentials: true,
+    });
+
+    dispatch(restoreCategorySuccess(data));
+  } catch (error) {
+    return async (dispatch) => {
+      dispatch(
+        CategoriesFail(
+          error.response?.data?.message || "Failed to restore category"
         )
       );
     };

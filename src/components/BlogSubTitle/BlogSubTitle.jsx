@@ -68,7 +68,7 @@ const BlogSubTitle = ({ subtitle, onEdit, onDelete }) => {
             <div className="subtitle-actions">
               {/* Edit Icon */}
               <Button
-                onConfirm={() => onEdit(item._id)}
+                onConfirm={() => onEdit(item)}
                 title="Edit Subtitle"
                 description={`Are you sure you want to Edit the subtitle titled "${item.title}"?`}
                 buttonClass="edit-btn"

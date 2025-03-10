@@ -1,20 +1,37 @@
 import React, { useEffect } from "react";
 import DataTable from "react-data-table-component";
 import { useSelector, useDispatch } from "react-redux";
-import { getAllDeletedUsers, restoreUser } from "../../redux/action/admin.js";
+import { getAllDeletedUsers, getAllUsers, restoreUser } from "../../redux/action/admin.js";
 import Button from "../../components/conformationButtom/Button.jsx";
 import "./recycle.scss";
+import { FaTrashRestoreAlt } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 
 const UsersTable = () => {
   const { deletedUsers } = useSelector((state) => state.admin);
   const dispatch = useDispatch();
 
+  const {users} = useSelector((state) => state.admin);
+
   useEffect(() => {
     dispatch(getAllDeletedUsers());
     // console.log("Fetching deleted users...");
+    if(users && users.length === 0){
+      dispatch(getAllUsers());
+      // console.log("Users: useEffect Called");
+    }
   }, [dispatch]);
 
   //   console.log("Deleted Users:", deletedUsers);
+
+  const superAdmin = users && users.filter((user) => user.role.name === "SuperAdmin");
+
+  // console.log(superAdmin)
+
+  const userName = (userId) => {
+    const user = users && users.find((user) => user._id === userId);
+    return user ? user.name : "Unknown";
+  };
 
   // Restore user function
   const handleRestore = (user) => {
@@ -42,6 +59,11 @@ const UsersTable = () => {
       sortable: true,
     },
     {
+      name: "DeletedBy",
+      selector: (row) => (row.deletedBy ? userName(row.deletedBy) : "N/A"), // Handle missing deletedBy data
+      sortable: true,
+    },
+    {
       name: "Actions",
       cell: (row) => (
         <div>
@@ -51,7 +73,7 @@ const UsersTable = () => {
             description={`Are You Sure You want to Restore "${row.name}"`}
             buttonClass="restore-button"
           >
-            Restore
+            <FaTrashRestoreAlt />
           </Button>
           <Button
             onConfirm={() => handleDelete(row)}
@@ -59,7 +81,7 @@ const UsersTable = () => {
             description={`Are You Sure You want to Permanently Delete "${row.name}"`}
             buttonClass="delete-button"
           >
-            Delete
+            <MdDelete />
           </Button>
           {/* <button onClick={() => handleRestore(row)}>Restore</button> */}
           {/* <button onClick={() => handleDelete(row)}>Delete</button> */}

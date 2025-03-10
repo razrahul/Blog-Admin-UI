@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -6,7 +6,7 @@ import Quill from "quill";
 import "./AddSubtitlePage.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { addSubtitle } from "../../redux/action/blogs";
-import { createSubtitle } from "../../redux/action/subtitleAction"
+import { createSubtitle, updateSubtitle } from "../../redux/action/subtitleAction"
 
 const AddSubtitlePage = () => {
   const { blogId } = useParams();
@@ -66,6 +66,44 @@ const AddSubtitlePage = () => {
     alert(`Subtitle added for Blog ID: ${blogId}`);
   };
 
+  //for Edit Subtitle
+
+  const {Subtitle = {} , newBlogId ={} , isEditable = false} = location.state || {};
+  // console.log(Subtitle, newBlogId, isEditable)
+
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    const mySubtitle = new FormData();
+    mySubtitle.append("title", subtitle);
+    mySubtitle.append("description", description);
+    mySubtitle.append("file", image);
+
+    dispatch(updateSubtitle(newBlogId, Subtitle._id, mySubtitle));
+    // console.log(newBlogId, Subtitle._id)
+
+    // console.log(subtitle, description, image);
+
+    // Reset form fields
+    setSubtitle("");
+    setDescription("");
+    setImage(null);
+    setImagePrev("");
+
+    alert(`Subtitle Updated for Blog ID: ${newBlogId}`);
+  };
+
+  useEffect(() => {
+    if (isEditable) {
+      setSubtitle(Subtitle.title);
+      setDescription(Subtitle.description);
+      if(Subtitle?.poster){
+        setImagePrev(Subtitle.poster.url);
+      }
+    }
+   
+  }, [isEditable]);
+
+
   const modules = {
     toolbar: [
       [{ header: "1" }, { header: "2" }, { font: [] }],
@@ -95,11 +133,11 @@ const AddSubtitlePage = () => {
   return (
     <div className="add-main">
       <div className="add-subtitle-page">
-        <h1>Add Subtitle</h1>
+        <h1>{isEditable? "Edit Subtitle" : "Add Subtitle"}</h1>
         {/* <h2>Blog ID: {blogId}</h2> */}
         {blog && <h2>Blog: {blog.title}</h2>}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={isEditable? handleUpdate: handleSubmit}>
 
           {/* Subtitle */}
           <div className="form-group">
@@ -146,7 +184,7 @@ const AddSubtitlePage = () => {
           
 
           <button type="submit" className="submit-button">
-            Add Subtitle
+            {isEditable? "Update Subtitle" : "Add Subtitle"}
           </button>
         </form>
       </div>

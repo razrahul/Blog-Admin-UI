@@ -113,7 +113,12 @@ const AddBlogPage = () => {
     toolbar: [
       [{ header: [1, 2, 3, 4, 5, 6, false] }],
       ["bold", "italic", "underline", "strike", "blockquote"],
-      [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { indent: "-1" },
+        { indent: "+1" },
+      ],
       ["link", "image"],
       ["clean"],
     ],
@@ -168,7 +173,12 @@ const AddBlogPage = () => {
         {/* Category */}
         <div className="form-group">
           <label htmlFor="category">Category</label>
-          <select value={categoryId || ""} onChange={handleCategoryChange} id="category" required>
+          <select
+            value={categoryId || ""}
+            onChange={handleCategoryChange}
+            id="category"
+            required
+          >
             <option value="">Select a Category</option>
             {categories.map((cat) => (
               <option key={cat._id} value={cat._id}>
@@ -181,11 +191,17 @@ const AddBlogPage = () => {
         {/* Company */}
         <div className="form-group">
           <label htmlFor="company">Company(Website)</label>
-          <select value={companyId || ""} onChange={handleCompanyChange} id="company" required>
+          <select
+            value={companyId || ""}
+            onChange={handleCompanyChange}
+            id="company"
+            required
+          >
             <option value="">Select For a Website</option>
             {companies.map((com) => (
               <option key={com._id} value={com._id}>
-                {com.companyName.charAt(0).toUpperCase() + com.companyName.slice(1)}
+                {com.companyName.charAt(0).toUpperCase() +
+                  com.companyName.slice(1)}
               </option>
             ))}
           </select>

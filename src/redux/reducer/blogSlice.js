@@ -114,6 +114,26 @@ const blogSlice = createSlice({
       };
     },
 
+    // update subtitle
+    updateSubtitleInBlogSlice (state, action) {
+      state.loading = false;
+      const { blogId, subtitleId, updatedSubtitle } = action.payload;
+  
+      state.blogs = state.blogs.map((blog) =>
+          blog._id === blogId
+              ? {
+                    ...blog,
+                    Subtitle: blog.Subtitle
+                        ? blog.Subtitle.map((subtitle) =>
+                              subtitle._id === subtitleId ? { ...updatedSubtitle } : subtitle
+                          )
+                        : [], // Ensure it returns an empty array if Subtitle is undefined
+                }
+              : blog
+      );
+  },
+  
+
     //delete Subtitle
     deleteSubtitleInBlogSlice(state, action) {
       const { blogId, subtitleId, message } = action.payload;
@@ -243,7 +263,8 @@ export const {
   restoreBlog,
   updateBlogSuccess,
   addSubtitle,
-  deleteSubtitleInBlogSlice
+  deleteSubtitleInBlogSlice,
+  updateSubtitleInBlogSlice
 } = blogSlice.actions;
 
 export default blogSlice.reducer;

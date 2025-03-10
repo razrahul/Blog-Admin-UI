@@ -1,11 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import "./DeltedBlog.scss";
 import BlogSubTitle from "../../components/BlogSubTitle/BlogSubTitle";
 import {formatDateOnly, formatDate } from "../../Utils/formatDate "
+import { useDispatch, useSelector } from "react-redux";
+import { getAllUsers } from "../../redux/action/admin";
 
 const TransBlog = () => {
   const location = useLocation();
+  
+
+  const {users } = useSelector((state) => state.admin)
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if(users && users.length === 0) {
+      dispatch(getAllUsers());
+      // console.log("feathing UseEffect ...")
+    }
+  }, [dispatch]);
+
+
+  const superAdmin = users.filter((user) => user.role.name === "SuperAdmin");
+
+  // console.log(superAdmin)
+
+  const userName = (userId) => {
+    const user = superAdmin.find((user) => user._id === userId);
+    return user ? user.name : "Unknown";
+  };
+
 
   const blog = location.state;
   // console.log(blogs)
@@ -50,8 +75,8 @@ const TransBlog = () => {
         <h2>CreateBy: {blog?.createdBy?.name || "N/A"}</h2>
         <h2>Created Date: {formatDate(blog.createdAt)}</h2>
         //Error Aa rha h Backend se data bhajne ke Badd v deketedBy And UpdatedBy me Name nahi aa rha user se filter krna prega
-        <h2>UpdatedBy: {blog?.updatedBy || "N/A"}</h2>
-        <h2>DeletddBy: {blog?.deletedBy || "N/A"}</h2>  
+        <h2>UpdatedBy: {userName(blog?.updatedBy) || "N/A"}</h2>
+        <h2>DeletddBy: {userName(blog?.deletedBy) || "N/A"}</h2>  
         <h2>Deleted Date: {formatDate(blog.updatedAt)}</h2>
         <h3>View: {blog.views || "N/A"}</h3>
       </div>

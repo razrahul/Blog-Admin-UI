@@ -35,6 +35,11 @@ const BlogCard = ({ blog }) => {
     dispatch(deleteBlog(blogId));
   };
 
+  const handleEditblog = (blog) => {
+    // console.log(blog)
+    navigate("/add-blog", { state: {blog, isEditable: !!blog} });
+  };
+
   return (
     <>
       {/* {blogs.map((blog) => ( */}
