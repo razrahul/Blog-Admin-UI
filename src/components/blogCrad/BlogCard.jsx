@@ -9,6 +9,7 @@ import { BsFillPeopleFill, BsPersonFillLock } from "react-icons/bs";
 
 const BlogCard = ({ blog }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // All blogs send to blogpage
   const handleViewButton = (blogId) => {
@@ -18,10 +19,15 @@ const BlogCard = ({ blog }) => {
   // console.log(blogs)
 
   const handleAddSubtitle = (blogId) => {
-    navigate(`/add-subtitle/${blogId}`,  { state: blog });
+    navigate(`/add-subtitle/${blogId}`, { state: blog });
   };
 
-  const dispatch = useDispatch();
+  //handle edit button 
+  const handleEdit = (blog) => {
+    navigate(`/add-blog`, { state: blog });
+  };
+
+
   // Handle delete confirmation and dispatch the action
   const handleDelete = (blogId) => {
     // dispatch(deleteBlog(blogId)); // Dispatch the delete action
@@ -39,13 +45,17 @@ const BlogCard = ({ blog }) => {
       {/* {blogs.map((blog) => ( */}
       <div className="blog-card">
         {/* Blog Image - Click to View Blog Detail */}
-        <div className="image-container" onClick={() => handleViewButton(blog._id)}>
+        <div
+          className="image-container"
+          onClick={() => handleViewButton(blog._id)}
+        >
           <img
             src={blog.poster?.url || "https://via.placeholder.com/150"}
             alt={blog.title || "Default Image"}
           />
           <div className="hover-overlay">
-            <span className="view-icon">👁️</span>{" "} {/* Eye icon or any other symbol */}
+            <span className="view-icon">👁️</span>{" "}
+            {/* Eye icon or any other symbol */}
           </div>
         </div>
 
@@ -84,10 +94,10 @@ const BlogCard = ({ blog }) => {
             >
               Delete
             </Button>
-            <button 
-              className="edit"
-              onClick={() => handleEditblog(blog)}
-            >Edit</button>
+            <button className="edit" onClick={() => handleEdit(blog)}>
+              Edit
+            </button>
+
             {/* <button className="visibility">
                 {blog.isview ? "Public" : "Private"}
               </button> */}
