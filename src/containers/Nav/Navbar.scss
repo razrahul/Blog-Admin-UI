@@ -1,12 +1,27 @@
 /* General navbar container */
 .navbar {
   height: 100vh;
+  width: 250px;
   display: flex;
   flex-direction: column;
-  background-color: #ffffff;
-  border-right: 1px solid #e5e7eb;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  transition: width 0.3s ease-in-out; /* Smooth transition when expanding/collapsing */
+  background-color: #2c3e50;
+  color: #ecf0f1;
+  transition: width 0.3s ease-in-out;
+
+  &.collapsed {
+    width: 80px;
+
+    .navbar__title,
+    .sidebar-item__text,
+    .navbar__user-name,
+    .navbar__user-email {
+      display: none;
+    }
+
+    .navbar__profile-menu {
+      right: -100px;
+    }
+  }
 }
 
 /* Header section */
@@ -15,85 +30,82 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: #34495e;
 }
 
 /* Title */
 .navbar__title {
-  overflow: hidden;
-  transition: width 0.3s;
-  width: 8rem; /* Adjust width based on expanded state */
-  white-space: nowrap;
+  font-size: 1.25rem;
+  font-weight: bold;
 }
 
 /* Toggle Button */
 .navbar__toggle-button {
   padding: 0.375rem;
   border-radius: 0.375rem;
-  background-color: #f9fafb;
+  background-color: #34495e;
+  color: #ecf0f1;
+  border: none;
+  cursor: pointer;
   transition: background-color 0.2s;
+
   &:hover {
-    background-color: #f3f4f6;
+    background-color: #1abc9c;
   }
 }
 
 /* Links section */
 .navbar__links {
   flex-grow: 1;
-  padding: 0 0.75rem;
+  padding: 1rem 0;
 }
 
 /* Profile section */
 .navbar__user-profile {
-  display: flex;
-  padding: 0.75rem;
+  padding: 1rem;
+  background-color: #34495e;
   position: relative;
-  border-top: 1px solid #e5e7eb;
-}
-
-/* Avatar */
-.navbar__user-avatar {
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 0.375rem;
 }
 
 /* User Info */
 .navbar__user-info {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  overflow: hidden;
-  transition: all 0.3s;
-  width: 13rem; /* Adjust width based on expanded state */
-  margin-left: 0.75rem;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-/* Profile Name (color change) */
+/* Profile Name */
 .navbar__user-name {
   font-weight: bold;
-  color: #4f46e5; /* New color for profile name */
+  color: #1abc9c;
 }
 
 /* Profile Email */
 .navbar__user-email {
   font-size: 0.875rem;
-  color: #6b7280; /* Adjust for better contrast */
+  color: #bdc3c7;
 }
 
 /* Profile Menu Toggle */
 .navbar__profile-toggle {
+  background: none;
+  border: none;
+  color: #ecf0f1;
   cursor: pointer;
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
 }
 
 /* Profile Menu */
 .navbar__profile-menu {
   position: absolute;
-  top: 0;
+  bottom: 100%;
   right: 0;
-  background-color: #ffffff;
+  background-color: #34495e;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 0.375rem;
-  width: 10rem;
+  width: 150px;
   z-index: 10;
 }
 
@@ -103,15 +115,18 @@
   padding: 0.5rem 0.75rem;
   font-size: 0.875rem;
   font-weight: 600;
-  background-color: #ef4444; /* Change for better color */
+  background-color: #e74c3c;
   color: #ffffff;
+  border: none;
   border-radius: 0.375rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  cursor: pointer;
   transition: background-color 0.2s;
+
   &:hover {
-    background-color: #dc2626;
+    background-color: #c0392b;
   }
 }
 
@@ -121,107 +136,51 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 0.5rem 0.75rem;
+  padding: 0.75rem 1rem;
   margin-bottom: 0.25rem;
   font-weight: 500;
   border-radius: 0.375rem;
   cursor: pointer;
   transition: background-color 0.2s;
-}
 
-/* Sidebar Item Hover */
-.sidebar-item:hover {
-  background-color: #f3f4f6;
+  &:hover {
+    background-color: #34495e;
+  }
 }
 
 /* Sidebar Item Text */
 .sidebar-item__text {
-  overflow: hidden;
-  transition: width 0.3s;
-  width: 13rem; /* Adjust width based on expanded state */
   margin-left: 0.75rem;
 }
 
-/* More Items color change */
-.sidebar-item__more-button {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: #4f46e5; /* Custom color for "More Items" button */
-}
-
-.sidebar-item__more-button:hover {
-  color: #2563eb; /* Hover effect for "More Items" */
-}
-
-/* Tooltip */
-.sidebar-item__tooltip {
-  position: absolute;
-  left: 100%;
-  margin-left: 1.5rem;
-  padding: 0.25rem 0.5rem;
-  background-color: #e0e7ff;
-  color: #4f46e5;
-  font-size: 0.75rem;
-  border-radius: 0.375rem;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
-  transform: translateX(-1rem);
-}
-
-.sidebar-item:hover .sidebar-item__tooltip {
-  visibility: visible;
-  opacity: 1;
-  transform: translateX(0);
+/* More Items Dropdown */
+.sidebar-item__more-dropdown {
+  padding-left: 2rem;
 }
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .navbar {
-    width: 80vw; /* Make the sidebar more compact */
-  }
+    width: 80px;
 
-  /* Make Sidebar Collapsible */
-  .navbar__container {
-    display: block;
-  }
-
-  .navbar__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    &.expanded {
+      width: 250px;
+    }
   }
 
   .navbar__title {
-    display: none; /* Hide title on mobile */
+    display: none;
   }
 
-  .navbar__toggle-button {
+  .navbar.expanded .navbar__title {
     display: block;
-  }
-
-  .navbar__links {
-    display: none; /* Hide links on mobile */
-  }
-
-  .navbar__user-profile {
-    flex-direction: column;
-  }
-
-  .navbar__user-info {
-    margin-left: 0;
   }
 
   .sidebar-item__text {
-    display: none; /* Hide text in collapsed state */
-  }
-
-  .navbar.expanded .navbar__links {
-    display: block;
+    display: none;
   }
 
   .navbar.expanded .sidebar-item__text {
-    display: block;
+    display: inline;
   }
 }

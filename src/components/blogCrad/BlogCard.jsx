@@ -5,7 +5,7 @@ import { formatDateOnly } from "../../Utils/formatDate ";
 import Button from "../conformationButtom/Button";
 import { useDispatch } from "react-redux";
 import { deleteBlog } from "../../redux/action/blogs";
-import { BsFillPeopleFill, BsPersonFillLock } from "react-icons/bs";
+import { BsFillGearFill, BsFillPeopleFill, BsFillTrashFill, BsPersonFillLock, BsFillPencilFill, BsPlusCircle } from "react-icons/bs"; // Import pencil and plus circle icons
 
 const BlogCard = ({ blog }) => {
   const navigate = useNavigate();
@@ -22,11 +22,10 @@ const BlogCard = ({ blog }) => {
     navigate(`/add-subtitle/${blogId}`, { state: blog });
   };
 
-  //handle edit button 
+  //handle edit button
   const handleEdit = (blog) => {
     navigate(`/add-blog`, { state: blog });
   };
-
 
   // Handle delete confirmation and dispatch the action
   const handleDelete = (blogId) => {
@@ -37,7 +36,7 @@ const BlogCard = ({ blog }) => {
 
   const handleEditblog = (blog) => {
     // console.log(blog)
-    navigate("/add-blog", { state: {blog, isEditable: !!blog} });
+    navigate("/add-blog", { state: { blog, isEditable: !!blog } });
   };
 
   return (
@@ -82,9 +81,6 @@ const BlogCard = ({ blog }) => {
 
           {/* Action Buttons */}
           <div className="actions">
-            <button className="view" onClick={() => handleViewButton(blog._id)}>
-              View
-            </button>
             {/* Delete Button with Confirmation */}
             <Button
               onConfirm={() => handleDelete(blog._id)}
@@ -92,10 +88,11 @@ const BlogCard = ({ blog }) => {
               description={`Are you sure you want to delete the blog titled "${blog.title}"?`}
               buttonClass="delete"
             >
-              Delete
+              <BsFillTrashFill/>
             </Button>
+            {/* Edit button */}
             <button className="edit" onClick={() => handleEdit(blog)}>
-              Edit
+              <BsFillPencilFill/>
             </button>
 
             {/* <button className="visibility">
@@ -105,7 +102,7 @@ const BlogCard = ({ blog }) => {
               className="subtitle"
               onClick={() => handleAddSubtitle(blog._id)}
             >
-              Add Subtitle
+              <BsPlusCircle />
             </button>
           </div>
         </div>
