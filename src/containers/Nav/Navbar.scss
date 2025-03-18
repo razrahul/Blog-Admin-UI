@@ -1,26 +1,20 @@
 /* General navbar container */
 .navbar {
   height: 100vh;
-  width: 250px;
+  width: 250px; /* Default width */
   display: flex;
   flex-direction: column;
   background-color: #2c3e50;
   color: #ecf0f1;
   transition: width 0.3s ease-in-out;
 
-  &.collapsed {
-    width: 80px;
-
-    .navbar__title,
-    .sidebar-item__text,
-    .navbar__user-name,
-    .navbar__user-email {
-      display: none;
-    }
-
-    .navbar__profile-menu {
-      right: -100px;
-    }
+  @media (max-width: 768px) {
+    width: 100%; /* Full width on mobile */
+    height: 60px; /* Fixed height on mobile */
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
   }
 }
 
@@ -31,15 +25,25 @@
   justify-content: space-between;
   align-items: center;
   background-color: #34495e;
+
+  @media (max-width: 768px) {
+    padding: 0;
+    width: 100%; /* Full width on mobile */
+  }
 }
 
 /* Title */
 .navbar__title {
   font-size: 1.25rem;
   font-weight: bold;
+  color: white;
+
+  @media (max-width: 768px) {
+    display: none; /* Hide title on mobile */
+  }
 }
 
-/* Toggle Button */
+/* Toggle Button (Hamburger Menu) */
 .navbar__toggle-button {
   padding: 0.375rem;
   border-radius: 0.375rem;
@@ -48,6 +52,12 @@
   border: none;
   cursor: pointer;
   transition: background-color 0.2s;
+  display: none; /* Hidden by default */
+
+  @media (max-width: 768px) {
+    display: block; /* Show on mobile */
+    margin-right: auto; /* Push to the left */
+  }
 
   &:hover {
     background-color: #1abc9c;
@@ -58,6 +68,22 @@
 .navbar__links {
   flex-grow: 1;
   padding: 1rem 0;
+  overflow-y: auto;
+
+  @media (max-width: 768px) {
+    display: none; /* Hidden by default on mobile */
+    flex-direction: column;
+    position: absolute;
+    top: 60px; /* Below the header */
+    left: 0;
+    width: 100%;
+    background-color: #2c3e50;
+    z-index: 1000;
+
+    &.open {
+      display: flex; /* Show when mobile menu is open */
+    }
+  }
 }
 
 /* Profile section */
@@ -65,6 +91,14 @@
   padding: 1rem;
   background-color: #34495e;
   position: relative;
+
+  @media (max-width: 768px) {
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto; /* Push to the right */
+  }
 }
 
 /* User Info */
@@ -72,18 +106,32 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+
+  @media (max-width: 768px) {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+  }
 }
 
 /* Profile Name */
 .navbar__user-name {
   font-weight: bold;
   color: #1abc9c;
+
+  @media (max-width: 768px) {
+    font-size: 0.875rem;
+  }
 }
 
 /* Profile Email */
 .navbar__user-email {
   font-size: 0.875rem;
   color: #bdc3c7;
+
+  @media (max-width: 768px) {
+    display: none; /* Hide email on mobile */
+  }
 }
 
 /* Profile Menu Toggle */
@@ -95,6 +143,10 @@
   position: absolute;
   right: 1rem;
   top: 1rem;
+
+  @media (max-width: 768px) {
+    position: static; /* Align with user info */
+  }
 }
 
 /* Profile Menu */
@@ -107,6 +159,11 @@
   border-radius: 0.375rem;
   width: 150px;
   z-index: 10;
+
+  @media (max-width: 768px) {
+    bottom: auto;
+    top: 100%;
+  }
 }
 
 .navbar__profile-menu button {
@@ -134,8 +191,7 @@
 .sidebar-item {
   position: relative;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   padding: 0.75rem 1rem;
   margin-bottom: 0.25rem;
   font-weight: 500;
@@ -155,32 +211,20 @@
 
 /* More Items Dropdown */
 .sidebar-item__more-dropdown {
-  padding-left: 2rem;
+  position: absolute;
+  top: 100%; /* Position dropdown just below the parent item */
+  left: 0;
+  width: 100%; /* Full width of the parent item */
+  background-color: #2c3e50; /* Match navbar background */
+  border-radius: 0.375rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10; /* Ensure dropdown appears above other content */
+  padding: 0.5rem 0; /* Add some padding */
 }
 
-/* Mobile Responsive */
-@media (max-width: 768px) {
-  .navbar {
-    width: 80px;
-
-    &.expanded {
-      width: 250px;
-    }
-  }
-
-  .navbar__title {
-    display: none;
-  }
-
-  .navbar.expanded .navbar__title {
-    display: block;
-  }
-
-  .sidebar-item__text {
-    display: none;
-  }
-
-  .navbar.expanded .sidebar-item__text {
-    display: inline;
-  }
+/* Dropdown Items */
+.sidebar-item__more-dropdown .sidebar-item {
+  padding: 0.5rem 1rem; /* Adjust padding for dropdown items */
+  margin: 0; /* Remove margin for dropdown items */
+  border-radius: 0; /* Remove border radius for dropdown items */
 }
