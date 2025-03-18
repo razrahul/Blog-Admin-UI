@@ -16,17 +16,12 @@ import { useDispatch } from "react-redux";
 import { logout } from "../../redux/action/userAction.js";
 
 const Navbar = ({ user }) => {
-  const [expanded, setExpanded] = useState(true); // Sidebar expanded state
   const [activeDropdown, setActiveDropdown] = useState(null); // Track active dropdown
   const [showProfileMenu, setShowProfileMenu] = useState(false); // Profile menu visibility
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // Mobile menu visibility
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  // Toggle sidebar expanded/collapsed state
-  const toggleSidebar = () => {
-    setExpanded((prev) => !prev);
-  };
 
   // Toggle dropdown for a specific section
   const toggleDropdown = (section) => {
@@ -39,19 +34,28 @@ const Navbar = ({ user }) => {
     navigate("/login");
   };
 
+  // Toggle mobile menu
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen((prev) => !prev);
+  };
+
   return (
-    <aside className={`navbar ${expanded ? "expanded" : "collapsed"}`}>
+    <aside className="navbar">
       <nav className="navbar__container">
         {/* Sidebar Header */}
         <div className="navbar__header">
           <h2 className="navbar__title">TechTimes.ai</h2>
-          <button onClick={toggleSidebar} className="navbar__toggle-button">
+          <button
+            onClick={toggleMobileMenu}
+            className="navbar__toggle-button"
+            aria-label="Toggle menu"
+          >
             <FaBars />
           </button>
         </div>
 
         {/* Sidebar Links */}
-        <ul className="navbar__links">
+        <ul className={`navbar__links ${isMobileMenuOpen ? "open" : ""}`}>
           <SidebarItem
             icon={<FaList size={20} />}
             text="List of Blog"
@@ -150,20 +154,23 @@ const SidebarItem = ({
   isActive,
   to,
 }) => {
+  const handleClick = () => {
+    if (section && toggleDropdown) {
+      toggleDropdown(section);
+    }
+  };
+
   return (
     <li className="sidebar-item">
       {to ? (
-        <Link to={to} className="sidebar-item__link">
+        <Link to={to} className="sidebar-item__link" onClick={handleClick}>
           <div className="sidebar-item__content">
             {icon}
             <span className="sidebar-item__text">{text}</span>
           </div>
         </Link>
       ) : (
-        <div
-          className="sidebar-item__content"
-          onClick={() => section && toggleDropdown(section)}
-        >
+        <div className="sidebar-item__content" onClick={handleClick}>
           {icon}
           <span className="sidebar-item__text">{text}</span>
         </div>

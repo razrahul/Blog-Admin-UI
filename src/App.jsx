@@ -13,10 +13,14 @@ const BlogListPage = lazy(() => import("./pages/BlogListPage/BlogListPage"));
 const ContactPage = lazy(() => import("./pages/Contact/ContactPage"));
 const LoginPage = lazy(() => import("./components/Login/Login"));
 const AddSubtitlePage = lazy(() => import("./pages/AddTitle/AddSubTitlePage"));
-const UserRegister = lazy(() => import("./containers/UserRegister/UserRegister"));
+const UserRegister = lazy(() =>
+  import("./containers/UserRegister/UserRegister")
+);
 const RecycleBinPage = lazy(() => import("./pages/RecycleBin/RecycleBinPage"));
 const Profile = lazy(() => import("./pages/Profile/Profile"));
-const ChangePassword = lazy(() => import("./components/ChangePassword/ChangePassword"));
+const ChangePassword = lazy(() =>
+  import("./components/ChangePassword/ChangePassword")
+);
 const MCategoryTable = lazy(() => import("./containers/MItem/MCategoryTable"));
 const MRoleTable = lazy(() => import("./containers/MItem/MRoleTable"));
 const MCompanyTable = lazy(() => import("./containers/MItem/MCompanyTable"));
@@ -36,20 +40,31 @@ const App = () => {
       <div className="app-container">
         {!isAuthenticated ? (
           // Show LoginPage if the user is not logged in
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense
+            fallback={<div className="suspense-fallback">Loading...</div>}
+          >
             <LoginPage />
           </Suspense>
         ) : (
           <>
+            {/* Left Navbar */}
             <div className="content-fix">
-              <Suspense fallback={<div>Loading Navbar...</div>}>
-                <Navbar user={user} /> {/* Left Navbar */}
+              <Suspense
+                fallback={
+                  <div className="suspense-fallback">Loading Navbar...</div>
+                }
+              >
+                <Navbar user={user} />
               </Suspense>
             </div>
 
             {/* Right-Side Dynamic Content */}
             <div className="content">
-              <Suspense fallback={<div>Loading Content...</div>}>
+              <Suspense
+                fallback={
+                  <div className="suspense-fallback">Loading Content...</div>
+                }
+              >
                 <Routes>
                   <Route path="/users" element={<UsersPage />} />
                   <Route path="/recycle-bin" element={<RecycleBinPage />} />
@@ -64,7 +79,10 @@ const App = () => {
                     element={<AddSubtitlePage />}
                   />
                   <Route path="/contact" element={<ContactPage />} />
-                  <Route path="/recycle-bin/transBlog" element={<TransBlog />} />
+                  <Route
+                    path="/recycle-bin/transBlog"
+                    element={<TransBlog />}
+                  />
                   <Route path="/category" element={<MCategoryTable />} />
                   <Route path="/role" element={<MRoleTable />} />
                   <Route path="/company" element={<MCompanyTable />} />
