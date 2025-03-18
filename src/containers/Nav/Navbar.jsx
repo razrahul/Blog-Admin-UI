@@ -44,11 +44,7 @@ const Navbar = ({ user }) => {
       <nav className="navbar__container">
         {/* Sidebar Header */}
         <div className="navbar__header">
-          <h2
-            className={`navbar__title ${expanded ? "expanded" : "collapsed"}`}
-          >
-            TechTimes.ai
-          </h2>
+          <h2 className="navbar__title">TechTimes.ai</h2>
           <button onClick={toggleSidebar} className="navbar__toggle-button">
             <FaBars />
           </button>
@@ -111,12 +107,7 @@ const Navbar = ({ user }) => {
 
         {/* User Profile Section */}
         <div className="navbar__user-profile">
-       
-          <div
-            className={`navbar__user-info ${
-              expanded ? "expanded" : "collapsed"
-            }`}
-          >
+          <div className="navbar__user-info">
             <div className="navbar__user-name">
               {user ? user.name : "Guest"}
             </div>

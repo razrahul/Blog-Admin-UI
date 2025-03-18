@@ -1,77 +1,77 @@
+/* General Styles */
 .app-container {
   display: flex;
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-
-  // Fixed Sidebar Navbar
-  .content-fix {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 18vw; /* Sidebar width for large screens */
-    background-color: #fff; 
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-  }
-
-  // Main Content
-  .content {
-    margin-left: 18vw; /* Push content to match sidebar width */
-    flex: 1;
-    padding: 20px;
-    background-color: #f9f9f9;
-    overflow-y: auto;
-    height: 100vh;
-  }
+  background-color: #f9f9f9;
 }
 
-// Medium Screens (Tablets)
-@media (max-width: 1024px) {
-  .content-fix {
-    width: 20vw; /* Adjusted sidebar for tablets */
+// Fixed Sidebar Navbar
+.content-fix {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 250px; /* Sidebar width for large screens */
+  background-color: #2c3e50; /* Dark sidebar background */
+  color: #ecf0f1; /* Light text color */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  transition: width 0.3s ease-in-out;
+
+  @media (max-width: 1024px) {
+    width: 200px; /* Adjusted sidebar for tablets */
   }
 
-  .content {
-    margin-left: 20vw; 
-  }
-}
-
-// Small Screens (Mobile)
-@media (max-width: 768px) {
-  .app-container {
-    flex-direction: column; /* Stack Navbar and Content */
-  }
-
-  .content-fix {
-    position: fixed;
-    width: 100vw; 
+  @media (max-width: 768px) {
+    width: 100vw; /* Full width for mobile */
     height: 60px; /* Navbar height */
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 10px 20px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
   }
 
-  .content {
+  @media (max-width: 480px) {
+    height: 50px; /* Reduce navbar height */
+    padding: 10px;
+  }
+}
+
+// Main Content
+.content {
+  margin-left: 250px; /* Push content to match sidebar width */
+  flex: 1;
+  padding: 20px;
+  background-color: #ffffff; /* White background for content */
+  overflow-y: auto;
+  height: 100vh;
+  transition: margin-left 0.3s ease-in-out;
+
+  @media (max-width: 1024px) {
+    margin-left: 200px; /* Adjusted margin for tablets */
+  }
+
+  @media (max-width: 768px) {
     margin-left: 0;
     margin-top: 60px; /* Offset for navbar height */
     padding: 15px;
   }
-}
 
-// Extra Small Screens
-@media (max-width: 480px) {
-  .content-fix {
-    height: 50px; /* Reduce navbar height */
-    padding: 10px;
-  }
-
-  .content {
+  @media (max-width: 480px) {
     margin-top: 50px;
     padding: 10px;
   }
+}
+
+// Loading Fallback Styles
+.suspense-fallback {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 1.5rem;
+  color: #2c3e50;
 }
