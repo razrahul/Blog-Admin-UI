@@ -1,131 +1,108 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Table from "./Table";
-
+import { useDispatch, useSelector } from "react-redux";
+import { getAllRoles, updateRole, createRole, deleteRole } from "../../redux/action/rolesActions";
+import { getAllUsers } from "../../redux/action/admin";
+import Button from "../../components/conformationButtom/Button.jsx";
+import { MdDelete } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
+import "./MScss/AllMitem.scss"
 
 const MRoleTable = () => {
-  const [roles, setRoles] = useState([
-    { id: 1, name: "Admin", description: "Administrator Role" },
-    { id: 2, name: "User", description: "Standard User Role" },
-  ]);
-  const [newRole, setNewRole] = useState({ name: "", description: "" });
+  const [newRole, setNewRole] = useState({ name: "" });
   const [editRole, setEditRole] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false); // New state for delete confirmation
-  const [roleToDelete, setRoleToDelete] = useState(null); // Store the role to be deleted
 
-  const columns = [
-    {
-      name: "Name",
-      selector: (row) => row.name,
-      sortable: true,
-    },
-    {
-      name: "Description",
-      selector: (row) => row.description,
-      sortable: true,
-    },
-    {
-      name: "Actions",
-      cell: (row) => (
-        <div>
-          <button onClick={() => handleEdit(row)}>Edit</button>
-          <button onClick={() => handleDeleteConfirmation(row)}>Delete</button>
-        </div>
-      ),
-    },
-  ];
+  const { roles: data } = useSelector((state) => state.role);
+  const { users } = useSelector((state) => state.admin);
+  const dispatch = useDispatch();
 
-  const handleEdit = (row) => {
-    setIsEditing(true);
-    setEditRole(row);
-    setNewRole({ name: row.name, description: row.description });
+  useEffect(() => {
+    dispatch(getAllRoles());
+    if (!users || users.length === 0) {
+      dispatch(getAllUsers());
+    }
+  }, [dispatch]);
+
+  // find username for createBy
+  const superAdmin = users && users.filter((user) => user.role.name === "SuperAdmin");
+
+  const userName = (userId) => {
+    if (!userId) return "N/A"; // Handle undefined/null IDs
+    const user = superAdmin.find((user) => user._id === userId);
+    return user ? user.name : "Unknown";
+  };
+
+  const handleEdit = (role) => {
+    setEditRole(role);
+    setNewRole({ name: role.name });
     setIsPopupOpen(true);
   };
 
-  const handleDeleteConfirmation = (row) => {
-    setRoleToDelete(row); // Store the role to delete
-    setIsDeletePopupOpen(true); // Open the delete confirmation modal
-  };
-
-  const handleDelete = () => {
-    if (roleToDelete) {
-      setRoles(roles.filter((item) => item.id !== roleToDelete.id));
-    }
-    setIsDeletePopupOpen(false); // Close the delete confirmation modal
-  };
-
-  const handleCancelDelete = () => {
-    setIsDeletePopupOpen(false); // Close the delete confirmation modal
-    setRoleToDelete(null); // Reset the role to delete
-  };
-
-  const handleAddRole = () => {
-    const newId = roles.length ? roles[roles.length - 1].id + 1 : 1;
-    const newRoleObject = { ...newRole, id: newId };
-    setRoles([...roles, newRoleObject]);
-    setNewRole({ name: "", description: "" });
-  };
-
   const handleSaveRole = () => {
-    if (isEditing) {
-      setRoles(roles.map((item) =>
-        item.id === editRole.id ? { ...item, ...newRole } : item
-      ));
-      setIsEditing(false);
+    if (editRole) {
+      dispatch(updateRole(editRole._id, newRole)).then(() => {
+          dispatch(getAllRoles());
+        });
+      // console.log(editRole._id, newRole);
     } else {
-      handleAddRole();
+      dispatch(createRole(newRole))
+      // console.log(newRole);
     }
     setIsPopupOpen(false);
+    setEditRole(null);
+    setNewRole({ name: "" });
   };
 
-  const handleClosePopup = () => {
-    setIsPopupOpen(false);
-    setIsEditing(false);
-    setNewRole({ name: "", description: "" });
+  const handleDeleteRole = (roleId) => {
+    dispatch(deleteRole(roleId)).then(() => {
+      dispatch(getAllRoles());
+    });
+    // console.log(roleId)
   };
+
+  const columns = [
+    { name: "Name", selector: (row) => row.name, sortable: true },
+    { name: "CreatedBy", selector: (row) => userName(row.createdBy) || "Unknown", sortable: true },
+    { name: "Active", selector: (row) => (row.isactive ? "Active" : "Inactive"), sortable: true },
+    {
+      name: "Actions",
+      cell: (row) => (
+        <div className="action-buttons">
+          <button onClick={() => handleEdit(row)} className="edit-button">
+            <FaEdit className="edit-icon" />
+          </button>
+          <Button
+            onConfirm={() => handleDeleteRole(row._id)}
+            title="Permanently Delete Role"
+            description={`Are you sure you want to delete "${row.name}"?`}
+            buttonClass="delete-button"
+          >
+            <MdDelete className="delete-icon" />
+          </Button>
+        </div>
+      ),
+    }
+  ];
 
   return (
     <div>
       <h3>Role Management</h3>
       <button onClick={() => setIsPopupOpen(true)}>Add Role</button>
-      <Table data={roles} columns={columns} />
+      <Table data={data} columns={columns} />
 
-      {/* Edit/Add Popup */}
       {isPopupOpen && (
         <div className="popup">
           <div className="popup-content">
-            <h4>{isEditing ? "Edit Role" : "Add Role"}</h4>
-            <div>
-              <label>Name:</label>
-              <input
-                type="text"
-                value={newRole.name}
-                onChange={(e) => setNewRole({ ...newRole, name: e.target.value })}
-              />
-            </div>
-            <div>
-              <label>Description:</label>
-              <input
-                type="text"
-                value={newRole.description}
-                onChange={(e) => setNewRole({ ...newRole, description: e.target.value })}
-              />
-            </div>
-            <button onClick={handleSaveRole}>{isEditing ? "Save" : "Add"}</button>
-            <button onClick={handleClosePopup}>Close</button>
-          </div>
-        </div>
-      )}
-
-      {/* Delete Confirmation Popup */}
-      {isDeletePopupOpen && (
-        <div className="popup">
-          <div className="popup-content">
-            <h4>Are you sure you want to delete this role?</h4>
-            <p>{roleToDelete ? roleToDelete.name : ""}</p>
-            <button onClick={handleDelete}>Delete</button>
-            <button onClick={handleCancelDelete}>Cancel</button>
+            <h4>{editRole ? "Edit Role" : "Add Role"}</h4>
+            <label>Name:</label>
+            <input
+              type="text"
+              value={newRole.name}
+              onChange={(e) => setNewRole({ ...newRole, name: e.target.value })}
+            />
+            <button onClick={handleSaveRole}>{editRole ? "Save" : "Add"}</button>
+            <button onClick={() => setIsPopupOpen(false)}>Close</button>
           </div>
         </div>
       )}

@@ -109,4 +109,43 @@
     margin: 10px;
     cursor: pointer;
   }
+
+  .action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  
+    .edit-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s ease-in-out;
+  
+      &:hover {
+        transform: scale(1.1);
+      }
+  
+      .edit-icon {
+        font-size: 22px;  // Adjust the size
+        color: #007bff;   // Blue color
+      }
+    }
+  
+    .delete-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+  
+      .delete-icon {
+        font-size: 22px;
+        color: red;
+        transition: color 0.2s ease-in-out;
+  
+        &:hover {
+          color: darkred;
+        }
+      }
+    }
+  }
+  
   
