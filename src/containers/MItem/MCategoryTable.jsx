@@ -1,11 +1,13 @@
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import React, { useState } from "react";
 import Table from "./Table";
+import { useEffect } from "react";
+import { getAllCategories } from "../../redux/action/categoryAction";
+import { getAllUsers } from '../../redux/action/admin';
 
 const MCategoryTable = () => {
-  const [categories, setCategories] = useState([
-    { id: 1, title: "Category 1", description: "Description 1" },
-    { id: 2, title: "Category 2", description: "Description 2" },
-  ]);
+  const [categories, setCategories] = useState();
   const [newCategory, setNewCategory] = useState({ title: "", description: "" });
   const [editCategory, setEditCategory] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -13,15 +15,46 @@ const MCategoryTable = () => {
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false); // New state for delete confirmation
   const [categoryToDelete, setCategoryToDelete] = useState(null); // Store the category to be deleted
 
+  const { categories: data } = useSelector((state) => state.category);
+  // console.log(categories)
+  const { users } = useSelector((state) => state.admin);
+  // console.log(users)
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Fetch categories from the API
+    dispatch(getAllCategories());
+    if(users && users.length === 0){
+      dispatch(getAllUsers());
+    }
+  }, [dispatch])
+
+  //find creadte to user Name
+
+  const superAdmin = users && users.filter((user) => user.role.name === "SuperAdmin");
+
+  const userName = (userId) => {
+    if (!userId) return "N/A"; // Handle undefined/null IDs
+    const user = superAdmin.find((user) => user._id === userId);
+    return user ? user.name : "Unknown";
+  };
+
+
   const columns = [
     {
       name: "Name",
-      selector: (row) => row.title,
+      selector: (row) => row.name,
       sortable: true,
     },
     {
-      name: "Description",
-      selector: (row) => row.description,
+      name: "CreatedBy",
+      selector: (row) =>userName( row.createdBy),
+      sortable: true,
+    },
+    {
+      name: "Active",
+      selector: (row) => row.isactive? "Active": "DeAcive",
       sortable: true,
     },
     {
@@ -88,7 +121,7 @@ const MCategoryTable = () => {
     <div>
       <h3>Category Management</h3>
       <button onClick={() => setIsPopupOpen(true)}>Add Category</button>
-      <Table data={categories} columns={columns} />
+      <Table data={data} columns={columns} />
 
       {/* Edit/Add Popup */}
       {isPopupOpen && (
