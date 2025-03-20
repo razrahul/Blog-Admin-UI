@@ -35,21 +35,21 @@ const companySlice = createSlice({
     },
     addCompany(state, action) {
       state.loading = false;
-      state.companies.push(action.payload);
+      state.companies.push(action.payload.company);
       state.message = action.payload.message;
     },
     updateCompany(state, action) {
-      const index = state.companies.findIndex(
-        (company) => company.id === action.payload.id
-      );
+      const { company } = action.payload; // Extract the updated company data
+      const index = state.companies.findIndex((c) => c._id === company._id);
+      
       if (index !== -1) {
-        state.companies[index] = action.payload;
+        state.companies[index] = { ...state.companies[index], ...company }; 
       }
     },
     deleteCompany(state, action) {
       state.loading = false;
       const { id, data } = action.payload;
-      state.companies = state.companies.filter((company) => company.id !== id);
+      state.companies = state.companies.filter((company) => company._id !== id);
     },
     updateActivity(state, action) {
       state.loading = false;

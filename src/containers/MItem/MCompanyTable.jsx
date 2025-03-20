@@ -1,36 +1,60 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "./Table";
-import "./MScss/AllMitem.scss"
+import "./MScss/AllMitem.scss";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAllCompanies,
+  createCompany,
+  updateCompany,
+  deleteCompany,
+} from "../../redux/action/companyAction";
+import Button from "../../components/conformationButtom/Button.jsx";
+import { MdDelete } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
 
 const MCompanyTable = () => {
-  const [mcompanies, setMcompanies] = useState([
-    { id: 1, name: "Company A", description: "Tech Company" },
-    { id: 2, name: "Company B", description: "Finance Company" },
-  ]);
-  const [newCompany, setNewCompany] = useState({ name: "", description: "" });
+  const [newCompany, setNewCompany] = useState({
+    companyName: "",
+    companyId: "",
+  });
   const [editCompany, setEditCompany] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false); // New state for delete confirmation
-  const [companyToDelete, setCompanyToDelete] = useState(null); // Store the company to be deleted
+
+  const { companies } = useSelector((state) => state.company);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllCompanies());
+  }, [dispatch]);
 
   const columns = [
     {
-      name: "Name",
-      selector: (row) => row.name,
+      name: "Company Name",
+      selector: (row) => row.companyName,
       sortable: true,
     },
+    { name: "Company Id", selector: (row) => row.companyId, sortable: true },
     {
-      name: "Description",
-      selector: (row) => row.description,
+      name: "Active",
+      selector: (row) => (row.isactive ? "Active" : "Inactive"),
       sortable: true,
     },
     {
       name: "Actions",
       cell: (row) => (
-        <div>
-          <button onClick={() => handleEdit(row)}>Edit</button>
-          <button onClick={() => handleDeleteConfirmation(row)}>Delete</button>
+        <div className="action-buttons">
+          <button onClick={() => handleEdit(row)} className="edit-button">
+            <FaEdit className="edit-icon" />
+          </button>
+          <Button
+            onConfirm={() => handleDeleteCompany(row._id)}
+            title="Permanently Delete Company"
+            description={`Are you sure you want to delete \"${row.companyName}\"?`}
+            buttonClass="delete-button"
+          >
+            <MdDelete className="delete-icon" />
+          </Button>
         </div>
       ),
     },
@@ -39,93 +63,68 @@ const MCompanyTable = () => {
   const handleEdit = (row) => {
     setIsEditing(true);
     setEditCompany(row);
-    setNewCompany({ name: row.name, description: row.description });
+    setNewCompany({
+      companyName: row.companyName || "", 
+      companyId: row.companyId || ""
+    });
     setIsPopupOpen(true);
   };
 
-  const handleDeleteConfirmation = (row) => {
-    setCompanyToDelete(row); // Store the company to delete
-    setIsDeletePopupOpen(true); // Open the delete confirmation modal
-  };
-
-  const handleDelete = () => {
-    if (companyToDelete) {
-      setMcompanies(mcompanies.filter((item) => item.id !== companyToDelete.id));
-    }
-    setIsDeletePopupOpen(false); // Close the delete confirmation modal
-  };
-
-  const handleCancelDelete = () => {
-    setIsDeletePopupOpen(false); // Close the delete confirmation modal
-    setCompanyToDelete(null); // Reset the company to delete
-  };
-
-  const handleAddCompany = () => {
-    const newId = mcompanies.length ? mcompanies[mcompanies.length - 1].id + 1 : 1;
-    const newCompanyObject = { ...newCompany, id: newId };
-    setMcompanies([...mcompanies, newCompanyObject]);
-    setNewCompany({ name: "", description: "" });
+  const handleDeleteCompany = (companyId) => {
+    dispatch(deleteCompany(companyId));
   };
 
   const handleSaveCompany = () => {
     if (isEditing) {
-      setMcompanies(mcompanies.map((item) =>
-        item.id === editCompany.id ? { ...item, ...newCompany } : item
-      ));
-      setIsEditing(false);
+      dispatch(updateCompany(editCompany._id, newCompany));
     } else {
-      handleAddCompany();
+      dispatch(createCompany(newCompany));
     }
     setIsPopupOpen(false);
+    setIsEditing(false);
+    setNewCompany({ companyName: "", companyId: "" });
   };
 
-  const handleClosePopup = () => {
+  const handlePopClose = () =>{
     setIsPopupOpen(false);
-    setIsEditing(false);
-    setNewCompany({ name: "", description: "" });
+    setNewCompany({ companyName: "", companyId: "" });
   };
 
   return (
     <div>
       <h3>Company Management</h3>
       <button onClick={() => setIsPopupOpen(true)}>Add Company</button>
-      <Table data={mcompanies} columns={columns} />
+      <Table data={companies} columns={columns} />
 
-      {/* Edit/Add Popup */}
       {isPopupOpen && (
         <div className="popup">
           <div className="popup-content">
             <h4>{isEditing ? "Edit Company" : "Add Company"}</h4>
             <div>
-              <label>Name:</label>
+              <label>Company Name:</label>
               <input
                 type="text"
-                value={newCompany.name}
-                onChange={(e) => setNewCompany({ ...newCompany, name: e.target.value })}
+                value={newCompany.companyName}
+                onChange={(e) =>
+                  setNewCompany({ ...newCompany, companyName: e.target.value })
+                }
               />
             </div>
             <div>
-              <label>Description:</label>
+              <label>Company Id:(optional)</label>
               <input
                 type="text"
-                value={newCompany.description}
-                onChange={(e) => setNewCompany({ ...newCompany, description: e.target.value })}
+                value={newCompany.companyId}
+                onChange={(e) =>
+                  setNewCompany({ ...newCompany, companyId: e.target.value })
+                }
               />
             </div>
-            <button onClick={handleSaveCompany}>{isEditing ? "Save" : "Add"}</button>
-            <button onClick={handleClosePopup}>Close</button>
-          </div>
-        </div>
-      )}
-
-      {/* Delete Confirmation Popup */}
-      {isDeletePopupOpen && (
-        <div className="popup">
-          <div className="popup-content">
-            <h4>Are you sure you want to delete this company?</h4>
-            <p>{companyToDelete ? companyToDelete.name : ""}</p>
-            <button onClick={handleDelete}>Delete</button>
-            <button onClick={handleCancelDelete}>Cancel</button>
+            <button onClick={handleSaveCompany}>
+              {isEditing ? "Save" : "Add"}
+            </button>
+            {/* <button onClick={() => setIsPopupOpen(false)}>Close</button> */}
+            <button onClick={handlePopClose}>Close</button>
           </div>
         </div>
       )}

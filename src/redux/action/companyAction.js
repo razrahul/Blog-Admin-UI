@@ -77,13 +77,13 @@ export const getAllDeletedCompany = () => async (dispatch) => {
 };
 
 //create Companies
-export const createCompany = (companyName, companyId) => async (dispatch) => {
+export const createCompany = (newCompany) => async (dispatch) => {
   try {
     dispatch(companyRequest());
 
     const { data } = await axios.post(
       `${server}/company`,
-      { companyName, companyId },
+      { companyName:newCompany.companyName, companyId:newCompany.companyId },
       {
         headers: {
           "Content-Type": "application/json",
@@ -104,13 +104,13 @@ export const createCompany = (companyName, companyId) => async (dispatch) => {
 
 //update Company
 export const updateCompany =
-  (id, companyName, companyId) => async (dispatch) => {
+  (id, newCompany) => async (dispatch) => {
     try {
       dispatch(companyRequest());
 
       const { data } = await axios.put(
         `${server}/company/${id}`,
-        { companyName, companyId },
+        { companyName:newCompany.companyName, companyId:newCompany.companyId },
         {
           headers: {
             "Content-Type": "application/json",
@@ -140,7 +140,7 @@ export const deleteCompany = (id) => async (dispatch) => {
       withCredentials: true,
     });
 
-    dispatch(deleteCompanySuccess(id, data));
+    dispatch(deleteCompanySuccess({id, data}));
   } catch (error) {
     return async (dispatch) => {
       dispatch(
