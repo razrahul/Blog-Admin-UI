@@ -7,7 +7,7 @@ import { getAllCompanies } from "../../redux/action/companyAction.js";
 
 const UserRegister = () => {
   const [name, setName] = useState("");
-  const [username, setUsername] = useState("")
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
@@ -15,33 +15,35 @@ const UserRegister = () => {
   const [image, setImage] = useState(null);
   const [imagePrev, setImagePrev] = useState("");
   const [error, setError] = useState("");
-  const [companyId, setCompanyId] = useState("")
+  const [companyId, setCompanyId] = useState("");
+
+  const [phoneError, setPhoneError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [formError, setFormError] = useState("");
 
   const dispatch = useDispatch();
   const { loading, roles } = useSelector((state) => state.role);
-
-  const { companies } = useSelector((state) => state.company)
+  const { companies } = useSelector((state) => state.company);
 
   useEffect(() => {
     if (!roles || roles.length === 0) {
       dispatch(getAllRoles());
-      console.log("useEffect Called")
     }
-    if(!companies || companies.length === 0) {
-      dispatch(getAllCompanies())
-      console.log("useEffect Called")
-
+    if (!companies || companies.length === 0) {
+      dispatch(getAllCompanies());
     }
-  }, [dispatch]); // Prevent repeated API calls
+  }, [dispatch]);
 
-  // console.log(roles)
-  // console.log(companies)
+  // Move isPasswordValid function outside handleSubmit
+  const isPasswordValid = (password) => {
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    return regex.test(password);
+  };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setImage(file);
 
-    // Generate a preview for the uploaded image
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => setImagePrev(reader.result);
@@ -59,6 +61,24 @@ const UserRegister = () => {
       return;
     }
 
+    let valid = true;
+
+    if (phone.length !== 10) {
+      setPhoneError("Phone number must be 10 digits.");
+      valid = false;
+    } else {
+      setPhoneError("");
+    }
+
+    if (!isPasswordValid(password)) {
+      setPasswordError("Password must be at least 8 characters and include uppercase, lowercase, and a number.");
+      valid = false;
+    } else {
+      setPasswordError("");
+    }
+
+    if (!valid) return;
+
     const myForm = new FormData();
     myForm.append("name", name);
     myForm.append("username", username);
@@ -70,40 +90,23 @@ const UserRegister = () => {
     myForm.append("file", image);
 
     dispatch(register(myForm));
-
-    console.log("User data: ", name, email, phone, password, roleId, companyId, image);
-    // console.log("roleId",roleId)
-    // console.log("companyId", companyId)
-    // console.log("username", username)
-
-    alert("User Registered Successfully!");
+    alert("User Add Successfully!");
 
     // Reset form fields
     setName("");
-    setUsername("")
+    setUsername("");
     setEmail("");
     setPhone("");
     setPassword("");
-    setRoleId(""); // Reset to empty string
+    setRoleId("");
     setCompanyId("");
     setImage(null);
     setImagePrev("");
   };
 
-  const custemroles = [
-    "SuperAdmin",
-    "Admin",
-    "Devloper",
-    "Content Writer",
-    "Designer",
-    "Other",
-  ];
-
-
   return (
     <div className="user-register-page">
-      <h1>User Registration</h1>
-
+      <h1>Add User</h1>
       <form onSubmit={handleSubmit} className="registration-form">
         {error && <p className="error-message">{error}</p>}
 
@@ -119,7 +122,6 @@ const UserRegister = () => {
           />
         </div>
 
-        {/* username section */}
         <div className="form-group">
           <label htmlFor="username">UserName</label>
           <input
@@ -132,7 +134,6 @@ const UserRegister = () => {
           />
         </div>
 
-          {/* email Section */}
         <div className="form-group">
           <label htmlFor="email">Email</label>
           <input
@@ -151,9 +152,17 @@ const UserRegister = () => {
             type="tel"
             id="phone"
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value;
+              if (/^\d*$/.test(value)) {
+                setPhone(value);
+              }
+            }}
             placeholder="Enter your phone number"
+            maxLength="10"
+            required
           />
+          {phoneError && <p className="error-message">{phoneError}</p>}
         </div>
 
         <div className="form-group">
@@ -163,11 +172,12 @@ const UserRegister = () => {
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter your password"
+            placeholder="Minimum 8 characters, 1 uppercase, 1 lowercase, 1 number"
             required
           />
+          {passwordError && <p className="error-message">{passwordError}</p>}
         </div>
-          {/* role section */}
+
         <div className="form-group">
           <label>Role</label>
           <select
@@ -186,7 +196,7 @@ const UserRegister = () => {
               ))}
           </select>
         </div>
-        {/* company section */}
+
         <div className="form-group">
           <label>Company (Website)</label>
           <select
