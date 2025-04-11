@@ -29,13 +29,9 @@ import {
 export const getAllBlogs = () => async (dispatch) => {
   try {
     dispatch(getAllBlogsRequest());
-
     const { data } = await axios.get(`${server}/blogs`, {
       withCredentials: true,
     });
-
-    //  console.log(data);
-
     dispatch(getAllBlogsSuccess(data));
   } catch (error) {
     dispatch(
@@ -48,7 +44,6 @@ export const getAllBlogs = () => async (dispatch) => {
 export const createBlog = (blogData) => async (dispatch) => {
   try {
     dispatch(createBlogRequest());
-
     const { data } = await axios.post(`${server}/createblog`, blogData, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -71,14 +66,13 @@ export const createBlog = (blogData) => async (dispatch) => {
 export const updateBlog = (blogId, blogData) => async (dispatch) => {
   try {
     dispatch(blogRequest());
-
-    const { data } = await axios.put(`${server}/blogs/${blogId}`, blogData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
+    const config={
+      headers:{
+        "Content-Type": "application/json",
       },
       withCredentials: true,
-    });
-
+    };
+    const { data } = await axios.put(`${server}/blogs/${blogId}`, blogData, config);
     dispatch(updateBlogSuccess(data));
   } catch (error) {
     dispatch(
@@ -144,20 +138,11 @@ export const deleteSubtitle = (blogId, subtitleId) => async (dispatch) => {
     //     withCredentials: true,
     //   }
     // );
-
-    dispatch(
-      deleteSubtitleSuccess({
-        blogId,
-        subtitleId,
-        message: data.message, // Ensure backend sends this
-      })
-    );
+    dispatch(deleteSubtitleSuccess({ blogId, subtitleId, message: data.message }));
   } catch (error) {
     dispatch(
       deleteSubtitleFail(
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message
+        error.response?.data?.message || error.message
       )
     );
   }
@@ -189,11 +174,9 @@ export const deleteBlog = (blogId) => async (dispatch) => {
 export const getAllDeltedBlogs = () => async (dispatch) => {
   try {
     dispatch(blogRequest());
-
     const { data } = await axios.get(`${server}/deletedblogs`, {
       withCredentials: true,
     });
-
     dispatch(allDeletedBlogs(data));
   } catch (error) {
     dispatch(

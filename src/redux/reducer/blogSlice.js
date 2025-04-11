@@ -42,7 +42,7 @@ const blogSlice = createSlice({
     },
 
     //add common blogRequest and blogfail
-    blogRequest: (state, action) => {
+    blogRequest: (state) => {
       state.loading = true;
     },
     
@@ -91,6 +91,7 @@ const blogSlice = createSlice({
     },
     
     //add Subtitle(new)
+
     addSubtitle(state, action) {
       // const { blogId, subtitle } = action.payload;
     
