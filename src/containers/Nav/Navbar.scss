@@ -20,11 +20,7 @@ $transition-speed: 0.3s;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: linear-gradient(
-      90deg,
-      $primary-color,
-      #233240
-    ); // Darkened #2c3e50 by ~10%
+    background: linear-gradient(90deg, $primary-color, #233240); // Darkened #2c3e50 by ~10%
     padding: 0.5rem 1rem;
     position: fixed;
     top: 0;
@@ -55,11 +51,7 @@ $transition-speed: 0.3s;
 }
 
 .navbar-sidebar {
-  background: linear-gradient(
-    180deg,
-    $primary-color,
-    #263449
-  ); // Darkened #2c3e50 by ~5%
+  background: linear-gradient(180deg, $primary-color, #263449); // Darkened #2c3e50 by ~5%
   color: #ecf0f1;
   position: fixed;
   top: 0;
@@ -132,6 +124,7 @@ $transition-speed: 0.3s;
       display: flex;
       align-items: center;
       width: 100%;
+      cursor: pointer; // Indicate clickable area
     }
 
     &-icon {
@@ -157,8 +150,12 @@ $transition-speed: 0.3s;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     min-width: 200px;
     border-radius: 0 0 4px 4px;
-    z-index: 10;
-    display: none;
+    z-index: 1010; // Increased z-index to ensure visibility
+    display: none; // Default hidden state
+
+    &.open { // Show when class is added
+      display: block;
+    }
 
     .navbar-dropdown-item {
       display: flex;
@@ -182,10 +179,11 @@ $transition-speed: 0.3s;
     }
   }
 
-  .dropdown .navbar-item-content:hover + .navbar-dropdown,
-  .navbar-dropdown:hover {
-    display: block;
-  }
+  // Removed hover-based display logic
+  // .dropdown .navbar-item-content:hover + .navbar-dropdown,
+  // .navbar-dropdown:hover {
+  //   display: block;
+  // }
 
   .navbar-user-section {
     padding: $item-padding;
