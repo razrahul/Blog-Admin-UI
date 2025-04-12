@@ -15,6 +15,7 @@ const BlogListPage = () => {
     dispatch(getAllBlogs());
     dispatch(getAllCompanies());
     dispatch(getAllCategories());
+    console.log("Fetched Blogs:", blogs); // Debug fetched blogs
   }, [dispatch]);
 
   const { loading: blogLoading, error: blogError, blogs } = useSelector(
@@ -29,21 +30,16 @@ const BlogListPage = () => {
     categories,
   } = useSelector((state) => state.category);
 
-  const [selectedCompany, setSelectedCompany] = useState(""); // Default to empty string
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedCompany, setSelectedCompany] = useState(""); // Default to "All Companies"
+  const [selectedCategory, setSelectedCategory] = useState("all"); // Default to "All Categories"
+  const [selectedVisibility, setSelectedVisibility] = useState("all"); // Default to "All"
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Remove the useEffect that defaults to the first company
-  // useEffect(() => {
-  //   if (companies && companies.length > 0 && !selectedCompany) {
-  //     setSelectedCompany(companies[0]._id);
-  //   } else if (!companies || companies.length === 0) {
-  //     setSelectedCompany("");
-  //   }
-  // }, [companies, selectedCompany]);
+  useEffect(() => {
+    console.log("Selected Visibility changed to:", selectedVisibility); // Debug visibility change
+  }, [selectedVisibility]);
 
   useEffect(() => {}, [categories]);
-
   useEffect(() => {}, [blogs]);
 
   const filteredBlogs = blogs.filter((blog) => {
@@ -52,9 +48,13 @@ const BlogListPage = () => {
     const categoryMatch =
       selectedCategory === "all" ||
       (blog.category && blog.category._id === selectedCategory);
+    const visibilityMatch =
+      selectedVisibility === "all" || // Show all when "All" is selected
+      (selectedVisibility === "public" && blog.ispublic === true) || // Use ispublic
+      (selectedVisibility === "private" && blog.ispublic === false); // Use ispublic
     const titleMatch =
       !searchTerm || blog.title.toLowerCase().includes(searchTerm.toLowerCase());
-    return companyMatch && categoryMatch && titleMatch;
+    return companyMatch && categoryMatch && visibilityMatch && titleMatch;
   });
 
   const itemsPerPage = 9;
@@ -77,6 +77,10 @@ const BlogListPage = () => {
     setSelectedCategory(e.target.value);
   };
 
+  const handleVisibilityChange = (e) => {
+    setSelectedVisibility(e.target.value);
+  };
+
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
@@ -95,9 +99,7 @@ const BlogListPage = () => {
             onChange={handleCompanyChange}
             disabled={companyLoading}
           >
-            <option value="" disabled>
-              Select Company
-            </option>
+            <option value="">All Companies</option>
             {companies &&
               companies.map((company) => (
                 <option key={company._id} value={company._id}>
@@ -117,6 +119,15 @@ const BlogListPage = () => {
                   {category.name}
                 </option>
               ))}
+          </select>
+          <select
+            value={selectedVisibility}
+            onChange={handleVisibilityChange}
+            disabled={blogLoading}
+          >
+            <option value="all">All</option>
+            <option value="public">Public</option>
+            <option value="private">Private</option>
           </select>
         </div>
       </div>
@@ -140,9 +151,13 @@ const BlogListPage = () => {
           </div>
         </div>
         <div className="blogs-container">
-          {paginatedBlogs.map((blog) => (
-            <BlogCard key={blog._id} blog={blog} />
-          ))}
+          {paginatedBlogs.length > 0 ? (
+            paginatedBlogs.map((blog) => (
+              <BlogCard key={blog._id} blog={blog} />
+            ))
+          ) : (
+            <p>No blogs found matching the filters.</p>
+          )}
         </div>
         <div className="pagination">
           {Array.from({ length: totalPages }).map((_, index) => (

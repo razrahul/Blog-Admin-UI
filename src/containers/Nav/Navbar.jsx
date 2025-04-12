@@ -3,129 +3,144 @@ import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.scss";
 import {
   FaList,
-  FaUserPlus,
+  FaPlus,
   FaBell,
+  FaUser,
   FaUsers,
-  FaSignOutAlt,
-  FaBars,
   FaTrashAlt,
   FaCog,
+  FaSignOutAlt,
+  FaBars,
+  FaTimes,
   FaUserCircle,
-  FaListAlt,
-  FaUserTag,
-  FaBuilding,
 } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/action/userAction.js";
 
 const Navbar = ({ user }) => {
-  const [activeDropdown, setActiveDropdown] = useState(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const toggleDropdown = (section) => {
-    setActiveDropdown((prev) => (prev === section ? null : section));
-  };
 
   const handleLogout = () => {
     dispatch(logout());
     navigate("/login");
+    setShowProfileMenu(false);
   };
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen((prev) => !prev);
+  const toggleSidebar = () => {
+    setIsSidebarOpen((prev) => !prev);
   };
 
   return (
-    <aside className="navbar">
-      <nav className="navbar__container">
-        <div className="navbar__header">
-          <h2 className="navbar__title">TechTimes.ai</h2>
-          <button
-            onClick={toggleMobileMenu}
-            className="navbar__toggle-button"
-            aria-label="Toggle menu"
-          >
-            <FaBars />
+    <>
+      {/* Mobile Header */}
+      <header className="navbar-mobile-header">
+        <button
+          className="navbar-toggle"
+          onClick={toggleSidebar}
+          aria-label="Toggle menu"
+          aria-expanded={isSidebarOpen}
+        >
+          {isSidebarOpen ? <FaTimes /> : <FaBars />}
+        </button>
+        <h2 className="navbar-brand">TechTimes.ai</h2>
+        <div className="navbar-user-icon" onClick={() => setShowProfileMenu(!showProfileMenu)}>
+          <FaUserCircle size={24} />
+        </div>
+      </header>
+
+      {/* Sidebar */}
+      <aside className={`navbar-sidebar ${isSidebarOpen ? "open" : ""}`}>
+        <div className="navbar-brand-container">
+          <h2 className="navbar-brand">TechTimes.ai</h2>
+          <button className="navbar-close" onClick={toggleSidebar} aria-label="Close menu">
+            <FaTimes />
           </button>
         </div>
 
-        <ul className={`navbar__links ${isMobileMenuOpen ? "open" : ""}`}>
-          <SidebarItem icon={<FaList size={20} />} text="List of Blog" to="/blog-list" />
-          <SidebarItem icon={<FaUserPlus size={20} />} text="Add New Blogs" to="/add-blog" />
-          <SidebarItem icon={<FaBell size={20} />} text="Contact" to="/contact" />
-          <SidebarItem icon={<FaUserCircle size={20} />} text="Profile" to="/profile" />
+        <nav className="navbar-nav">
+          <SidebarItem icon={<FaList />} text="Blog List" to="/blog-list" />
+          <SidebarItem icon={<FaPlus />} text="Add Blog" to="/add-blog" />
+          <SidebarItem icon={<FaBell />} text="Contact" to="/contact" />
+          <SidebarItem icon={<FaUser />} text="Profile" to="/profile" />
           {user && user.role?.name === "SuperAdmin" && (
-            <SidebarItem icon={<FaUsers size={20} />} text="Users" to="/users" />
+            <SidebarItem icon={<FaUsers />} text="Users" to="/users" />
           )}
-          <SidebarItem icon={<FaTrashAlt size={20} />} text="Recycle Bin" to="/recycle-bin" />
-          <SidebarItem
-            icon={<FaCog size={20} />}
-            text="More Items"
-            section="more"
-            toggleDropdown={toggleDropdown}
-            isActive={activeDropdown === "more"}
-          >
-            <SidebarItem icon={<FaListAlt size={18} />} text="Category" to="/category" />
-            <SidebarItem icon={<FaUserTag size={18} />} text="Role" to="/role" />
-            <SidebarItem icon={<FaBuilding size={18} />} text="Company" to="/company" />
-          </SidebarItem>
-        </ul>
+          <SidebarItem icon={<FaTrashAlt />} text="Recycle Bin" to="/recycle-bin" />
+          <DropdownItem
+            icon={<FaCog />}
+            text="More"
+            items={[
+              { icon: <FaList />, text: "Category", to: "/category" },
+              { icon: <FaUser />, text: "Role", to: "/role" },
+              { icon: <FaUsers />, text: "Company", to: "/company" },
+            ]}
+          />
+        </nav>
 
-        <div className="navbar__user-profile">
-          <div className="navbar__user-info">
-            <div className="navbar__user-name">{user ? user.name : "Guest"}</div>
-            <div className="navbar__user-email">{user ? user.email : "guest@example.com"}</div>
-            <button
-              onClick={() => setShowProfileMenu((prev) => !prev)}
-              className="navbar__profile-toggle"
-            >
-              <FaCog size={20} />
+        <div className="navbar-user-section">
+          <div className="navbar-user-info">
+            <span className="navbar-user-name">{user?.name || "Guest"}</span>
+            <span className="navbar-user-email">{user?.email || "guest@example.com"}</span>
+          </div>
+          <button className="navbar-logout" onClick={handleLogout}>
+            <FaSignOutAlt /> Logout
+          </button>
+        </div>
+      </aside>
+
+      {/* Profile Menu (Mobile/Overlay) */}
+      {showProfileMenu && (
+        <div className="navbar-profile-menu-overlay">
+          <div className="navbar-profile-menu">
+            <button className="navbar-profile-menu-item" onClick={handleLogout}>
+              <FaSignOutAlt /> Logout
             </button>
           </div>
-
-          {showProfileMenu && (
-            <div className="navbar__profile-menu">
-              <button className="navbar__profile-menu-button" onClick={handleLogout}>
-                <FaSignOutAlt size={16} />
-                <span>Logout</span>
-              </button>
-            </div>
-          )}
         </div>
-      </nav>
-    </aside>
+      )}
+
+      {/* Main Content Overlay for Mobile */}
+      {isSidebarOpen && <div className="navbar-overlay" onClick={toggleSidebar}></div>}
+    </>
   );
 };
 
-const SidebarItem = ({ icon, text, section, children, toggleDropdown, isActive, to }) => {
-  const handleClick = () => {
-    if (section && toggleDropdown) {
-      toggleDropdown(section);
-    }
-  };
+const SidebarItem = ({ icon, text, to }) => (
+  <Link to={to} className="navbar-item" onClick={() => window.innerWidth < 768 && setIsSidebarOpen(false)}>
+    <span className="navbar-item-icon">{icon}</span>
+    <span className="navbar-item-text">{text}</span>
+  </Link>
+);
+
+const DropdownItem = ({ icon, text, items }) => {
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <li className="sidebar-item">
-      {to ? (
-        <Link to={to} className="sidebar-item__link" onClick={handleClick}>
-          <div className="sidebar-item__content">
-            {icon}
-            <span className="sidebar-item__text">{text}</span>
-          </div>
-        </Link>
-      ) : (
-        <div className="sidebar-item__content" onClick={handleClick}>
-          {icon}
-          <span className="sidebar-item__text">{text}</span>
+    <div className="navbar-item dropdown">
+      <div className="navbar-item-content" onClick={() => setIsOpen(!isOpen)}>
+        <span className="navbar-item-icon">{icon}</span>
+        <span className="navbar-item-text">{text}</span>
+        <span className="navbar-dropdown-arrow">{isOpen ? "▲" : "▼"}</span>
+      </div>
+      {isOpen && (
+        <div className="navbar-dropdown">
+          {items.map((item, index) => (
+            <Link
+              key={index}
+              to={item.to}
+              className="navbar-dropdown-item"
+              onClick={() => window.innerWidth < 768 && setIsSidebarOpen(false)}
+            >
+              <span className="navbar-dropdown-icon">{item.icon}</span>
+              <span className="navbar-dropdown-text">{item.text}</span>
+            </Link>
+          ))}
         </div>
       )}
-      {isActive && <ul className="sidebar-item__more-dropdown">{children}</ul>}
-      {/* Ensure consistent margin by applying it to the li or ul */}
-    </li>
+    </div>
   );
 };
 
