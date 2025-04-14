@@ -25,7 +25,7 @@ const Navbar = ({ user }) => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate("/login");
+    navigate("/blog-list");
     setShowProfileMenu(false);
   };
 
