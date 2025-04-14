@@ -67,7 +67,7 @@ const App = () => {
                   <Route path="/profile" element={<Profile user={user} />} />
                   <Route path="/change-password" element={<ChangePassword />} />
                   <Route path="/add-blog" element={<AddBlogPage />} />
-                  <Route path="/blog-list" element={<BlogListPage />} />
+                  <Route path="/blog-list" element={<BlogListPage user={user}/>} />
                   <Route path="/blog-list/:blogId" element={<BlogsDetails />} />
                   <Route
                     path="/add-subtitle/:blogId"

@@ -7,7 +7,7 @@ import { getAllBlogs } from "../../redux/action/blogs";
 import { getAllCategories } from "../../redux/action/categoryAction";
 import { getAllCompanies } from "../../redux/action/companyAction";
 
-const BlogListPage = () => {
+const BlogListPage = ({user}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -153,7 +153,7 @@ const BlogListPage = () => {
         <div className="blogs-container">
           {paginatedBlogs.length > 0 ? (
             paginatedBlogs.map((blog) => (
-              <BlogCard key={blog._id} blog={blog} />
+              <BlogCard user={user} key={blog._id} blog={blog} />
             ))
           ) : (
             <p>No blogs found matching the filters.</p>

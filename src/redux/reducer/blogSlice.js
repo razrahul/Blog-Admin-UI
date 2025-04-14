@@ -26,6 +26,7 @@ const blogSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    
 
     // Create Blog
     createBlogRequest: (state) => {
@@ -55,6 +56,32 @@ const blogSlice = createSlice({
     allDeletedBlogs: (state, action) => {
       state.loading = false;
       state.deletedBlogs = action.payload.blogs;
+    },
+
+    //update visbility
+    updatevisiblity: (state, action) => {
+      state.loading = false;
+      state.message = action.payload?.message;
+      
+      if (Array.isArray(state.blogs)) {
+        state.blogs = state.blogs.map((blog) =>
+          blog._id === action.payload.blog._id ? action.payload.blog : blog
+        );
+      }
+    },
+
+    //delete Blog
+    deleteBlog: (state, action) => {
+      state.loading = false;
+      state.message = action.payload?.message;
+
+      if (Array.isArray(state.blogs)) {
+        state.blogs = state.blogs.filter(
+          (blog) => blog._id !== action.payload.blog._id
+        );
+      }
+
+      state.deletedBlogs.unshift(action.payload.blog);
     },
 
     //Get blog By Id
@@ -265,7 +292,8 @@ export const {
   updateBlogSuccess,
   addSubtitle,
   deleteSubtitleInBlogSlice,
-  updateSubtitleInBlogSlice
+  updateSubtitleInBlogSlice,
+  updatevisiblity
 } = blogSlice.actions;
 
 export default blogSlice.reducer;

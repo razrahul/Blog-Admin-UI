@@ -1,17 +1,17 @@
-import React ,{useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import "./BlogCard.scss";
 import { useNavigate } from "react-router-dom";
 import { formatDateOnly } from "../../Utils/formatDate ";
 import Button from "../conformationButtom/Button";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteBlog, updateBlog } from "../../redux/action/blogs";
+import { deleteBlog, changeVisibility } from "../../redux/action/blogs";
 import {
   BsFillTrashFill,
   BsFillPencilFill,
   BsPlusCircle,
 } from "react-icons/bs"; // Removed unused icons
 
-const BlogCard = ({ blog }) => {
+const BlogCard = ({ blog, user }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -34,10 +34,21 @@ const BlogCard = ({ blog }) => {
   const handleDelete = (blogId) => {
     dispatch(deleteBlog(blogId));
   };
+  
+  const handleispublic = (blogId) => {
+    dispatch(changeVisibility(blogId));
+    // dispatch(updateBlog(blogId, { ispublic: !blog.ispublic }));
+    console.log(blogId)
+  };
+  // console.log(user.role.name); // Should log: "superAdmin"
+  // console.log(blog);
 
   return (
     <div className="blog-card">
-      <div className="image-container" onClick={() => handleViewButton(blog._id)}>
+      <div
+        className="image-container"
+        onClick={() => handleViewButton(blog._id)}
+      >
         <img
           src={blog.poster?.url || "https://via.placeholder.com/150"}
           alt={blog.title || "Default Image"}
@@ -50,10 +61,20 @@ const BlogCard = ({ blog }) => {
       <div className="blog-details">
         <h3 className="blog-title">{blog.title}</h3>
         <div className="blog-cat">
-          <p className="blog-view">
-            {/* Removed toggle logic, keeping only static display if needed */}
-            {blog.isview ? "Public" : "Private"}
-          </p>
+          {user.role.name === "SuperAdmin" && blog.numOfSubtitles >= 5 ? (
+            <Button
+              onConfirm={() => handleispublic(blog._id)}
+              title="Change Visibility"
+              description={`Are you sure you want to change the blog visibility to "${
+                blog.ispublic ? "Private" : "Public"
+              }"?`}
+              className="blog-toggle-btn"
+            >
+              {blog.ispublic ? "Make Private" : "Make Public"}
+            </Button>
+          ) : (
+            <p className="blog-view">{blog.ispublic ? "Public" : "Private"}</p>
+          )}
           <p className="blog-date">{formatDateOnly(blog.createdAt)}</p>
         </div>
 
@@ -69,7 +90,10 @@ const BlogCard = ({ blog }) => {
           <button className="edit" onClick={() => handleEdit(blog)}>
             <BsFillPencilFill />
           </button>
-          <button className="subtitle" onClick={() => handleAddSubtitle(blog._id)}>
+          <button
+            className="subtitle"
+            onClick={() => handleAddSubtitle(blog._id)}
+          >
             <BsPlusCircle />
           </button>
         </div>
