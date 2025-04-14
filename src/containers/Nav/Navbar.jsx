@@ -118,21 +118,30 @@ const SidebarItem = ({ icon, text, to }) => (
 const DropdownItem = ({ icon, text, items }) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const handleToggle = (e) => {
+    e.preventDefault(); // Prevent default link behavior if any
+    console.log("Toggling dropdown, isOpen:", !isOpen); // Debug log
+    setIsOpen((prev) => !prev);
+  };
+
   return (
     <div className="navbar-item dropdown">
-      <div className="navbar-item-content" onClick={() => setIsOpen(!isOpen)}>
+      <div className="navbar-item-content" onClick={handleToggle}>
         <span className="navbar-item-icon">{icon}</span>
         <span className="navbar-item-text">{text}</span>
         <span className="navbar-dropdown-arrow">{isOpen ? "▲" : "▼"}</span>
       </div>
       {isOpen && (
-        <div className="navbar-dropdown">
+        <div className={`navbar-dropdown ${isOpen ? "open" : ""}`}>
           {items.map((item, index) => (
             <Link
               key={index}
               to={item.to}
               className="navbar-dropdown-item"
-              onClick={() => window.innerWidth < 768 && setIsSidebarOpen(false)}
+              onClick={() => {
+                window.innerWidth < 768 && setIsSidebarOpen(false); // Close sidebar on mobile
+                setIsOpen(false); // Close dropdown after selection
+              }}
             >
               <span className="navbar-dropdown-icon">{item.icon}</span>
               <span className="navbar-dropdown-text">{item.text}</span>
