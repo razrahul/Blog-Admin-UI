@@ -69,7 +69,7 @@ export const updateBlog = (blogId, blogData) => async (dispatch) => {
     dispatch(blogRequest());
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
       withCredentials: true,
     };

@@ -69,8 +69,10 @@ const AddBlogPage = () => {
     }
   };
 
+  // console.log(isEditable)
+
   // Handle form submission
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
 
     // Prepare FormData to send as API request
@@ -81,18 +83,20 @@ const AddBlogPage = () => {
     myBlog.append("companyId", companyId);
     if (image) myBlog.append("file", image);
 
-    const blogData = {
-      title,
-      description,
-      categoryId,
-      companyId,
-      image,
-    };
+    // const blogData = {
+    //   title,
+    //   description,
+    //   categoryId,
+    //   companyId,
+    //   image,
+    // };
+
+    
 
     if (isEditable) {
-      dispatch(updateBlog(blogData, existingBlog._id)); // Update the blog
+      await dispatch(updateBlog(myBlog, existingBlog._id)); // Update the blog
     } else {
-      dispatch(createBlog(blogData)); // Create a new blog
+      await dispatch(createBlog(myBlog)); // Create a new blog
     }
 
     // Reset form fields after successful submission
