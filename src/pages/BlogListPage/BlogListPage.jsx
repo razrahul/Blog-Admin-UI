@@ -1,128 +1,130 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import BlogCard from "../../components/blogCrad/BlogCard";
+import BlogCard from "../../components/blogCrad/BlogCard"; // keep your actual folder name
 import "./BlogListPage.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllBlogs } from "../../redux/action/blogs";
 import { getAllCategories } from "../../redux/action/categoryAction";
 import { getAllCompanies } from "../../redux/action/companyAction";
+import Pagination from "../../components/pagination/Pagination.jsx";
 
-const BlogListPage = ({user}) => {
+const LIMIT = 9;
+
+const BlogListPage = ({ user }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getAllBlogs());
-    dispatch(getAllCompanies());
-    dispatch(getAllCategories());
-    console.log("Fetched Blogs:", blogs); // Debug fetched blogs
-  }, [dispatch]);
-
-  const { loading: blogLoading, error: blogError, blogs } = useSelector(
-    (state) => state.blog
-  );
-  const { loading: companyLoading, error: companyError, companies } = useSelector(
-    (state) => state.company
-  );
-  const {
-    loading: categoryLoading,
-    error: categoryError,
-    categories,
-  } = useSelector((state) => state.category);
-
-  const [selectedCompany, setSelectedCompany] = useState(""); // Default to "All Companies"
-  const [selectedCategory, setSelectedCategory] = useState("all"); // Default to "All Categories"
-  const [selectedVisibility, setSelectedVisibility] = useState("all"); // Default to "All"
+  // Filters/UI state
+  const [selectedCompany, setSelectedCompany] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedVisibility, setSelectedVisibility] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
-
-  useEffect(() => {
-    console.log("Selected Visibility changed to:", selectedVisibility); // Debug visibility change
-  }, [selectedVisibility]);
-
-  useEffect(() => {}, [categories]);
-  useEffect(() => {}, [blogs]);
-
-  const filteredBlogs = blogs.filter((blog) => {
-    const companyMatch =
-      !selectedCompany || (blog.company && blog.company._id === selectedCompany);
-    const categoryMatch =
-      selectedCategory === "all" ||
-      (blog.category && blog.category._id === selectedCategory);
-    const visibilityMatch =
-      selectedVisibility === "all" || // Show all when "All" is selected
-      (selectedVisibility === "public" && blog.ispublic === true) || // Use ispublic
-      (selectedVisibility === "private" && blog.ispublic === false); // Use ispublic
-    const titleMatch =
-      !searchTerm || blog.title.toLowerCase().includes(searchTerm.toLowerCase());
-    return companyMatch && categoryMatch && visibilityMatch && titleMatch;
-  });
-
-  const itemsPerPage = 9;
   const [currentPage, setCurrentPage] = useState(1);
 
-  const paginatedBlogs = filteredBlogs.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+  // Selectors (match your reducers)
+  const {
+    loading: blogLoading,
+    error: blogError,
+    blogs,
+    total,
+    totalPages: totalPagesFromStore,
+    page: pageFromStore,
+  } = useSelector((state) => state.blog);
+
+  // console.log(blogs)
+
+  const { loading: companyLoading, companies } = useSelector(
+    (state) => state.company
+  );
+  const { loading: categoryLoading, categories } = useSelector(
+    (state) => state.category
   );
 
-  const totalPages = Math.ceil(filteredBlogs.length / itemsPerPage);
+  // Compute total pages safely
+  const effectiveTotalPages =
+    (typeof totalPagesFromStore === "number" && totalPagesFromStore) ||
+    (typeof total === "number" && Math.max(1, Math.ceil(total / LIMIT))) ||
+    1;
 
-  const handlePagination = (page) => setCurrentPage(page);
+  // Fetch static filters once
+  useEffect(() => {
+    dispatch(getAllCompanies());
+    dispatch(getAllCategories());
+  }, [dispatch]);
 
-  const handleCompanyChange = (e) => {
-    setSelectedCompany(e.target.value);
-  };
+  // Debounced search (350ms)
+  const debouncedSearch = useMemo(() => {
+    const obj = { value: searchTerm };
+    let t;
+    return (fn) => {
+      clearTimeout(t);
+      t = setTimeout(() => fn(obj.value), 350);
+    };
+  }, [searchTerm]);
 
-  const handleCategoryChange = (e) => {
-    setSelectedCategory(e.target.value);
-  };
+  // Build query params for API
+  const buildParams = (p, sTerm) => ({
+    page: p,
+    limit: LIMIT,
+    companyId: selectedCompany || undefined,
+    categoryId: selectedCategory !== "all" ? selectedCategory : undefined,
+    visibility:
+      selectedVisibility === "all" ? undefined : selectedVisibility,
+    search: sTerm || undefined,
+  });
 
-  const handleVisibilityChange = (e) => {
-    setSelectedVisibility(e.target.value);
-  };
+  // Fetch blogs when page changes
+  useEffect(() => {
+    dispatch(getAllBlogs(buildParams(currentPage, searchTerm)));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, currentPage]);
 
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-  };
+  // Refetch on filter/search change (reset to page 1)
+  useEffect(() => {
+    setCurrentPage(1);
+    debouncedSearch((latestSearch) => {
+      dispatch(getAllBlogs(buildParams(1, latestSearch)));
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCompany, selectedCategory, selectedVisibility, searchTerm]);
 
-  const handleClearSearch = () => {
-    setSearchTerm("");
-  };
+  const handlePagination = (p) => setCurrentPage(p);
 
   return (
     <div className="blog-list-page">
+      {/* Sidebar */}
       <div className="sidebar">
         <h2>Dashboard</h2>
         <div className="dropdown-container">
           <select
             value={selectedCompany}
-            onChange={handleCompanyChange}
+            onChange={(e) => setSelectedCompany(e.target.value)}
             disabled={companyLoading}
           >
             <option value="">All Companies</option>
-            {companies &&
-              companies.map((company) => (
-                <option key={company._id} value={company._id}>
-                  {company.companyName}
-                </option>
-              ))}
+            {companies?.map((c) => (
+              <option key={c._id} value={c._id}>
+                {c.companyName}
+              </option>
+            ))}
           </select>
+
           <select
             value={selectedCategory}
-            onChange={handleCategoryChange}
+            onChange={(e) => setSelectedCategory(e.target.value)}
             disabled={categoryLoading}
           >
             <option value="all">All Categories</option>
-            {categories &&
-              categories.map((category) => (
-                <option key={category._id} value={category._id}>
-                  {category.name}
-                </option>
-              ))}
+            {categories?.map((cat) => (
+              <option key={cat._id} value={cat._id}>
+                {cat.name}
+              </option>
+            ))}
           </select>
+
           <select
             value={selectedVisibility}
-            onChange={handleVisibilityChange}
+            onChange={(e) => setSelectedVisibility(e.target.value)}
             disabled={blogLoading}
           >
             <option value="all">All</option>
@@ -131,9 +133,12 @@ const BlogListPage = ({user}) => {
           </select>
         </div>
       </div>
+
+      {/* Main content */}
       <div className="main-content">
         <div className="header">
           <h1>Blog List</h1>
+
           <div className="search-container">
             <span className="search-icon">🔍</span>
             <input
@@ -141,35 +146,35 @@ const BlogListPage = ({user}) => {
               placeholder="Search blogs..."
               className="search-bar"
               value={searchTerm}
-              onChange={handleSearchChange}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
             {searchTerm && (
-              <button className="clear-btn" onClick={handleClearSearch}>
+              <button className="clear-btn" onClick={() => setSearchTerm("")}>
                 ×
               </button>
             )}
           </div>
         </div>
+
+        {/* Blog Cards */}
         <div className="blogs-container">
-          {paginatedBlogs.length > 0 ? (
-            paginatedBlogs.map((blog) => (
+          {blogLoading ? (
+            <p>Loading…</p>
+          ) : blogs?.length ? (
+            blogs.map((blog) => (
               <BlogCard user={user} key={blog._id} blog={blog} />
             ))
           ) : (
-            <p>No blogs found matching the filters.</p>
+            <p>No blogs found.</p>
           )}
         </div>
-        <div className="pagination">
-          {Array.from({ length: totalPages }).map((_, index) => (
-            <button
-              key={index}
-              className={currentPage === index + 1 ? "active" : ""}
-              onClick={() => handlePagination(index + 1)}
-            >
-              {index + 1}
-            </button>
-          ))}
-        </div>
+
+        {/* Pagination */}
+        <Pagination
+          totalPages={effectiveTotalPages}
+          currentPage={currentPage}
+          onChange={handlePagination}
+        />
       </div>
     </div>
   );
