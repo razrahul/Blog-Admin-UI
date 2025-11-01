@@ -10,7 +10,7 @@ import {
 } from "../../redux/action/companyAction";
 import Button from "../../components/conformationButtom/Button.jsx";
 import { MdDelete } from "react-icons/md";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit,FaPlus } from "react-icons/fa";
 
 const MCompanyTable = () => {
   const [newCompany, setNewCompany] = useState({
@@ -91,43 +91,53 @@ const MCompanyTable = () => {
   };
 
   return (
-    <div>
-      <h3>Company Management</h3>
-      <button onClick={() => setIsPopupOpen(true)}>Add Company</button>
+    <div className="table-wrap">
+      <div className="header">
+  <h3>Company Management</h3>
+  <div className="actions">
+    <button className="btn primary" onClick={() => { setIsEditing(false); setEditCompany(null); setNewCompany({ companyName:"", companyId:"" }); setIsPopupOpen(true); }}>
+      <FaPlus /> <span>Add Company</span>
+    </button>
+  </div>
+</div>
       <Table data={companies} columns={columns} />
 
-      {isPopupOpen && (
-        <div className="popup">
-          <div className="popup-content">
-            <h4>{isEditing ? "Edit Company" : "Add Company"}</h4>
-            <div>
-              <label>Company Name:</label>
-              <input
-                type="text"
-                value={newCompany.companyName}
-                onChange={(e) =>
-                  setNewCompany({ ...newCompany, companyName: e.target.value })
-                }
-              />
-            </div>
-            <div>
-              <label>Company Id:(optional)</label>
-              <input
-                type="text"
-                value={newCompany.companyId}
-                onChange={(e) =>
-                  setNewCompany({ ...newCompany, companyId: e.target.value })
-                }
-              />
-            </div>
-            <button onClick={handleSaveCompany}>
-              {isEditing ? "Save" : "Add"}
-            </button>
-            {/* <button onClick={() => setIsPopupOpen(false)}>Close</button> */}
-            <button onClick={handlePopClose}>Close</button>
-          </div>
-        </div>
-      )}
+    {isPopupOpen && (
+  <div className="popup" role="dialog" aria-modal="true" aria-labelledby="company-popup-title">
+    <div className="popup-content">
+      <h4 id="company-popup-title">{isEditing ? "Edit Company" : "Add Company"}</h4>
+
+      <div className="form-row">
+        <label htmlFor="company-name">Company Name:</label>
+        <input
+          id="company-name"
+          type="text"
+          value={newCompany.companyName}
+          onChange={(e) => setNewCompany({ ...newCompany, companyName: e.target.value })}
+          placeholder="Enter company name"
+        />
+      </div>
+
+      <div className="form-row">
+        <label htmlFor="company-id">Company Id (optional):</label>
+        <input
+          id="company-id"
+          type="text"
+          value={newCompany.companyId}
+          onChange={(e) => setNewCompany({ ...newCompany, companyId: e.target.value })}
+          placeholder="e.g. CMP-001"
+        />
+      </div>
+
+      <div className="popup-actions">
+        <button className="btn primary" onClick={handleSaveCompany}>
+          {isEditing ? "Save" : "Add"}
+        </button>
+        <button className="btn" onClick={handlePopClose}>Close</button>
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 };
