@@ -2,6 +2,9 @@
 import React from "react";
 import DataTable from "react-data-table-component";
 import { contactData } from "./data";
+import "./recycle.scss";
+import { FaTrashRestoreAlt } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 
 const ContactTable = ({ handleRestore, handleDelete }) => {
   const columns = [
@@ -10,9 +13,9 @@ const ContactTable = ({ handleRestore, handleDelete }) => {
     {
       name: "Actions",
       cell: (row) => (
-        <div>
-          <button onClick={() => handleRestore(row)}>Restore</button>
-          <button onClick={() => handleDelete(row)}>Delete</button>
+        <div className="icon-btn">
+          <button className="restore-button" onClick={() => handleRestore(row)}><FaTrashRestoreAlt /></button>
+          <button className="delete-button" onClick={() => handleDelete(row)}><MdDelete /></button>
         </div>
       ),
     },

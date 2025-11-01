@@ -37,11 +37,13 @@ const UsersTable = () => {
   const handleRestore = (user) => {
     // console.log("Restoring User ID:", user._id);
     dispatch(restoreUser(user._id));
+
   };
 
   // Permanently delete user function
   const handleDelete = (user) => {
     console.log("Deleting User ID:", user._id);
+    alert(`Deleting User name: [its not working] ${user?.name}`);
   };
 
   const columns = [
@@ -66,8 +68,9 @@ const UsersTable = () => {
     {
       name: "Actions",
       cell: (row) => (
-        <div>
+        <div className="icon-btn">
           <Button
+          className="restore-button"
             onConfirm={() => handleRestore(row)}
             title="Restore User"
             description={`Are You Sure You want to Restore "${row.name}"`}
@@ -76,6 +79,7 @@ const UsersTable = () => {
             <FaTrashRestoreAlt />
           </Button>
           <Button
+          className="delete-button"
             onConfirm={() => handleDelete(row)}
             title="Permanently Delete User"
             description={`Are You Sure You want to Permanently Delete "${row.name}"`}

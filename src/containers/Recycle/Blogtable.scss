@@ -1,0 +1,94 @@
+/* Scope everything to this table only */
+.recycle-table-scope {
+  /* RDT defaults + allow shrink */
+  .rdt_Table, .rdt_TableRow, .rdt_TableCell, .rdt_TableCol, .rdt_TableCol_Sortable {
+    min-width: 0 !important;
+  }
+
+  /* BlogTable.scss */
+
+
+  .icon-btn {
+    svg {
+      width: 80px;   /* or 22px if you want bolder look */
+      height: 20px;
+      color: #1e3a8a; /* optional: navy-blue look */
+    }
+  }
+
+
+  /* Truncations */
+  .cell-1line {
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+
+  .cell-2lines {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;    /* set 3 for three lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    max-width: 100%;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+
+  /* Keep action areas visible and on a single line */
+  .nowrap { white-space: nowrap; }
+
+  .view-cell,
+  .actions-cell {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    overflow: visible !important;
+  }
+
+  /* Icon/button visuals */
+  .icon-btn,
+  .restore-button,
+  .delete-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    background: #fff;
+    color: #111827;
+    cursor: pointer;
+    transition: background .15s ease, transform .06s ease;
+  }
+
+  .icon-btn { border-color: #c7d2fe; color: #1e3a8a; }
+  .restore-button { color: #059669; }   /* green */
+  .delete-button  { color: #dc2626; }   /* red  */
+
+  .icon-btn:hover { background: #eef2ff; }
+  .restore-button:hover { background: #ecfdf5; }
+  .delete-button:hover  { background: #fef2f2; }
+
+  .icon-btn:active,
+  .restore-button:active,
+  .delete-button:active { transform: translateY(1px); }
+
+  /* Ensure SVGs are visible and sized */
+  .icon-btn svg,
+  .restore-button svg,
+  .delete-button svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+  }
+
+  /* Optional: subtle row hover */
+  .rdt_TableRow {
+    transition: background .2s ease;
+    &:hover { background: #f9fafb; }
+  }
+}

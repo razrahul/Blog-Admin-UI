@@ -36,13 +36,14 @@ function RolesTable() {
   //restore role function
   const handleRestore =  (role) => {
      dispatch(restoreRole(role._id));
-    console.log("Restoring Role ID:", role._id);
+    // console.log("Restoring Role ID:", role._id);
     // dispatch(restoreRole(role._id));
   };
 
   //permanent delete role function
   const handleDelete = (role) => {
-    console.log("Deleting Role ID:", role._id);
+    // console.log("Deleting Role ID:", role._id);
+    alert(`Deleting Role name: [its not working] ${role?.name}`);
   };
 
   const columns = [
@@ -52,7 +53,7 @@ function RolesTable() {
     {
       name: "Actions",
       cell: (row) => (
-        <div>
+        <div className="icon-btn">
           <Button
             onConfirm={() => handleRestore(row)}
             title="Restore Role"

@@ -41,7 +41,8 @@ const CompanyTable = () => {
 
   //pemanetly delete category
   const handleDelete = (company) => {
-    console.log("Delete Company", company._id);
+    // console.log("Delete Company", company._id);
+    alert(`Deleting Company name: [its not working] ${company?. companyName}`);
   };
   
 
@@ -53,7 +54,7 @@ const CompanyTable = () => {
     {
       name: "Actions",
       cell: (row) => (
-        <div>
+        <div className="icon-btn">
           <Button
             onConfirm={() => handleRestore(row)}
             title="Restore Comapany"
