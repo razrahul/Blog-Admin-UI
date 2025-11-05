@@ -54,12 +54,111 @@
   }
 }
 
+
+
+
 /* Loading Fallback Styles */
 .suspense-fallback {
+  /* default = fullscreen overlay */
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  height: 100vh;
-  font-size: 1.5rem;
-  color: #2c3e50;
+  justify-content: center;
+
+  font-size: 1rem;
+  letter-spacing: 0.3px;
+  color: #e8ecf3;
+
+  /* soft glass effect */
+  background:
+    radial-gradient(60% 60% at 80% 20%, rgba(99, 102, 241, 0.10), transparent 60%),
+    linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(2, 6, 23, 0.88));
+  backdrop-filter: blur(6px);
+
+  /* subtle entrance */
+  animation: fadeIn 220ms ease-out both;
+
+  /* spinner */
+  &::before {
+    content: "";
+    display: block;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 14px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.25);
+    border-top-color: #6366f1; /* indigo */
+    animation: spin 0.8s linear infinite;
+  }
+
+  /* animated dots on your text */
+  &::after {
+    content: "";
+    display: block;
+    height: 1px; /* just a spacer to keep layout stable */
+  }
+
+  /* nicer text */
+  > * {
+    opacity: 0.95;
+    font-weight: 500;
+  }
+
+  /* modifier — use for a compact inline loader inside cards/sections */
+  &.--inline {
+    position: static;
+    inset: auto;
+    min-height: 140px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(2, 6, 23, 0.78));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
+  }
+
+  /* modifier — slim top bar loader (great for Navbar area while routes mount) */
+  &.--topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 60px;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.7));
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+
+    /* center align, smaller spinner */
+    &::before {
+      width: 24px;
+      height: 24px;
+      margin: 0;
+      border-width: 2px;
+    }
+  }
+
+  /* modifier — content area overlay (inside .content only) */
+  &.--content {
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.82), rgba(2, 6, 23, 0.75));
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+}
+
+/* Keyframes */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .suspense-fallback {
+    animation: none;
+    &::before { animation: none; }
+  }
 }
