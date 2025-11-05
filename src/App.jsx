@@ -1,10 +1,11 @@
-import React, { lazy, useState, useEffect, Suspense } from "react";
+import React, { lazy, useEffect, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loadUser } from "./redux/action/userAction";
 import "react-quill/dist/quill.snow.css";
 import "./App.scss";
 
+/* Lazy Imports */
 const Navbar = lazy(() => import("./containers/Nav/Navbar"));
 const UsersPage = lazy(() => import("./pages/userPage/UsersPage"));
 const AddBlogPage = lazy(() => import("./pages/AddBlog/AddBlogPage"));
@@ -26,6 +27,7 @@ const MCompanyTable = lazy(() => import("./containers/MItem/MCompanyTable"));
 const BlogsDetails = lazy(() => import("./pages/BlogView/BlogsDetails"));
 const TransBlog = lazy(() => import("./containers/DeltedBlog/DeltedBlog"));
 
+/* App Component */
 const App = () => {
   const dispatch = useDispatch();
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -38,26 +40,28 @@ const App = () => {
     <Router>
       <div className="app-container">
         {!isAuthenticated ? (
-          <Suspense
-            fallback={<div className="suspense-fallback">Loading...</div>}
-          >
+          /* Fullscreen loader while login page mounts */
+          <Suspense fallback={<div className="suspense-fallback">Loading...</div>}>
             <LoginPage />
           </Suspense>
         ) : (
           <>
+            {/* Fixed Navbar Section */}
             <div className="content-fix">
               <Suspense
                 fallback={
-                  <div className="suspense-fallback">Loading Navbar...</div>
+                  <div className="suspense-fallback --topbar">Loading Navbar...</div>
                 }
               >
                 <Navbar user={user} />
               </Suspense>
             </div>
+
+            {/* Main Content Area */}
             <div className="content">
               <Suspense
                 fallback={
-                  <div className="suspense-fallback">Loading Content...</div>
+                  <div className="suspense-fallback --content">Loading Content...</div>
                 }
               >
                 <Routes>
@@ -67,7 +71,10 @@ const App = () => {
                   <Route path="/profile" element={<Profile user={user} />} />
                   <Route path="/change-password" element={<ChangePassword />} />
                   <Route path="/add-blog" element={<AddBlogPage />} />
-                  <Route path="/blog-list" element={<BlogListPage user={user}/>} />
+                  <Route
+                    path="/blog-list"
+                    element={<BlogListPage user={user} />}
+                  />
                   <Route path="/blog-list/:blogId" element={<BlogsDetails />} />
                   <Route
                     path="/add-subtitle/:blogId"
