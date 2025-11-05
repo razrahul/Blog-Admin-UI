@@ -1,65 +1,81 @@
-.recycle-bin-container {
-  position: relative;
+/* Page layout */
+.recycle-bin-page {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
   padding: 20px;
+  background: #f9fafb;
+  min-height: 100vh;
 }
 
-/* Style for the Recycle Bin button */
-.recycle-bin-button {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 20px;
-  font-size: 16px;
-  border: none;
-  cursor: pointer;
-  border-radius: 4px;
-  margin-bottom: 10px;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #0056b3;
-  }
+/* ===========================
+   Top Horizontal Nav (Tabs)
+   =========================== */
+.recycle-nav {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 14px;
+  padding: 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
 }
 
-/* Dropdown menu styles */
-.dropdown-menu {
-  position: absolute;
-  top: 50px; /* Position below the button */
-  left: 0;
-  width: 180px; /* Dropdown width */
-  background-color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.recycle-nav__title {
+  margin: 0 0 10px;
+  font-size: 18px;
+  font-weight: 800;
+  color: #1e3a8a;
+  text-align: center;
+}
+
+.recycle-nav__list {
+  display: flex;
+  flex-wrap: nowrap;     /* single row */
+  width: 100%;
+  gap: 8px;
+  margin: 0;
   padding: 0;
   list-style: none;
-  margin: 0;
-  border-radius: 4px;
-  z-index: 10;
+  overflow-x: auto;      /* scroll on overflow */
+  scrollbar-width: none;
 }
+.recycle-nav__list::-webkit-scrollbar { display: none; }
 
-.dropdown-item {
-  padding: 10px;
+.recycle-nav__li { flex: 1 1 0; }   /* equal width tabs */
+
+.recycle-nav__item {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: #f3f4f6;
+  color: #1f2937;
+  font-weight: 700;
+  font-size: 14px;
   cursor: pointer;
-  border-bottom: 1px solid #f1f1f1;
-  transition: background-color 0.3s ease;
+  transition: background .15s, color .15s, transform .06s, box-shadow .15s;
+  white-space: nowrap;
+  text-align: center;
 
   &:hover {
-    background-color: #f1f1f1;
-  }
-}
-
-/* Styling for DataTable */
-.react-data-table-component {
-  margin-top: 20px;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-  .recycle-bin-button {
-    font-size: 14px;
-    padding: 8px 16px;
+    background: #e5e7eb;
+    transform: translateY(-1px);
   }
 
-  .dropdown-menu {
-    width: 100%; /* Make dropdown full width on smaller screens */
-    left: 0; /* Align with button */
+  &.active {
+    background: #1e3a8a;
+    color: #ffffff;
+    box-shadow: 0 6px 16px rgba(30, 58, 138, 0.22);
+    position: relative;
+  }
+
+  &.active::after {
+    content: "";
+    position: absolute;
+    left: 12%;
+    bottom: -5px;
+    width: 76%;
+    height: 3px;
+    border-radius: 3px;
+    background: #1e3a8a;
   }
 }

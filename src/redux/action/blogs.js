@@ -27,17 +27,18 @@ import {
   updatevisiblity,
 } from "../reducer/blogSlice.js";
 
-export const getAllBlogs = () => async (dispatch) => {
+export const getAllBlogs = (params) => async (dispatch) => {
   try {
-    dispatch(getAllBlogsRequest());
-    const { data } = await axios.get(`${server}/blogs`, {
-      withCredentials: true,
-    });
+    dispatch({ type: "BLOG_LIST_REQUEST" });
+
+    const { data } = await axios.get(`${server}/blogs`, { params, withCredentials: true });
+
     dispatch(getAllBlogsSuccess(data));
   } catch (error) {
-    dispatch(
-      getAllBlogsFail(error.response?.data?.message || "Failed to fetch blogs")
-    );
+    dispatch({
+      type: "BLOG_LIST_FAIL",
+      payload: error.response?.data?.message || "Failed to fetch blogs",
+    });
   }
 };
 

@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
 import Table from "./Table";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllRoles, updateRole, createRole, deleteRole } from "../../redux/action/rolesActions";
+import {
+  getAllRoles,
+  updateRole,
+  createRole,
+  deleteRole,
+} from "../../redux/action/rolesActions";
 import { getAllUsers } from "../../redux/action/admin";
 import Button from "../../components/conformationButtom/Button.jsx";
 import { MdDelete } from "react-icons/md";
-import { FaEdit } from "react-icons/fa";
-import "./MScss/AllMitem.scss"
+import { FaEdit, FaPlus } from "react-icons/fa";
+import "./MScss/AllMitem.scss";
 
 const MRoleTable = () => {
   const [newRole, setNewRole] = useState({ name: "" });
@@ -25,7 +30,8 @@ const MRoleTable = () => {
   }, [dispatch]);
 
   // find username for createBy
-  const superAdmin = users && users.filter((user) => user.role.name === "SuperAdmin");
+  const superAdmin =
+    users && users.filter((user) => user.role.name === "SuperAdmin");
 
   const userName = (userId) => {
     if (!userId) return "N/A"; // Handle undefined/null IDs
@@ -42,11 +48,11 @@ const MRoleTable = () => {
   const handleSaveRole = () => {
     if (editRole) {
       dispatch(updateRole(editRole._id, newRole)).then(() => {
-          dispatch(getAllRoles());
-        });
+        dispatch(getAllRoles());
+      });
       // console.log(editRole._id, newRole);
     } else {
-      dispatch(createRole(newRole))
+      dispatch(createRole(newRole));
       // console.log(newRole);
     }
     setIsPopupOpen(false);
@@ -63,8 +69,16 @@ const MRoleTable = () => {
 
   const columns = [
     { name: "Name", selector: (row) => row.name, sortable: true },
-    { name: "CreatedBy", selector: (row) => userName(row.createdBy) || "Unknown", sortable: true },
-    { name: "Active", selector: (row) => (row.isactive ? "Active" : "Inactive"), sortable: true },
+    {
+      name: "CreatedBy",
+      selector: (row) => userName(row.createdBy) || "Unknown",
+      sortable: true,
+    },
+    {
+      name: "Active",
+      selector: (row) => (row.isactive ? "Active" : "Inactive"),
+      sortable: true,
+    },
     {
       name: "Actions",
       cell: (row) => (
@@ -82,27 +96,56 @@ const MRoleTable = () => {
           </Button>
         </div>
       ),
-    }
+    },
   ];
 
   return (
-    <div>
-      <h3>Role Management</h3>
-      <button onClick={() => setIsPopupOpen(true)}>Add Role</button>
+    <div className="table-wrap">
+      <div className="header">
+        <h3>Role Management</h3>
+        <div className="actions">
+          <button
+            className="btn primary"
+            onClick={() => {
+              setEditRole(null);
+              setNewRole({ name: "" });
+              setIsPopupOpen(true);
+            }}
+          >
+            <FaPlus /> <span>Add Role</span>
+          </button>
+        </div>
+      </div>
       <Table data={data} columns={columns} />
 
       {isPopupOpen && (
-        <div className="popup">
+        <div
+          className="popup"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="role-popup-title"
+        >
           <div className="popup-content">
-            <h4>{editRole ? "Edit Role" : "Add Role"}</h4>
-            <label>Name:</label>
+            <h4 id="role-popup-title">{editRole ? "Edit Role" : "Add Role"}</h4>
+
+            <label htmlFor="role-name">Name:</label>
             <input
+              id="role-name"
               type="text"
               value={newRole.name}
               onChange={(e) => setNewRole({ ...newRole, name: e.target.value })}
+              placeholder="Enter role name"
+              autoFocus
             />
-            <button onClick={handleSaveRole}>{editRole ? "Save" : "Add"}</button>
-            <button onClick={() => setIsPopupOpen(false)}>Close</button>
+
+            <div className="popup-actions">
+              <button className="btn primary" onClick={handleSaveRole}>
+                {editRole ? "Save" : "Add"}
+              </button>
+              <button className="btn" onClick={() => setIsPopupOpen(false)}>
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}

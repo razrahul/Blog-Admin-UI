@@ -1,0 +1,123 @@
+.category-wrap {
+    display: grid;
+    gap: 12px;
+    margin: 20px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 100px 10px 50px;
+    margin: 0; /* remove large fixed margins that broke layout */
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn {
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    background: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    &:hover {
+        background: #f9fafb;
+    }
+
+    &.primary {
+        background: #111827;
+        color: #fff;
+        border-color: #111827;
+
+        &:hover {
+            opacity: .95;
+        }
+    }
+}
+
+.add-btn .add-icon {
+    font-size: 16px;
+}
+
+.action-cell {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    cursor: pointer;
+    transition: background .15s ease, transform .05s ease;
+
+    &:hover {
+        background: #f3f4f6;
+    }
+
+    &:active {
+        transform: translateY(1px);
+    }
+
+    &.edit-button .edit-icon {
+        font-size: 18px;
+        color: green;
+    }
+
+    &.delete-button .delete-icon {
+        font-size: 20px;
+
+        color: red;
+    }
+}
+
+.popup {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    z-index: 50;
+}
+
+.popup-content {
+    width: 100%;
+    max-width: 420px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .15);
+}
+
+.form-row {
+    display: grid;
+    gap: 6px;
+    margin: 10px 0 16px;
+}
+
+.form-row input {
+    padding: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+}
+
+.popup-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}

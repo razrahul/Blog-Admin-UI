@@ -1,12 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// const initialState = {
+//   loading: false,
+//   blogs: [], // Holds the list of blogs
+//   deletedBlogs: [], // Holds the list of deleted blogs
+//   blog: {}, // Holds the blog details
+//   message: null, // Success message
+//   error: null, // Error message
+// };
+
 const initialState = {
   loading: false,
-  blogs: [], // Holds the list of blogs
-  deletedBlogs: [], // Holds the list of deleted blogs
-  blog: {}, // Holds the blog details
-  message: null, // Success message
-  error: null, // Error message
+  blogs: [], // holds blog list
+  deletedBlogs: [],
+  blog: {},
+  message: null,
+  error: null,
+
+  // optional pagination fields (so selectors never break)
+  total: 0, // total blogs count (server)
+  totalPages: 0, // total pages
+  page: 1, // current page
 };
 
 const blogSlice = createSlice({
@@ -16,17 +30,44 @@ const blogSlice = createSlice({
     // Get All Blogs
     getAllBlogsRequest: (state) => {
       state.loading = true;
+      state.error = null;
     },
+
     getAllBlogsSuccess: (state, action) => {
       state.loading = false;
-      state.blogs = action.payload.blogs;
-      state.message = action.payload?.message;
+      state.message = action.payload?.message || null;
+
+      // ✅ New API format { items, total, totalPages, page }
+      if (Array.isArray(action.payload?.items)) {
+        const { items, total = 0, totalPages = 0, page = 1 } = action.payload;
+        state.blogs = items;
+        state.total = total;
+        state.totalPages = totalPages;
+        state.page = page;
+        return;
+      }
+
+      // ✅ Old API format { blogs: [...] }
+      if (Array.isArray(action.payload?.blogs)) {
+        state.blogs = action.payload.blogs;
+        state.total = action.payload.blogs.length;
+        state.totalPages = 1;
+        state.page = 1;
+        return;
+      }
+
+      // ✅ Fallback (no data)
+      console.warn("⚠️ Unexpected blogs payload:", action.payload);
+      state.blogs = [];
+      state.total = 0;
+      state.totalPages = 0;
+      state.page = 1;
     },
+
     getAllBlogsFail: (state, action) => {
       state.loading = false;
-      state.error = action.payload;
+      state.error = action.payload || "Failed to fetch blogs";
     },
-    
 
     // Create Blog
     createBlogRequest: (state) => {
@@ -46,7 +87,7 @@ const blogSlice = createSlice({
     blogRequest: (state) => {
       state.loading = true;
     },
-    
+
     blogFail: (state, action) => {
       state.loading = false;
       state.error = action.payload;
@@ -62,7 +103,7 @@ const blogSlice = createSlice({
     updatevisiblity: (state, action) => {
       state.loading = false;
       state.message = action.payload?.message;
-      
+
       if (Array.isArray(state.blogs)) {
         state.blogs = state.blogs.map((blog) =>
           blog._id === action.payload.blog._id ? action.payload.blog : blog
@@ -94,7 +135,7 @@ const blogSlice = createSlice({
     restoreBlog: (state, action) => {
       state.loading = false;
 
-       // Ensure users array exists before pushing
+      // Ensure users array exists before pushing
       if (!state.blogs) {
         state.blogs = [];
       }
@@ -109,19 +150,19 @@ const blogSlice = createSlice({
     updateBlogSuccess: (state, action) => {
       state.loading = false;
       state.message = action.payload?.message;
-    
+
       if (Array.isArray(state.blogs) && action.payload?.blog) {
         state.blogs = state.blogs.map((blog) =>
           blog._id === action.payload.blog._id ? action.payload.blog : blog
         );
       }
     },
-    
+
     //add Subtitle(new)
 
     addSubtitle(state, action) {
       // const { blogId, subtitle } = action.payload;
-    
+
       // state.blogs = state.blogs.map((blog) => {
       //   if (blog._id === blogId) {
       //     if (!blog.Subtitle) {
@@ -136,31 +177,35 @@ const blogSlice = createSlice({
         ...state,
         blogs: state.blogs.map((blog) =>
           blog._id === action.payload.blogId
-            ? { ...blog, Subtitle: [...(blog.Subtitle || []), action.payload.subtitle] }
+            ? {
+                ...blog,
+                Subtitle: [...(blog.Subtitle || []), action.payload.subtitle],
+              }
             : blog
         ),
       };
     },
 
     // update subtitle
-    updateSubtitleInBlogSlice (state, action) {
+    updateSubtitleInBlogSlice(state, action) {
       state.loading = false;
       const { blogId, subtitleId, updatedSubtitle } = action.payload;
-  
+
       state.blogs = state.blogs.map((blog) =>
-          blog._id === blogId
-              ? {
-                    ...blog,
-                    Subtitle: blog.Subtitle
-                        ? blog.Subtitle.map((subtitle) =>
-                              subtitle._id === subtitleId ? { ...updatedSubtitle } : subtitle
-                          )
-                        : [], // Ensure it returns an empty array if Subtitle is undefined
-                }
-              : blog
+        blog._id === blogId
+          ? {
+              ...blog,
+              Subtitle: blog.Subtitle
+                ? blog.Subtitle.map((subtitle) =>
+                    subtitle._id === subtitleId
+                      ? { ...updatedSubtitle }
+                      : subtitle
+                  )
+                : [], // Ensure it returns an empty array if Subtitle is undefined
+            }
+          : blog
       );
-  },
-  
+    },
 
     //delete Subtitle
     deleteSubtitleInBlogSlice(state, action) {
@@ -179,8 +224,6 @@ const blogSlice = createSlice({
 
       // state.message = message;
     },
-    
-    
 
     // Add Subtitle
     addSubtitleRequest: (state) => {
@@ -212,27 +255,26 @@ const blogSlice = createSlice({
     deleteSubtitleSuccess: (state, action) => {
       state.loading = false;
       const { blogId, subtitleId, message } = action.payload;
-    
+
       state.blogs = state.blogs.map((blog) =>
         blog._id === blogId
           ? {
               ...blog,
-              subtitles: blog.subtitles?.filter(
-                (subtitle) => subtitle._id !== subtitleId
-              ) || [], // Fallback to an empty array
+              subtitles:
+                blog.subtitles?.filter(
+                  (subtitle) => subtitle._id !== subtitleId
+                ) || [], // Fallback to an empty array
             }
           : blog
       );
-    
+
       state.message = message; // Use the success message from the action payload
     },
-    
-    
+
     deleteSubtitleFail: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
-
 
     // delete Blog reducer:
     deleteBlogRequest: (state) => {
@@ -240,14 +282,14 @@ const blogSlice = createSlice({
     },
     deleteBlogSuccess: (state, action) => {
       state.loading = false;
-      const {blogId, message} = action.payload;
+      const { blogId, message } = action.payload;
 
       const deletdblog = state.blogs.find((blog) => blog._id === blogId);
 
       // Filter out the blog with the matching ID
       state.blogs = state.blogs.filter((blog) => blog._id !== blogId);
 
-      state.deletedBlogs = state.deletedBlogs.push(deletdblog)
+      state.deletedBlogs = state.deletedBlogs.push(deletdblog);
 
       state.message = message; // Set the success message from the payload
     },
@@ -293,7 +335,7 @@ export const {
   addSubtitle,
   deleteSubtitleInBlogSlice,
   updateSubtitleInBlogSlice,
-  updatevisiblity
+  updatevisiblity,
 } = blogSlice.actions;
 
 export default blogSlice.reducer;

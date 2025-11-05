@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import Quill from "quill";
@@ -7,6 +7,7 @@ import "./AddSubtitlePage.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { addSubtitle } from "../../redux/action/blogs";
 import { createSubtitle, updateSubtitle } from "../../redux/action/subtitleAction"
+import { getAllBlogs } from "../../redux/action/blogs";
 
 const AddSubtitlePage = () => {
   const { blogId } = useParams();
@@ -24,6 +25,8 @@ const AddSubtitlePage = () => {
 
   // const blog = blogs.find((blog) => blog._id === blogId);
   const location = useLocation();
+
+  const navigate = useNavigate();
 
   const blog = location.state;   // use Navigate For Blog
 
@@ -71,17 +74,22 @@ const AddSubtitlePage = () => {
   const {Subtitle = {} , newBlogId ={} , isEditable = false} = location.state || {};
   // console.log(Subtitle, newBlogId, isEditable)
 
-  const handleUpdate = (e) => {
+  const handleUpdate = async(e) => {
     e.preventDefault();
     const mySubtitle = new FormData();
     mySubtitle.append("title", subtitle);
     mySubtitle.append("description", description);
-    mySubtitle.append("file", image);
+    if(image) mySubtitle.append("file", image);
 
-    dispatch(updateSubtitle(newBlogId, Subtitle._id, mySubtitle));
+    await dispatch(updateSubtitle(newBlogId, Subtitle._id, mySubtitle));
     // console.log(newBlogId, Subtitle._id)
 
     // console.log(subtitle, description, image);
+
+
+      // 2️⃣ Refetch all blogs (to refresh Redux state)
+    // await dispatch(getAllBlogs());
+
 
     // Reset form fields
     setSubtitle("");
@@ -90,6 +98,9 @@ const AddSubtitlePage = () => {
     setImagePrev("");
 
     alert(`Subtitle Updated for Blog ID: ${newBlogId}`);
+    // setTimeout(() => {
+    //   navigate(`/blog-list`);
+    // }, 3000);
   };
 
   useEffect(() => {

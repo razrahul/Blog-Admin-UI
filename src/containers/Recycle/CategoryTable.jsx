@@ -45,7 +45,8 @@ const CategoryTable = () => {
 
   //pemanetly delete category
   const handleDelete = (category) => {
-    console.log("Delete Category", category._id);
+    // console.log("Delete Category", category._id);
+    alert(`Deleting Category name: [its not working] ${category?.name}`);
   };
   
 
@@ -56,8 +57,9 @@ const CategoryTable = () => {
     {
       name: "Actions",
       cell: (row) => (
-        <div>
+        <div className="icon-btn">
           <Button
+          className="restore-button"
             onConfirm={() => handleRestore(row)}
             title="Restore Category"
             description={`Are You Sure You want to Restore "${row.name}"`}
@@ -66,6 +68,7 @@ const CategoryTable = () => {
             <FaTrashRestoreAlt />
           </Button>
           <Button
+          className="delete-button"
             onConfirm={() => handleDelete(row)}
             title="Permanently Delete Category"
             description={`Are You Sure You want to Permanently Delete "${row.name}"`}
