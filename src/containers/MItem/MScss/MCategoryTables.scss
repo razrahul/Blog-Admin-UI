@@ -1,7 +1,19 @@
 .category-wrap {
+    --border: #e5e7eb;
+    --text: #111827;
+    --muted: #6b7280;
+    --bg: #ffffff;
+    --bg-soft: #f9fafb;
+    --bg-head: #f3f4f6;
+
+
     display: grid;
-    gap: 12px;
+
+
+    // gap: 12px;
     margin: 20px;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    color: var(--text);
 }
 
 .header {
@@ -9,12 +21,51 @@
     align-items: center;
     justify-content: space-between;
     padding: 0 100px 10px 50px;
-    margin: 0; /* remove large fixed margins that broke layout */
+    margin: 0;
+    /* remove large fixed margins that broke layout */
+
+    h3 {
+        margin: 0;
+        color: var(--text);
+        font-weight: 600;
+        letter-spacing: .2px;
+    }
 }
 
 .actions {
     display: flex;
     gap: 8px;
+}
+
+
+/* react-data-table-component tweaks */
+.rdt_Table {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg);
+    overflow: hidden;
+}
+
+.rdt_TableHead {
+    background: var(--bg-head);
+}
+
+.rdt_TableHead .rdt_TableCol {
+    font-weight: 600;
+    color: var(--muted);
+}
+
+.rdt_TableBody .rdt_TableRow {
+    transition: background .12s ease;
+
+    &:nth-child(even) {
+        background: var(--bg-soft);
+    }
+
+    &:hover {
+        background: #eef2ff;
+    }
 }
 
 .btn {
