@@ -15,6 +15,7 @@ const BlogCard = ({ blog, user }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  console.log(blog);
   // Removed loading and error from useSelector since toggle is gone
   // const { loading = false, error = null } = useSelector((state) => state.blog || {});
 
@@ -34,11 +35,11 @@ const BlogCard = ({ blog, user }) => {
   const handleDelete = (blogId) => {
     dispatch(deleteBlog(blogId));
   };
-  
+
   const handleispublic = (blogId) => {
     dispatch(changeVisibility(blogId));
     // dispatch(updateBlog(blogId, { ispublic: !blog.ispublic }));
-    console.log(blogId)
+    console.log(blogId);
   };
   // console.log(user.role.name); // Should log: "superAdmin"
   // console.log(blog);
@@ -59,6 +60,13 @@ const BlogCard = ({ blog, user }) => {
       </div>
 
       <div className="blog-details">
+        <div className="highlight-info">
+          <span className="company-name">{blog.company.companyName}</span>
+          <span className="subtitle-count">
+            {blog.numOfSubtitles} Subtitles
+          </span>
+        </div>
+
         <h3 className="blog-title">{blog.title}</h3>
         <div className="blog-cat">
           {user.role.name === "SuperAdmin" && blog.numOfSubtitles >= 5 ? (
