@@ -1,150 +1,181 @@
 .create-blog-page {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: Arial, sans-serif;
+  max-width: 860px;
+  margin: 40px auto;
+  padding: 32px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  border-radius: 18px;
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
 
   h1 {
     text-align: center;
-    margin-bottom: 20px;
-    font-size: 2rem;
-    color: #333;
+    margin-bottom: 30px;
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.3px;
   }
 
   .blog-form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 26px;
 
     .form-group {
-      // height: 100px;
       display: flex;
       flex-direction: column;
-      gap: 5px;
-
-      .react-quill {
-        height: 180px; // Set custom height to 180px
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 10PX;
-      
-        .ql-container {
-          height: 90%; // Ensures the editor fills the set height
-        }
-      
-        .ql-editor {
-          min-height: 150px; // Adjust the text editing area
-          font-size: 1rem; // Optional: Adjust font size
-        }
-      }
-      
+      gap: 6px;
 
       label {
-        font-weight: bold;
-        color: #555;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: #475569;
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
       }
-      // .react-quill{
-      //   height: 100px;
-      // }
 
       input,
       textarea,
       select {
-        padding: 10px;
-        font-size: 1rem;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        outline: none;
+        padding: 12px 14px;
+        font-size: 0.95rem;
+        border-radius: 10px;
+        border: 1px solid #e2e8f0;
+        background: #ffffff;
+        transition: all 0.2s ease;
+
+        &:hover {
+          border-color: #c7d2fe;
+        }
 
         &:focus {
-          border-color: #007bff;
+          outline: none;
+          border-color: #6366f1;
+          box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
         }
       }
 
-      textarea {
-        resize: vertical;
+      /* React Quill */
+      .react-quill {
+        background: #ffffff;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: inset 0 0 0 1px #e2e8f0;
+
+        .ql-toolbar {
+          background: #f1f5f9;
+          border: none;
+          border-bottom: 1px solid #e2e8f0;
+        }
+
+        .ql-container {
+          border: none;
+          min-height: 170px;
+        }
+
+        .ql-editor {
+          font-size: 0.95rem;
+          line-height: 1.7;
+          color: #0f172a;
+        }
+      }
+
+      /* Category Chips */
+      .chip-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 6px;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        font-size: 0.75rem;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+        color: #3730a3;
+        border: 1px solid #c7d2fe;
+        box-shadow: 0 2px 6px rgba(99, 102, 241, 0.15);
+      }
+
+      .chip-remove {
+        border: none;
+        background: transparent;
+        font-size: 14px;
+        cursor: pointer;
+        color: #4f46e5;
+
+        &:hover {
+          color: #dc2626;
+        }
       }
 
       .mandatory {
-        font-size: 0.8rem;
-        color: red;
+        font-size: 0.72rem;
+        color: #dc2626;
+        margin-top: 2px;
       }
-    }
 
-    .visibility-options {
-      display: flex;
-      flex-direction: row; 
-      gap: 15px;
+      .image-preview {
+        margin-top: 10px;
 
-      label {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-
-        input {
-          accent-color: #007bff;
+        img {
+          max-height: 130px;
+          border-radius: 12px;
+          border: 1px solid #e2e8f0;
+          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
         }
       }
     }
 
     .create-button {
-      background-color: #007bff;
-      color: white;
-      padding: 10px 15px;
+      margin-top: 8px;
+      align-self: flex-end;
+      padding: 12px 36px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #ffffff;
       border: none;
-      border-radius: 5px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
       cursor: pointer;
-      font-size: 1rem;
-      font-weight: bold;
+      box-shadow: 0 10px 20px rgba(79, 70, 229, 0.35);
+      transition: all 0.2s ease;
 
       &:hover {
-        background-color: #0056b3;
+        transform: translateY(-2px);
+        box-shadow: 0 14px 26px rgba(79, 70, 229, 0.45);
+      }
+
+      &:active {
+        transform: translateY(0);
+        box-shadow: 0 6px 14px rgba(79, 70, 229, 0.35);
       }
     }
   }
 
+  /* Responsive */
   @media (max-width: 768px) {
-    padding: 15px;
+    padding: 22px;
 
     h1 {
       font-size: 1.5rem;
     }
-
-    .blog-form {
-      .form-group {
-        input,
-        textarea,
-        select {
-          font-size: 0.9rem;
-          padding: 8px;
-        }
-      }
-
-      .create-button {
-        font-size: 0.9rem;
-        padding: 8px;
-      }
-    }
   }
 
   @media (max-width: 480px) {
-    h1 {
-      font-size: 1.2rem;
-    }
+    padding: 18px;
 
     .blog-form {
-      .form-group {
-        input,
-        textarea,
-        select {
-          font-size: 0.8rem;
-          padding: 6px;
-        }
-      }
+      gap: 20px;
 
       .create-button {
-        font-size: 0.8rem;
-        padding: 6px;
+        width: 100%;
       }
     }
   }

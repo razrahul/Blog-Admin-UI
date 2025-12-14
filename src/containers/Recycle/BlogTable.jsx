@@ -64,11 +64,13 @@ const BlogTable = () => {
     },
     {
       name: "Category",
-      selector: (row) => row.category?.name,
+      selector: (row) => {if(!Array.isArray(row.category) || row.length===0){
+        return <div className="cell-1line">-</div>
+      }},
       sortable: true,
       width: "180px", // fixed
       cell: (row) => (
-        <div className="cell-1line">{row.category?.name || "-"}</div>
+        <div className="cell-1line">{row.category?.map((c) => c.name).join(", ") || "-"}</div>
       ),
     },
     {
