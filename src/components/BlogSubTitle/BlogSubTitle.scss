@@ -3,7 +3,7 @@
   margin-top: 0;
   padding: 15px;
   background-color: #e5e7eb;
-  
+
   .toc-title {
     font-size: 18px;
     font-weight: 600;
@@ -35,15 +35,16 @@
       }
 
       .toc-link {
-        text-decoration: none; /* Removes underline */
+        text-decoration: none;
+        /* Removes underline */
         cursor: pointer;
         color: blue;
-      
+
         // &:hover {
         //   text-decoration: underline; /* Optional: Show underline only on hover */
         // }
       }
-      
+
     }
   }
 }
@@ -71,27 +72,27 @@
       gap: 3px;
 
       .edit-btn {
-        color: #51b669; 
-        font-size: 1rem; 
+        color: #51b669;
+        font-size: 1rem;
         background-color: #f9fafb;
-    
+
         &:hover {
-          color: #0dee3d; 
-        }
-      }
-    
-      .delete-Btn {
-        color: #bd5a64; 
-        background-color:#f9fafb;
-        font-size: 1rem; 
-        
-    
-        &:hover {
-          color: #ea0b21; 
+          color: #0dee3d;
         }
       }
 
-    
+      .delete-Btn {
+        color: #bd5a64;
+        background-color: #f9fafb;
+        font-size: 1rem;
+
+
+        &:hover {
+          color: #ea0b21;
+        }
+      }
+
+
     }
   }
 
@@ -101,22 +102,33 @@
     color: #6b7280;
     // margin-bottom: 10px;
     line-height: 1.6;
-    h1, h2, h3, h4, h5, h6 {
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
       margin: 0;
       font-size: 20px;
     }
-    p{
+
+    p {
       margin: 0;
     }
-    a{
+
+    a {
       margin: 0;
     }
-    ul, li{
+
+    ul,
+    li {
       margin: 0;
     }
   }
 
   .subtitle-image {
+    position: relative; // 👈 important
     display: flex;
     justify-content: center;
     margin-bottom: 15px;
@@ -126,14 +138,53 @@
       height: 25rem;
       border-radius: 8px;
       object-fit: cover;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    &.clickable {
+      cursor: pointer;
+
+      &:hover img {
+        transform: scale(1.03);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+      }
+
+      &:active img {
+        transform: scale(0.99);
+      }
+
+      &::after {
+        content: "↗";
+        position: absolute;
+        bottom: 10px;
+        right: 12px;
+        font-size: 18px;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+      }
+
+      &:hover::after {
+        opacity: 1;
+      }
+    }
+
+    // 📱 Mobile: disable hover zoom
+    @media (hover: none) {
+      &.clickable:hover img {
+        transform: none;
+        box-shadow: none;
+      }
     }
   }
+
+
+
 }
 
 // FAQ Section
 .faq-section {
   margin-top: 20px;
-  
+
   h3 {
     font-size: 24px;
     color: #1f2937;
@@ -154,4 +205,3 @@
     }
   }
 }
-

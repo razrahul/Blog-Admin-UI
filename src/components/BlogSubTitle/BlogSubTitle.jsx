@@ -11,7 +11,7 @@ const BlogSubTitle = ({ subtitle, onEdit, onDelete }) => {
 
   const location = useLocation();
 
-  // console.log("subtitle", subtitle);
+  console.log("subtitle", subtitle);
 
   useEffect(() => {
     if (location.hash) {
@@ -91,11 +91,22 @@ const BlogSubTitle = ({ subtitle, onEdit, onDelete }) => {
             className="subtitle-dec"
             dangerouslySetInnerHTML={{ __html: item.description }}
           ></div>
-          {item.poster && item.poster.public_id ? (
-            <div className="subtitle-image">
-              <img src={item.poster.url} alt={item.title} />
-            </div>
-          ) : null}
+          {item.poster?.url && (
+            item.redirectUrl ? (
+              <a
+              href={item.redirectUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="subtitle-image clickable"
+              >
+                <img src={item.poster.url} alt={item?.title} />
+              </a>
+            ): (
+              <div className="subtitle-image">
+                <img src={item.poster.url} alt={item.title} />
+              </div>
+            )
+          )}
         </div>
       ))}
 

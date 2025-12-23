@@ -15,6 +15,7 @@ const AddSubtitlePage = () => {
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
   const [imagePrev, setImagePrev] = useState("");
+  const [redirectUrl, setRedirectUrl] = useState("");
 
   // Filter to find the specific blog
   // const {
@@ -35,6 +36,10 @@ const AddSubtitlePage = () => {
     const file = e.target.files[0];
     setImage(file);
 
+    if(!file){
+      setRedirectUrl("");   // ! image hataya -> redirectUrl clear
+    }
+
     // Generate a preview for the uploaded image
     if (file) {
       const reader = new FileReader();
@@ -48,15 +53,16 @@ const AddSubtitlePage = () => {
   const dispatch = useDispatch();
 
   // Handle Subtitle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const mySubtitle = new FormData();
     mySubtitle.append("title", subtitle);
     mySubtitle.append("description", description);
-    mySubtitle.append("file", image);
+    if (image) mySubtitle.append("file", image);
+    if (image && redirectUrl) mySubtitle.append("redirectUrl", redirectUrl);
 
     // dispatch(addSubtitle(blogId, mySubtitle));
-    dispatch(createSubtitle(blogId, mySubtitle));
+    await dispatch(createSubtitle(blogId, mySubtitle));
 
     console.log( subtitle, description, image);
 
@@ -65,6 +71,7 @@ const AddSubtitlePage = () => {
     setDescription("");
     setImage(null);
     setImagePrev("");
+    setRedirectUrl("");
 
     alert(`Subtitle added for Blog ID: ${blogId}`);
   };
@@ -81,6 +88,19 @@ const AddSubtitlePage = () => {
     mySubtitle.append("description", description);
     if(image) mySubtitle.append("file", image);
 
+    // for redirectUrl if image is not uploaded then redirectUrl is not required
+    // if (image && redirectUrl) mySubtitle.append("redirectUrl", redirectUrl);
+
+    const hasImage = Boolean(image || imagePrev);
+
+    if(hasImage && redirectUrl) {
+      mySubtitle.append("redirectUrl", redirectUrl);
+    }
+
+    if(hasImage && redirectUrl === "") {
+      mySubtitle.append("redirectUrl", "");
+    }
+
     await dispatch(updateSubtitle(newBlogId, Subtitle._id, mySubtitle));
     // console.log(newBlogId, Subtitle._id)
 
@@ -96,6 +116,7 @@ const AddSubtitlePage = () => {
     setDescription("");
     setImage(null);
     setImagePrev("");
+    setRedirectUrl("");
 
     alert(`Subtitle Updated for Blog ID: ${newBlogId}`);
     // setTimeout(() => {
@@ -107,8 +128,10 @@ const AddSubtitlePage = () => {
     if (isEditable) {
       setSubtitle(Subtitle.title);
       setDescription(Subtitle.description);
-      if(Subtitle?.poster){
+
+      if(Subtitle?.poster?.url){
         setImagePrev(Subtitle.poster.url);
+        setRedirectUrl(Subtitle.redirectUrl || "");
       }
     }
    
@@ -192,6 +215,19 @@ const AddSubtitlePage = () => {
               </div>
             )}
           </div>
+
+          {/*  Redirect URL (only when image exists) */}
+          {imagePrev && (
+            <div className="form-group">
+              <label>Redirect URL (Optional)</label>
+              <input
+                type="text"
+                placeholder="https://example.com"
+                value={redirectUrl}
+                onChange={(e) => setRedirectUrl(e.target.value)}
+              />
+            </div>
+          )}
           
 
           <button type="submit" className="submit-button">
