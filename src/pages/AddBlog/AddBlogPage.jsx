@@ -18,12 +18,16 @@ const AddBlogPage = () => {
   const [description, setDescription] = useState(
     existingBlog ? existingBlog.description : ""
   );
+
+  //upadte
   const [categoryId, setCategoryId] = useState(
-    existingBlog ? existingBlog.categoryId : ""
+    existingBlog ? existingBlog.category?.map((c) => c._id) || [] : []
   );
+
   const [companyId, setCompanyId] = useState(
-    existingBlog ? existingBlog.companyId : ""
+    existingBlog ? existingBlog.company?._id || "" : ""
   );
+
   const [isEditable, setIsEditable] = useState(Boolean(existingBlog));
   const [image, setImage] = useState("");
   const [imagePrev, setImagePrev] = useState(
@@ -47,7 +51,8 @@ const AddBlogPage = () => {
 
   // Handle category selection change
   const handleCategoryChange = (e) => {
-    setCategoryId(e.target.value);
+    const selected = Array.from(e.target.selectedOptions, (opt) => opt.value);
+    setCategoryId(selected);
   };
 
   // Handle company selection change
@@ -75,12 +80,22 @@ const AddBlogPage = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
+     // 🔴 CATEGORY REQUIRED VALIDATION (HERE)
+    if (categoryId.length === 0) {
+      alert("Please select at least one category");
+      return;
+    }
+
     // Prepare FormData to send as API request
     const myBlog = new FormData();
     myBlog.append("title", title);
     myBlog.append("description", description);
-    myBlog.append("categoryId", categoryId);
     myBlog.append("companyId", companyId);
+    // ✅ MULTIPLE CATEGORY
+    categoryId.forEach((id) => {
+      myBlog.append("categoryId[]", id);
+    });
+
     if (image) myBlog.append("file", image);
 
     // const blogData = {
@@ -91,10 +106,10 @@ const AddBlogPage = () => {
     //   image,
     // };
 
-    
-
     if (isEditable) {
-      await dispatch(updateBlog(myBlog, existingBlog._id)); // Update the blog
+      // Update the blog
+      // console.log(existingBlog._id, myBlog);
+      await dispatch(updateBlog(existingBlog._id, myBlog));
     } else {
       await dispatch(createBlog(myBlog)); // Create a new blog
     }
@@ -102,12 +117,12 @@ const AddBlogPage = () => {
     // Reset form fields after successful submission
     setTitle("");
     setDescription("");
-    setCategoryId("");
+    setCategoryId([]);
     setCompanyId("");
     setImage("");
     setImagePrev("");
 
-    alert("Blog created/updated successfully!");
+    alert(isEditable ? "Blog updated successfully!" : "Blog created successfully!");
 
     navigate("/blog-list"); // Navigate back to BlogList after submitting
   };
@@ -155,7 +170,7 @@ const AddBlogPage = () => {
             type="text"
             id="title"
             placeholder="Enter blog title"
-            required
+            required={isEditable}
           />
         </div>
 
@@ -171,24 +186,55 @@ const AddBlogPage = () => {
             modules={modules}
             formats={formats}
             placeholder="Enter blog description"
+            required={!isEditable}
           />
         </div>
 
         {/* Category */}
         <div className="form-group">
-          <label htmlFor="category">Category</label>
+          <label>Category</label>
+
+          {/* Selected categories */}
+          <div className="chip-container">
+            {categoryId.map((id) => {
+              const cat = categories.find((c) => c._id === id);
+              if (!cat) return null;
+
+              return (
+                <span className="chip" key={id}>
+                  {cat.name}
+                  <button
+                    type="button"
+                    className="chip-remove"
+                    onClick={() =>
+                      setCategoryId((prev) => prev.filter((c) => c !== id))
+                    }
+                  >
+                    ×
+                  </button>
+                </span>
+              );
+            })}
+          </div>
+
+          {/* Dropdown to add */}
           <select
-            value={categoryId || ""}
-            onChange={handleCategoryChange}
-            id="category"
-            required
+            onChange={(e) => {
+              const value = e.target.value;
+              if (value && !categoryId.includes(value)) {
+                setCategoryId([...categoryId, value]);
+              }
+              e.target.value = "";
+            }}
           >
-            <option value="">Select a Category</option>
-            {categories.map((cat) => (
-              <option key={cat._id} value={cat._id}>
-                {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
-              </option>
-            ))}
+            <option value="">+ Add category</option>
+            {categories
+              .filter((cat) => !categoryId.includes(cat._id))
+              .map((cat) => (
+                <option key={cat._id} value={cat._id}>
+                  {cat.name}
+                </option>
+              ))}
           </select>
         </div>
 
@@ -199,7 +245,7 @@ const AddBlogPage = () => {
             value={companyId || ""}
             onChange={handleCompanyChange}
             id="company"
-            required
+            required={!isEditable}
           >
             <option value="">Select For a Website</option>
             {companies.map((com) => (
@@ -219,14 +265,18 @@ const AddBlogPage = () => {
             id="image"
             accept="image/*"
             onChange={handleImageChange}
-            required
+            required={!isEditable}
           />
           {imagePrev && (
             <div className="image-preview">
               <img src={imagePrev} alt="Preview" width="150" />
             </div>
           )}
-          <small className="mandatory">*Uploading an image is mandatory.</small>
+          <small className="mandatory">
+            {isEditable
+              ? "*Upload image only if you want to change it"
+              : "*Uploading an image is mandatory"}
+          </small>
         </div>
 
         {/* Submit Button */}

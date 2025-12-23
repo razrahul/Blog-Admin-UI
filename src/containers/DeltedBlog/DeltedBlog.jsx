@@ -70,7 +70,7 @@ const TransBlog = () => {
         <p className="note-text">
           <span>Note:</span> This blog deleted is Extra Information Here...
         </p>
-        <h2>Category: {blog.category.name || "N/A"}</h2>
+        <h2>Category: {blog.category?.map((cat) => cat.name).join(", ") || "N/A"}</h2>
         <h2>Company: {blog.company.companyName || "N/A"}</h2>
         <h2>CreateBy: {blog?.createdBy?.name || "N/A"}</h2>
         <h2>Created Date: {formatDate(blog.createdAt)}</h2>
